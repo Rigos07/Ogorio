@@ -10,3 +10,17 @@ Vitesse mouton  0 à 15
 Position panier X : 0
                 Y : 3000
 Rayon panier    900
+
+Taille Map :	X : 9000 Y : 6000				
+Vitesse mouton		0 à 15			
+Position panier		X : 0, Y : 3000			
+Rayon panier		900			
+					
+	       Vitesse relative 	 Rayon d'action	   Largeur du cadre	    Hauteur du cadre             	Effet spécial
+         a celle des brebis                    de vue en X          de vue en Y
+Red		                       60	               200	                200	                          tire des boules de feu
+Blue		                     0	               2000	                2000	                        crée un vortex
+Green		                     300	             800	                800	                          a le gant d'infinité
+Yellow	                     100	             600	                600	                          est élastique
+Cyan		                     300	             600	                600	
+Purple	                     100	             400	                1600	

@@ -1,0 +1,39 @@
+Types de message : 
+
+- 0 - Connexion Start Command
+Initialise la connexion
+
+- Connexion Command (13)
+Permet de se connecter au serveur
+
+- Protocol 18 :
+??? message custom du serveur
+
+- Nickname: <couleur>
+Permet de choisir une couleur pour son pion
+<couleurs> : red/blue/green/yellow/cyan/purple : 
+si autre : pion blanc qui ne peux ni bouger ni interargir avec l'environnement
+
+- Border Information Message
+Donne des informations sur la carte (dimensions)
+
+
+Connexions :
+
+C : Connexion Start Command (255)
+Protocol : 0
+
+C : Connexion Command (254)
+Protocol : 13
+
+S : Protocol 18
+
+C : Nickname (0)
+Nickname : <couleur>
+
+S : Border Information Message
+Border value : <minX> (Border Left)
+Border value : <minY> (Border Top)
+Border value : <maxX> (Border Right)
+Border value : <maxY> (Border Bottom)
+

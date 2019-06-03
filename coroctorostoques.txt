@@ -1,5 +1,4 @@
-Taille Map :	 X : 9000,
-Y : 6000				
+Taille Map :	 X : 9000, Y : 6000				
 Vitesse mouton	 0 à 15			
 Position panier	 X : 0, Y : 3000			
 Rayon panier	 900			

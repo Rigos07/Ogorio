@@ -7,8 +7,8 @@ Rayon panier	 900
                à celle des brebis                          de vue en X              de vue en Y            
 Red	       0.4                       60	           200	                    200	                   Fait bouger les brebis dans l'enclos
 Blue	       2.67                      0	           2000	                    2000	           Pas d'effet sur les brebis
-Green	       1.33                      300	           800	                    800	                   Équilibré
-Yellow	       2                         100	           600	                    600	                   Équilibré
+Green	       1.33                      300	           800	                    800	                   /
+Yellow	       2                         100	           600	                    600	                   /
 Cyan	       0.2                       300	           600	                    600	                   Fait bouger les brebis dans l'enclos
 Purple	       1                         100	           400	                    1600		   Vision non carrée
 

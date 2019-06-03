@@ -1,0 +1,12 @@
+Couleur  Vitesse  Rayon de poussée  Champ de vision
+Cyan     3        ~300              600 x 600
+Bleu     40       0                 2000 x 2000
+Jaune    30       ~100              600 x 600
+Vert     20       ~300              800 x 800
+Rouge    6        ~60               200 x 200
+Violet   15       ~100              400 x 1600
+
+Vitesse mouton  0 à 15
+Position panier X : 0
+                Y : 3000
+Rayon panier    900

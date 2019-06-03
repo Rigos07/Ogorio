@@ -1,6 +1,6 @@
 Taille Map :	 X : 9000, Y : 6000				
 Vitesse mouton	 0 à 15			
-Position panier	 X : 0, Y : 3000			
+Position panier	 X : 0, Y : 3000, Rayon : 900			
 Rayon panier	 900			
 					
 	       Vitesse relative 	 Rayon d'action	   Largeur du cadre	    Hauteur du cadre       Effet spécial

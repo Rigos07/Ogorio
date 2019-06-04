@@ -16,7 +16,7 @@ Format : 12 (1 octet seul)
 Permet de choisir une couleur pour son pion
 <couleurs> : red/blue/green/yellow/cyan/purple : 
 si autre : pion blanc qui ne peux ni bouger ni interargir avec l'environnement
-Format : 00 + pseudo en ASCII
+Format : 00 + pseudo en ASCII (4 o)
 
 - 64 - Border Information Message
 Donne des informations sur la carte (dimensions)

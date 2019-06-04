@@ -82,6 +82,19 @@ int writePacket(struct lws *wsi)
 
 /****************************************************************************************************************************/ 
 
+/*
+Fonction pour recevoir les packets
+
+*/
+int receive_packet(unsigned char * buf){
+	for(int i ; i < 50 ; i++ ){
+		printf("%x",buf[i]);
+	}
+	return 1;
+}
+
+/****************************************************************************************************************************/ 
+
 static int callbackOgar(struct lws *wsi, enum lws_callback_reasons reason, void *user, void *in, size_t len)
 {
 	static unsigned int offset=0; 
@@ -104,7 +117,8 @@ static int callbackOgar(struct lws *wsi, enum lws_callback_reasons reason, void 
 			offset+=len;
 			// we have receive some data, check with websocket API if this is a final fragment 
 			if (lws_is_final_fragment(wsi)) {
-				// call recv function here 
+				// call recv function here
+				receive_packet(rbuf); 
 				offset=0; 
 			} 
 		} else {	// length is too long... get others but ignore them... 
@@ -134,6 +148,10 @@ static int callbackOgar(struct lws *wsi, enum lws_callback_reasons reason, void 
 
 	return 0;
 }
+
+
+
+
 
 /****************************************************************************************************************************/ 
 int main(int argc, char **argv)
@@ -214,6 +232,7 @@ int main(int argc, char **argv)
 	// the main magic here !! 
 	while (!forceExit) {
 		lws_service(context, 1000);
+
 	}
 	// if there is some errors, we just quit  
 	lwsl_err("Exiting\n");

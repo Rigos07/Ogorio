@@ -87,7 +87,8 @@ Fonction pour recevoir les packets
 
 */
 int receive_packet(unsigned char * buf){
-	for(int i ; i < 50 ; i++ ){
+	int i;
+	for(i = 0 ; i < 50 ; i++ ){
 		printf("%x",buf[i]);
 	}
 	return 1;
@@ -231,6 +232,9 @@ int main(int argc, char **argv)
 	forceExit=0; 
 	// the main magic here !! 
 	while (!forceExit) {
+		unsigned char msg[] = {1,1,1,1,1,1,1,1,1,1};
+		int len = 10;
+		sendCommand(i.parent_wsi,msg,len);
 		lws_service(context, 1000);
 
 	}

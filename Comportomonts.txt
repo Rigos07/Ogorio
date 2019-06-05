@@ -1,0 +1,35 @@
+# ---- Comportements des chiens ----
+
+#Mouvement :
+
+
+#Exploration :
+Bleu : Balayage de zone, création d'une liste chainée contenant les positions et ID des brebis
+
+#Communication :
+Protocole n°x : Protocole Carrelage 3.6
+Emmetteur : Si un chien Receveur est présent dans le champ de vision : Ne plus bouger jusqu'à ce que le Receveur sorte 
+du champ ou vienne sur la position exacte du bleu (et maintienne pendant x frames)
+Receveur : Si brebis à ramener : ne communique pas avec les autres
+Si Emmetteur visible et pas de brebis a ramener et pas de communication Carrelage déjà en cours: venir dessus pendant x frames et attendre la communication
+
+Echange de position : lorsqu'un Emmetteur et un Receveur sont à la même position, l'Emmetteur va, a chaque frame, 
+se placer sur une case (d'une grille virtuelle) qui indique, en décimal, la position ou donnée voulue.
+
+
+#Organisation sociale :
+Bleu : Explorateur (aka Sonicout)
+Comportement dit de l'Autoroute :
+- Rejoint (par le chemin le plus court) l'Autoroute (chemin de scouting)
+- Parcours le chemin, ajoute les brebis a sa checkliste
+- Si croise un jaune, lui communique une position de brebis de la liste
+
+Jaune : Pousseur (aka Speedy Gonzales)
+
+Vert : Multi-tache, jeune et dynamique créateur de startup, militant ferme d'En marche!
+
+Violet : le Scanner v1.0
+
+Rouge : Pas gaté par la vie (le différent)
+
+Cyan : Bulldozer

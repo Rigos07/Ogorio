@@ -25,9 +25,22 @@ Fin
 # ========= YELLOW =========
 #Variables externes :
 # - circuit (liste de points)
-# - target ( un tuple ?)
-#
+# - target Node
 
+Fonction Yellow(xc,yc,target):
+# objectif = tuple (ou 2 vars) d'entiers qui est le point objectif que l'on enverra au seveur
+# xc,yc entiers position du chien
+# target Node de la cible (id,position), NULL si pas de cible
+Debut
+    Si target == NULL
+        Si moutons_en_vue == NULL
+            objectif = parcourir_circuit(xc,yc)
+        Sinon
+            target = moutons_en_vue[0]
+            objectif = ramener_mouton(xc,yc,target)
+    Sinon
+        objectif = ramener_mouton(xc,yc,target)
+Fin
 
 
 # ========= PURPLE =========

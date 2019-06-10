@@ -34,7 +34,7 @@ Fonction aller_sur_circuit(Circuit c, Chien a) : Aucun
     Entiers j, j1, j2, j3, j4
 
 Début
-    TantQue (i < arrondi_sup(d) ET s = Faux) Faire :
+    TantQue (i < arrondir_sup(d) ET s = Faux) Faire :
         j1 ← est_sur_circuit(c, xc - i, yc)
         j2 ← est_sur_circuit(c, xc + i, yc)
         j3 ← est_sur_circuit(c, xc, yc - i)

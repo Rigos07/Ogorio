@@ -111,4 +111,20 @@ Debut
 Fin
 
 
+Fonction ramener_mouton(target)
+# target Node de la cible (id,position)
+Debut
+    distance_mouton_bergerie = distance(target.x,target.y,bergerie_x,bergerie_y)
+    Si distance_mouton_bergerie > rayon_bergerie
+        dx = target.x - bergerie_x
+        dy = target.y - bergerie_y
+
+        delta_x = ((rayon * dx) / distance_mouton_bergerie)
+        delta_y = ((rayon * dy) / distance_mouton_bergerie)
+
+        objectif = ( target.x + delta_x , target.y + delta_y )
+        Retourner objectif
+Fin
+
+
 # ========= PURPLE =========

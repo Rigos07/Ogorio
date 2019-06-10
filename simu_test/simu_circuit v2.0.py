@@ -247,115 +247,8 @@ def is_on_circuit(x,y,circuit):
 
 
 #BRINGER DOG AI
-def dog_bringer_movement(dog):
-    sheeps_in_sight = 0
-    for i in range(0, len(SHEEPS_LIST) ):
-        target = SHEEPS_LIST[i]
-        dx = target.x - dog.x
-        dy = target.y - dog.y
-        if( abs(dx) < dog.sightx and abs(dy) < dog.sighty ):
-            sheeps_in_sight += 1
-            dest_dx = target.x - sheepfold_center[0]
-            dest_dy = target.y - sheepfold_center[1]
-            dest_distance = sqrt(dest_dx**2 + dest_dy**2)
-
-            delta_x = (dog.radius * dest_dx) / dest_distance
-            delta_y = (dog.radius * dest_dy) / dest_distance
-                
-            r = 10
-            distance = sqrt( (dog.x - target.x - delta_x)**2 + (dog.y - target.y - delta_y)**2 )
-            if(distance != 0):
-                (vx , vy) = position_to_speed(dog.x,dog.y,target.x + delta_x ,target.y + delta_y ,dog.speed)
-            else:
-                vx = 0
-                vy = 0 
-            dog.x += vx
-            dog.y += vy
-            break
-        
-    #Roaming behavior
-    if(sheeps_in_sight == 0):
-        default_speed_x = dog.speed / sqrt(2)
-        default_speed_y = dog.speed / sqrt(2)
-        
-        if(dog.x >= MAX_WIDTH or dog.x == 0):
-            default_speed_x = - default_speed_x
-            
-        if(dog.y >= MAX_HEIGHT or dog.y == 0):
-            default_speed_y = - default_speed_y
-            
-        dog.x += default_speed_x
-        dog.y += default_speed_y
-
-
-# 2 POINTS VERSION
-def dog_bringer_movement2(dog):
-    sheeps_in_sight = 0
-    for i in range(0, len(SHEEPS_LIST) ):
-        target = SHEEPS_LIST[i]
-        dx = target.x - dog.x
-        dy = target.y - dog.y
-        if( abs(dx) < dog.sightx and abs(dy) < dog.sighty ): #Sheep targeting behavior
-            sheeps_in_sight += 1
-            dest_dx = target.x - sheepfold_center[0]
-            dest_dy = target.y - sheepfold_center[1]
-            dest_distance = sqrt(dest_dx**2 + dest_dy**2)
-            
-            delta_x = (dog.radius * dest_dx) / dest_distance #<= FINAL OBJECTIVE POINT
-            delta_y = (dog.radius * dest_dy) / dest_distance
-            
-            delta_x1 = -(dog.radius * dest_dy) / dest_distance #<= FIRST INTERMEDIATE POINT
-            delta_y1 = (dog.radius * dest_dx) / dest_distance
-
-            delta_x2 = (dog.radius * dest_dy) / dest_distance #<= SECOND INTERMEDIATE POINT
-            delta_y2 = -(dog.radius * dest_dx) / dest_distance
-
-            if(target.x + delta_x1 < 0):
-                delta_x1 = - target.x
-            if(target.x + delta_x2 < 0):
-                delta_x2 = - target.x
-                              
-            distance = sqrt( (dog.x - target.x - delta_x)**2 + (dog.y - target.y - delta_y)**2 )
-            distance_1 = sqrt( (dog.x - target.x - delta_x1)**2 + (dog.y - target.y - delta_y1)**2 )
-            distance_2 = sqrt( (dog.x - target.x - delta_x2)**2 + (dog.y - target.y - delta_y2)**2 )
-
-            distance_dog_to_sheepfold = sqrt( (dog.x - sheepfold_center[0])**2 +(dog.y - sheepfold_center[1])**2 )
-            distance_sheep_to_sheepfold = sqrt( (target.x - sheepfold_center[0])**2 + (target.y - sheepfold_center[1])**2)
-        
-            is_behind_sheep = (distance_dog_to_sheepfold > distance_sheep_to_sheepfold)
-
-            if( is_behind_sheep and distance != 0 ):
-                (vx , vy) = position_to_speed(dog.x,dog.y,target.x + delta_x ,target.y + delta_y ,dog.speed) #directly go to objective point
-            else:
-                if(distance == 0): #if point has been reached
-                    vx = 0
-                    vy = 0
-
-                #Going to the closest intermediate point
-                if(distance_1 >= distance_2):
-                    (vx , vy) = position_to_speed(dog.x,dog.y,target.x + delta_x2 ,target.y + delta_y2 ,dog.speed) 
-            
-                if(distance_1 < distance_2):
-                    (vx , vy) = position_to_speed(dog.x,dog.y,target.x + delta_x1 ,target.y + delta_y1 ,dog.speed)
-
-            dog.x += vx
-            dog.y += vy
-            break
-    #Roaming behavior
-    if(sheeps_in_sight == 0):
-        default_speed_x = dog.speed / sqrt(2)
-        default_speed_y = dog.speed / sqrt(2)
-        
-        if(dog.x >= MAX_WIDTH or dog.x == 0):
-            default_speed_x = - default_speed_x
-            
-        if(dog.y >= MAX_HEIGHT or dog.y == 0):
-            default_speed_y = - default_speed_y
-            
-        dog.x += default_speed_x
-        dog.y += default_speed_y
-
-
+#def dog_bringer_movement(dog):
+    
 #SHEEP AI
 def sheep_movement(sheep):
     if(sheep.x == 60):
@@ -417,11 +310,11 @@ def animate():
             if(DOGS_LIST[i].color == 'blue'):
                 dog_scout_movement(DOGS_LIST[i],blue_circuit)
                 
-            if(DOGS_LIST[i].color == 'yellow' or DOGS_LIST[i].color == 'green'):
-                dog_bringer_movement(DOGS_LIST[i])
+            #if(DOGS_LIST[i].color == 'yellow' or DOGS_LIST[i].color == 'green'):
+            #    dog_bringer_movement(DOGS_LIST[i])
 
-            if(DOGS_LIST[i].color == 'purple'):
-                dog_bringer_movement2(DOGS_LIST[i])
+            #if(DOGS_LIST[i].color == 'purple'):
+            #    dog_bringer_movement2(DOGS_LIST[i])
             
                 
             X = DOGS_LIST[i].x

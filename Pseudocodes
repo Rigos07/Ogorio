@@ -2,6 +2,13 @@
 
 # ========= BLUE =========
 # Actuellement capable : déterminer le point du circuit le plus proche de sa position de spawn et s'y rendre
+# A faire :
+# - suivre le circuit
+# - répertorier les brebis trouvées + mise a jours si déjà répertoriées
+# - localiser les Yellow
+# - protocole joystick
+# - trouver le mouton le plus proche d'un Yellow
+# - génération du circuit
 
 # Détermine l'index j du point d'intersection le plus proche dans le circuit c pour un point de coordonnées (xc, yc)
 Fonction inters_plus_proche(Circuit c, Entier x, Entier y) : Entier
@@ -109,10 +116,14 @@ Fin
 
 
 # ========= YELLOW =========
-#Actuellement capable : 
+# Actuellement capable : 
 # - Rejoindre le circuit depuis son spawn
 # - Ramener 1 brebis quand hors circuit et quand assignée en target
-#Variables externes :
+# A faire :
+# - parcourir le circuit
+# - localiser le bleu le plus proche
+# - creation du circuit (reverse le circuit Blue)
+# Variables externes :
 # - circuit (liste de points)
 # - target Node
 
@@ -167,3 +178,8 @@ Fin
 
 
 # ========= PURPLE =========
+# A faire :
+# - generation du circuit
+# - ramener une brebis en 2 temps
+
+

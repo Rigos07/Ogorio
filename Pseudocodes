@@ -21,8 +21,10 @@ Retourne j
 Fin
 
 
-
 # ========= YELLOW =========
+#Variables externes :
+# - circuit (liste de points)
+# - target ( un tuple ?)
 #
 
 

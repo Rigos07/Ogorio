@@ -131,10 +131,13 @@ Fin
 
 
 Fonction ramener_mouton(target,rayon)
-# target Node de la cible (id,position)
+# target : Node de la cible (id,position)
+# rayon : Entier rayon du chien
+# bergerie_x,bergerie_x coordonnées du centre de la bergerie (supposés globals)
 Debut
     dx = target.x - bergerie_x
     dy = target.y - bergerie_y
+    distance_mouton_bergerie = distance(target.x,target.y,bergerie_x,bergerie_y)
 
     delta_x = ((rayon * dx) / distance_mouton_bergerie)
     delta_y = ((rayon * dy) / distance_mouton_bergerie)

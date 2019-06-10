@@ -1,7 +1,6 @@
 #IAs des chiens
 
 # ========= BLUE =========
-# ========= BLUE =========
 # Actuellement capable : déterminer le point du circuit le plus proche de sa position de spawn et s'y rendre
 
 # Détermine l'index j du point d'intersection le plus proche dans le circuit c pour un point de coordonnées (xc, yc)

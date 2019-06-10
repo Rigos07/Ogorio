@@ -1,7 +1,7 @@
 #IAs des chiens
 
 # ========= BLUE =========
-# Détermine l'index j du point d'intersection le plus proche dans le circuit c pour un chien de coordonnées (xc, yc)
+# Détermine l'index j du point d'intersection le plus proche dans le circuit c pour un point de coordonnées (xc, yc)
 Fonction inters_plus_proche(Circuit c, Entier xc, Entier yc) : Entier
     Entier d ← TAILLE_MAX
     Entiers i, x, y, d2, j
@@ -19,6 +19,54 @@ Début
     FinPour
 
 Retourne j
+Fin
+
+# Va à la position du point du circuit c le plus proche pour un chien a
+Fonction aller_sur_circuit(Circuit c, Chien a) : Aucun
+    Booléen s ← Faux
+    Entier i ← 0
+    Entier xc ← coord_x(a)
+    Entier yc ← coord_y(a)
+    Entier n ← inters_plus_proche(c, xc, yc)
+    Entier x ← coord_x(c, n)
+    Entier y ← coord_y(c, n)
+    Entier d ← distance(xc, yc, x, y)
+    Entiers j, j1, j2, j3, j4
+
+Début
+    TantQue (i < arrondi_sup(d) ET s = Faux) Faire :
+        j1 ← est_sur_circuit(c, xc - i, yc)
+        j2 ← est_sur_circuit(c, xc + i, yc)
+        j3 ← est_sur_circuit(c, xc, yc - i)
+        j4 ← est_sur_circuit(c, xc, yc + i)
+        s ← Vrai
+        
+        Si j1 > -1 Alors :
+            j ← j1
+            x ← xc - i
+            y ← yc
+
+        Sinon Si j2 > -1 Alors :
+            j ← j2
+            x ← xc + i
+            y ← yc
+
+        Sinon Si j3 > -1 Alors :
+            j ← j3
+            x ← xc
+            y ← yc - i
+
+        Sinon Si j4 > -1 Alors :
+            j ← j4
+            x ← xc
+            y ← yc + i
+
+        Sinon :
+            s ← Faux
+        FinSi
+    FinTantQue
+
+    aller_point(a, x, y, j)
 Fin
 
 

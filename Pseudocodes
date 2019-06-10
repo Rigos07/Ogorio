@@ -2,18 +2,18 @@
 
 # ========= BLUE =========
 # Détermine l'index j du point d'intersection le plus proche dans le circuit c pour un point de coordonnées (xc, yc)
-Fonction inters_plus_proche(Circuit c, Entier xc, Entier yc) : Entier
+Fonction inters_plus_proche(Circuit c, Entier x, Entier y) : Entier
     Entier d ← TAILLE_MAX
-    Entiers i, x, y, d2, j
+    Entiers i, xi, yi, di, j
 
 Début
     Pour i ← 0 à nombre_points(c) Faire :
-        x ← coord_x(c, i)
-        y ← coord_y(c, i)
-        d2 ← distance(xc, yc, x, y)
+        xi ← coord_x(c, i)
+        yi ← coord_y(c, i)
+        di ← distance(x, y, xi, yi)
 
         Si d2 < d Alors :
-            d ← d2
+            d ← di
             j ← i
         FinSi
     FinPour
@@ -24,22 +24,22 @@ Fin
 # Va à la position du point du circuit c le plus proche pour un chien a
 Fonction aller_sur_circuit(Circuit c, Chien a) : Aucun
     Booléen s ← Faux
-    Entier i ← 0
+    Entier i  ← 0
     Entier xc ← coord_x(a)
     Entier yc ← coord_y(a)
-    Entier n ← inters_plus_proche(c, xc, yc)
-    Entier x ← coord_x(c, n)
-    Entier y ← coord_y(c, n)
-    Entier d ← distance(xc, yc, x, y)
+    Entier n  ← inters_plus_proche(c, xc, yc)
+    Entier x  ← coord_x(c, n)
+    Entier y  ← coord_y(c, n)
+    Entier d  ← distance(xc, yc, x, y)
     Entiers j, j1, j2, j3, j4
 
 Début
-    TantQue (i < arrondir_sup(d) ET s = Faux) Faire :
+    TantQue i < arrondir_sup(d) Et s = Faux Faire :
         j1 ← est_sur_circuit(c, xc - i, yc)
         j2 ← est_sur_circuit(c, xc + i, yc)
         j3 ← est_sur_circuit(c, xc, yc - i)
         j4 ← est_sur_circuit(c, xc, yc + i)
-        s ← Vrai
+        s  ← Vrai
         
         Si j1 > -1 Alors :
             j ← j1
@@ -64,6 +64,8 @@ Début
         Sinon :
             s ← Faux
         FinSi
+
+        i ← i + 1
     FinTantQue
 
     aller_point(a, x, y, j)
@@ -72,21 +74,23 @@ Fin
 # Détermine si un point de coordonnées (x, y) est sur le circuit c
 Fonction est_sur_circuit(Circuit c, Entier x, Entier y) : Entier
     Booléen j ← -1
-    Entier i ← 0
-    Entier n ← nombre_points(c)
+    Entier i  ← 0
+    Entier n  ← nombre_points(c)
 
 Début
     Si est_sur_segment(c, x, y, n - 1, 0) = Vrai Alors :
         j ← i
     FinSi
 
-    TantQue (i < n ET j = -1) Faire :
-        Si est_sur_segment(c, x, y, i, i+1) = Vrai Alors :
+    TantQue i < n Et j = -1 Faire :
+        Si est_sur_segment(c, x, y, i, i + 1) = Vrai Alors :
             j ← i
         FinSi
+
+        i ← i + 1
     FinTantQue
 
-Retourner j
+Retourne j
 Fin
 
 

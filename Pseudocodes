@@ -69,6 +69,26 @@ Début
     aller_point(a, x, y, j)
 Fin
 
+# Détermine si un point de coordonnées (x, y) est sur le circuit c
+Fonction est_sur_circuit(Circuit c, Entier x, Entier y) : Entier
+    Booléen j ← -1
+    Entier i ← 0
+    Entier n ← nombre_points(c)
+
+Début
+    Si est_sur_segment(c, x, y, n - 1, 0) = Vrai Alors :
+        j ← i
+    FinSi
+
+    TantQue (i < n ET j = -1) Faire :
+        Si est_sur_segment(c, x, y, i, i+1) = Vrai Alors :
+            j ← i
+        FinSi
+    FinTantQue
+
+Retourner j
+Fin
+
 
 # ========= YELLOW =========
 #Variables externes :

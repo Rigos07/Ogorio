@@ -129,7 +129,6 @@ Debut
 Fin
 
 
-
 Fonction ramener_mouton(target,rayon)
 # target : Node de la cible (id,position)
 # rayon : Entier rayon du chien
@@ -139,8 +138,8 @@ Debut
     dy = target.y - bergerie_y
     distance_mouton_bergerie = distance(target.x,target.y,bergerie_x,bergerie_y)
 
-    delta_x = ((rayon * dx) / distance_mouton_bergerie)
-    delta_y = ((rayon * dy) / distance_mouton_bergerie)
+    delta_x = (( (rayon - marge) * dx) / distance_mouton_bergerie)
+    delta_y = (( (rayon - marge) * dy) / distance_mouton_bergerie)
 
     objectif = ( target.x + delta_x , target.y + delta_y )
     Retourner objectif

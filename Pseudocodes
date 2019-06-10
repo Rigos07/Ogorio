@@ -1,6 +1,7 @@
 #IAs des chiens
 
 # ========= BLUE =========
+# Détermine l'index j du point d'intersection le plus proche dans le circuit c pour un chien de coordonnées (xc, yc)
 Fonction inters_plus_proche(Circuit c, Entier xc, Entier yc) : Entier
     Entier d ← TAILLE_MAX
     Entiers i, x, y, d2, j

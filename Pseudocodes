@@ -1,7 +1,9 @@
 #IAs des chiens
 
 # ========= BLUE =========
+# ========= BLUE =========
 # Actuellement capable : déterminer le point du circuit le plus proche de sa position de spawn et s'y rendre
+
 # Détermine l'index j du point d'intersection le plus proche dans le circuit c pour un point de coordonnées (xc, yc)
 Fonction inters_plus_proche(Circuit c, Entier x, Entier y) : Entier
     Entier d ← TAILLE_MAX
@@ -18,6 +20,39 @@ Début
             j ← i
         FinSi
     FinPour
+
+Retourne j
+Fin
+
+# Détermine si un point de coordonnées (x, y) appartient à un segment horizontal ou vertical du circuit c repéré par les points d'index i1 et i2
+Fonction est_sur_segment(Circuit c, Entier x, Entier y, Entier i1, Entier i2) : Booléen
+    Entier xs1 ← coord_x(c, i1)
+    Entier xs2 ← coord_y(c, i2)
+    Entier ys1 ← coord_x(c, i1)
+    Entier ys2 ← coord_y(c, i2)
+    Booleen r  ← (x = xs1 Et x = xs2 Et valeur_entre(y, ys1, ys2)) Ou (y = ys1 Et y = ys2 Et valeur_entre(x, xs1, xs2))
+
+Retourne r
+Fin
+
+# Détermine si un point de coordonnées (x, y) est sur le circuit c et retourne l'index du point d'intersection suivante si oui, -1 sinon
+Fonction est_sur_circuit(Circuit c, Entier x, Entier y) : Entier
+    Booléen j ← -1
+    Entier i  ← 0
+    Entier n  ← nombre_points(c)
+
+Début
+    Si est_sur_segment(c, x, y, n - 1, 0) = Vrai Alors :
+        j ← 0
+    FinSi
+
+    TantQue i < n Et j = -1 Faire :
+        Si est_sur_segment(c, x, y, i, i + 1) = Vrai Alors :
+            j ← i + 1
+        FinSi
+
+        i ← i + 1
+    FinTantQue
 
 Retourne j
 Fin
@@ -72,38 +107,6 @@ Début
     aller_point(a, x, y, j)
 Fin
 
-# Détermine si un point de coordonnées (x, y) est sur le circuit c et retourne l'index du point d'intersection suivante si oui, -1 sinon
-Fonction est_sur_circuit(Circuit c, Entier x, Entier y) : Entier
-    Booléen j ← -1
-    Entier i  ← 0
-    Entier n  ← nombre_points(c)
-
-Début
-    Si est_sur_segment(c, x, y, n - 1, 0) = Vrai Alors :
-        j ← 0
-    FinSi
-
-    TantQue i < n Et j = -1 Faire :
-        Si est_sur_segment(c, x, y, i, i + 1) = Vrai Alors :
-            j ← i + 1
-        FinSi
-
-        i ← i + 1
-    FinTantQue
-
-Retourne j
-Fin
-
-# Détermine si un point de coordonnées (x, y) appartient à un segment horizontal ou vertical du circuit c repéré par les points d'index i1 et i2
-Fonction est_sur_segment(Circuit c, Entier x, Entier y, Entier i1, Entier i2) : Booléen
-    Entier xs1 ← coord_x(c, i1)
-    Entier xs2 ← coord_y(c, i2)
-    Entier ys1 ← coord_x(c, i1)
-    Entier ys2 ← coord_y(c, i2)
-    Booleen r  ← (x = xs1 Et x = xs2 Et valeur_entre(y, ys1, ys2)) Ou (y = ys1 Et y = ys2 Et valeur_entre(x, xs1, xs2))
-
-Retourne r
-Fin
 
 
 # ========= YELLOW =========

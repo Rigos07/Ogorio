@@ -100,34 +100,47 @@ Fin
 # - target Node
 
 Fonction Yellow(xc,yc,target):
-# objectif = tuple (ou 2 vars) d'entiers qui est le point objectif que l'on enverra au seveur
+# objectif = tuple (ou 2 vars) d'entiers qui est le point objectif que l'on enverra au serveur
 # xc,yc entiers position du chien
 # target Node de la cible (id,position), NULL si pas de cible
 Debut
     Si target == NULL
-        Si moutons_en_vue == NULL
-            objectif = parcourir_circuit(xc,yc)
+        Si est_sur_circuit(xc,yc)
+            Si bleu_en_vue == NULL
+                objectif = parcourir_circuit(xc,yc)
+            Sinon
+                objectif = aller_vers_bleu_le_plus_proche
         Sinon
-            target = moutons_en_vue[0]
-            objectif = ramener_mouton(xc,yc,target)
+            Si moutons_en_vue == NULL
+                objectif = parcourir_circuit(xc,yc)
+            Sinon
+                target = moutons_en_vue[0]
+                objectif = ramener_mouton(xc,yc,target)
     Sinon
-        objectif = ramener_mouton(xc,yc,target)
+        Si target est_dans(moutons_en_vue)
+            distance_mouton_bergerie = distance(target.x,target.y,bergerie_x,bergerie_y)
+            Si distance_mouton_bergerie > rayon_bergerie
+                objectif = ramener_mouton(xc,yc,target)
+            Sinon
+                target = NULL
+            
+        Sinon
+            objectif = ( target.x,target.y )
 Fin
 
 
-Fonction ramener_mouton(target)
+
+Fonction ramener_mouton(target,rayon)
 # target Node de la cible (id,position)
 Debut
-    distance_mouton_bergerie = distance(target.x,target.y,bergerie_x,bergerie_y)
-    Si distance_mouton_bergerie > rayon_bergerie
-        dx = target.x - bergerie_x
-        dy = target.y - bergerie_y
+    dx = target.x - bergerie_x
+    dy = target.y - bergerie_y
 
-        delta_x = ((rayon * dx) / distance_mouton_bergerie)
-        delta_y = ((rayon * dy) / distance_mouton_bergerie)
+    delta_x = ((rayon * dx) / distance_mouton_bergerie)
+    delta_y = ((rayon * dy) / distance_mouton_bergerie)
 
-        objectif = ( target.x + delta_x , target.y + delta_y )
-        Retourner objectif
+    objectif = ( target.x + delta_x , target.y + delta_y )
+    Retourner objectif
 Fin
 
 

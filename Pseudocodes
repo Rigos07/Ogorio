@@ -72,7 +72,7 @@ Début
     aller_point(a, x, y, j)
 Fin
 
-# Détermine si un point de coordonnées (x, y) est sur le circuit c, retourne l'index du point d'intersection suivante si oui, -1 sinon
+# Détermine si un point de coordonnées (x, y) est sur le circuit c et retourne l'index du point d'intersection suivante si oui, -1 sinon
 Fonction est_sur_circuit(Circuit c, Entier x, Entier y) : Entier
     Booléen j ← -1
     Entier i  ← 0

@@ -109,14 +109,20 @@ Fin
 
 
 # ========= YELLOW =========
+#Actuellement capable : 
+# - Rejoindre le circuit depuis son spawn
+# - Ramener 1 brebis quand hors circuit et quand assignée en target
 #Variables externes :
 # - circuit (liste de points)
 # - target Node
+
 
 Fonction Yellow(xc,yc,target):
 # objectif = tuple (ou 2 vars) d'entiers qui est le point objectif que l'on enverra au serveur
 # xc,yc entiers position du chien
 # target Node de la cible (id,position), NULL si pas de cible
+# bergerie_x,bergerie_y,rayon_bergerie : informations sur la bergerie, supposées globales
+# circuit : Circuit de Yellow
 Debut
     Si target == NULL
         Si est_sur_circuit(xc,yc)
@@ -126,7 +132,7 @@ Debut
                 objectif = aller_vers_bleu_le_plus_proche
         Sinon
             Si moutons_en_vue == NULL
-                objectif = parcourir_circuit(xc,yc)
+                objectif = aller_sur_circuit(xc,yc)
             Sinon
                 target = moutons_en_vue[0]
                 objectif = ramener_mouton(xc,yc,target)
@@ -137,16 +143,16 @@ Debut
                 objectif = ramener_mouton(xc,yc,target)
             Sinon
                 target = NULL
-            
         Sinon
             objectif = ( target.x,target.y )
 Fin
 
 
+
 Fonction ramener_mouton(target,rayon)
 # target : Node de la cible (id,position)
 # rayon : Entier rayon du chien
-# bergerie_x,bergerie_x coordonnées du centre de la bergerie (supposés globals)
+# bergerie_x,bergerie_x coordonnées du centre de la bergerie (supposées globales)
 Debut
     dx = target.x - bergerie_x
     dy = target.y - bergerie_y

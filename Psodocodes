@@ -18,8 +18,8 @@ Debut
     Pour i allant de 0 à (MAX_X//400)-1 Faire:
         ajouter_point(circuit, xmin - vue_bleu*(4*i + 3) , ymin - vue_bleu)
         ajouter_point(circuit, xmin - vue_bleu*(4*i + 3) , ymin + vue_bleu*3)
-        ajouter_point(circuit, xmin - vue_bleu*(4*i + 3) , ymin + vue_bleu*3)
-        ajouter_point(circuit, xmin - vue_bleu*(4*i + 3) , ymin - vue_bleu)
+        ajouter_point(circuit, xmin - vue_bleu*(4*i + 5) , ymin + vue_bleu*3)
+        ajouter_point(circuit, xmin - vue_bleu*(4*i + 5) , ymin - vue_bleu)
 
     ajouter_point(circuit, xmin + vue_bleu , ymin - vue_bleu)
 

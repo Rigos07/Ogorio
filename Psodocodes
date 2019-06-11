@@ -270,7 +270,7 @@ Debut
             Si nodes_en_vue == NULL
                 objectif = aller_sur_circuit(Yellow->node)
             Sinon
-                target = récupérer_node(nodes_en_vue,0)
+                target = mouton_plus_proche(Chien a)
                 objectif = ramener_mouton(xc,yc,target)
     Sinon
         Si récupérer_node(nodes_en_vue,target.id) != NULL

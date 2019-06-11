@@ -1,7 +1,6 @@
 #IAs des chiens
 
 # ========= FONCTIONS COMMUNES =========
-#Commenter suivre_circuit /revoir fonction ?
 
 Fonction generer_circuit(MAX_X,MAX_Y,vue_bleu)
 # genère une structure circuit a partir de la taille de la map
@@ -37,7 +36,7 @@ Fonction inters_plus_proche(Circuit c, Point p) : Point
 
 Début
     Pour i ← 0 à nombre_points(c) Faire :
-        pi ← point_suivant(pi)
+        pi ← suivant(pi)
         di ← distance(p, pi)
 
         Si di < d Alors :
@@ -62,7 +61,7 @@ Fonction est_sur_segment(Circuit c, Point p, Point p1, Point p2) : Booléen
 Retourne r
 Fin
 
-# Détermine si un point p est sur le circuit c et retourne le point d'intersection suivant si oui, Rien sinon
+# Détermine si un point p est sur le circuit c et retourne le point d'intersection précédent si oui, Rien sinon
 Fonction est_sur_circuit(Circuit c, Point p) : Point
     Entier i ← 0
     Entier n ← nombre_points(c) + 1
@@ -72,11 +71,11 @@ Fonction est_sur_circuit(Circuit c, Point p) : Point
 
 Début
     TantQue i < n Et r = Rien Faire :
-        p1 ← point_suivant(p1)
-        p2 ← point_suivant(p1)
+        p1 ← suivant(p1)
+        p2 ← suivant(p1)
 
         Si est_sur_segment(c, p, p1, p2) = Vrai Alors :
-            r ← p2
+            r ← p1
         FinSi
 
         i ← i + 1
@@ -84,34 +83,24 @@ Début
 
 Retourne r
 Fin
- 
-Fonction suivre_circuit(Circuit c, Chien a, Point p) :
-    Entier np
-Début
-    Si pseudo(a) = yellow Alors :
-        np ← point_suivant(p)
-    Sinon Si pseudo(a) = blue Alors :
-        np ← point_precedent(p)
-    FinSi
 
-    aller_point(p, np)
-Fin
-
-# Détermine le point du circuit c le plus proche d'un point p
-Fonction pt_circuit_plus_proche(Circuit c, Point p) : Aucun
+# Détermine le point du circuit c le plus proche d'un point p, et retourne le point d'intersection précédent
+Fonction rejoindre_circuit(Circuit c, Point p) : Point
+    Booléen s ← Faux
     Entier i ← 0
     Entier x ← coord_x(p)
     Entier y ← coord_y(p)
-    Point ps ← inters_plus_proche(c, p)
-    Entier d ← distance(p, ps)
-    Points p1, p2, p3, p4, r, rs
+    Point r ← inters_plus_proche(c, p)
+    Point rs ← r
+    Entier d ← distance(p, r)
+    Points p1, p2, p3, p4, ps1, ps2, ps3, ps4
 
 Début
-    TantQue i < arrondir_sup(d) Et r = Rien Faire :
-        p1 ← point(x - i, y)
-        p2 ← point(x + i, y)
-        p3 ← point(x, y - i)
-        p4 ← point(x, y + i)
+    TantQue i < arrondir_sup(d) Et s = Faux Faire :
+        p1  ← point(x - i, y)
+        p2  ← point(x + i, y)
+        p3  ← point(x, y - i)
+        p4  ← point(x, y + i)
         ps1 ← est_sur_circuit(c, p1)
         ps2 ← est_sur_circuit(c, p2)
         ps3 ← est_sur_circuit(c, p3)
@@ -127,18 +116,43 @@ Début
 
         Sinon Si ps3 != Rien Alors :
             r ← p2
-            rs ← ps2
+            rs ← ps3
 
         Sinon Si ps4 != Rien Alors :
             r ← p2
-            rs ← ps2
+            rs ← ps4
 
+        Sinon
+            s ← Vrai
         FinSi
 
         i ← i + 1
     FinTantQue
 
-    aller_point(r, rs)
+    aller_point(r)
+
+Retourner rs
+Fin
+
+# Déplace le chien a vers le circuit c s'il n'y est pas déjà et/ou suit ce circuit
+Fonction suivre_circuit(Circuit c, Chien a) : Aucun
+    Point p ← est_sur_circuit(position(a)) renvoie un Circuit
+    Entier np
+
+Début
+    Si p = Rien Alors :
+        np ← rejoindre_circuit()
+
+    Sinon
+        Si pseudo(a) = yellow Alors :
+            np ← suivant(p)
+
+        Sinon Si pseudo(a) = blue Alors :
+            np ← precedent(p)
+        FinSi
+    FinSi
+
+    aller_point(np)
 Fin
 
 # ========= BLUE =========

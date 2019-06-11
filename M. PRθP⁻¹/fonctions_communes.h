@@ -2,26 +2,25 @@
 #define MAXLEN 26
 
 typedef struct Point {
-    int x, y;
+    unsigned int x, y;
 } Point;
 
 typedef struct Path {
-    struct Path *prev;
-    Point point;
-    struct Path *next;
+    Path *prev;
+    Point position;
+    Path *next;
 } Path;
 
 typedef struct Node {
-	unsigned char id;
-    unsigned int x, y;
+    unsigned char id;
+    Point position;
     unsigned char *nickname;
 } Node;
 
 typedef struct NodeList {
     Node node;
-    struct NodeList *next;
+    NodeList *next;
 } NodeList;
-
 
 Path *create_path();
 Path *add_point(Path *last_element, Point new_point);

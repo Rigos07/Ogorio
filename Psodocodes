@@ -131,7 +131,7 @@ Début
 
     aller_point(r)
 
-Retourner rs
+Retourne rs
 Fin
 
 # Déplace le chien a vers le circuit c s'il n'y est pas déjà et/ou suit ce circuit
@@ -177,12 +177,35 @@ Début
     FinTantQue
 Fin
 
+# Détermine et renvoie le noeud contenant le mouton le plus proche du chien a
+Fonction mouton_plus_proche(Chien a) : Noeud
+    Entier d      ← TAILLE_MAX
+    Point p       ← position(a)
+    ListeNoeuds l ← liste_noeuds(a)
+    Entier di
+    Noeud m, r
+
+Début
+    TantQue l != Rien Faire :
+        m ← noeud(l)
+        di ← distance(p, position(m))
+
+        Si di < d Alors :
+            d ← di
+            r ← m
+        FinSi
+    FinTantQue
+
+Retourne r
+Fin
+
+
+
 # ========= BLUE =========
 # Actuellement capable : déterminer le point du circuit le plus proche de sa position de spawn et s'y rendre
 # A faire :
 # - localiser les Yellow
 # - protocole joystick
-# - trouver le mouton le plus proche d'un Yellow
 
 ####################################
 ####################################MAJ ÇA !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

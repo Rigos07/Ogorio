@@ -254,30 +254,29 @@ Fin
 # vérifier la compatibilité du code avec les fonctions communes
 
 
-Fonction Yellow(xc,yc,target):
-# objectif = tuple (ou 2 vars) d'entiers qui est le point objectif que l'on enverra au serveur
-# xc,yc entiers position du chien
-# target Node de la cible (id,position), NULL si pas de cible
+Fonction Yellow(Dog Yellow):
+# Point objectif = Point qui est le point objectif que l'on enverra au serveur
+# Dog Yellow : Node du chien Yellow + Node de la cible (id,position), NULL si pas de cible
 # bergerie_x,bergerie_y,rayon_bergerie : informations sur la bergerie, supposées globales
 # circuit : Circuit de Yellow
 Debut
     Si target == NULL
-        Si est_sur_circuit(xc,yc)
+        Si est_sur_circuit(Yellow)
             Si detecter_blue(nodes_en_vue) == NULL
-                objectif = parcourir_circuit(xc,yc,"yellow")
+                objectif = parcourir_circuit(Yellow)
             Sinon 
                 objectif = aller_vers_bleu_le_plus_proche(nodes_en_vue)
         Sinon
             Si nodes_en_vue == NULL
-                objectif = aller_sur_circuit(xc,yc)
+                objectif = aller_sur_circuit(Yellow->node)
             Sinon
-                target = nodes_en_vue[0]
+                target = récupérer_node(nodes_en_vue,0)
                 objectif = ramener_mouton(xc,yc,target)
     Sinon
-        Si target est_dans(nodes_en_vue)
+        Si récupérer_node(nodes_en_vue,target.id) != NULL
             distance_mouton_bergerie = distance(target.x,target.y,bergerie_x,bergerie_y)
             Si distance_mouton_bergerie > rayon_bergerie
-                objectif = ramener_mouton(xc,yc,target)
+                objectif = ramener_mouton(Yellow.target, rayon)
             Sinon
                 target = NULL
         Sinon
@@ -307,6 +306,7 @@ Fonction ramener_mouton(target,rayon)
 # Retourne le point objectif pour ramener une cible donnée à la bergerie
 # target : Node de la cible (id,position)
 # rayon : Entier rayon du chien
+# marge : Entier constant fixé
 # bergerie_x,bergerie_x coordonnées du centre de la bergerie (supposées globales)
 Debut
     dx = target.x - bergerie_x

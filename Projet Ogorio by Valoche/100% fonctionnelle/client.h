@@ -1,0 +1,58 @@
+#include "libwebsockets.h"
+#define MAXLEN 20000
+
+static int callbackOgar(struct lws *wsi, enum lws_callback_reasons reason, void *user, void *in, size_t len);
+
+int forceExit;
+
+typedef struct s_packet {
+        unsigned char buf[MAXLEN+LWS_PRE];
+        unsigned int len;
+        struct s_packet *next;
+} t_packet;
+
+/// Pointer on the list of packet to be send when socket is writeable
+t_packet *packetList=NULL;
+
+/// LibWebsocket interlan structure needed for API
+struct lws_protocols protocols[] = {
+	{
+    	"ogar_protocol",
+	callbackOgar,
+    	0,
+    	20
+    	},
+	{
+	NULL,
+	NULL,
+	0,
+	0
+	}
+};
+
+typedef struct Point{
+  unsigned int x,y;
+}Point;
+
+typedef struct Node{
+        unsigned char id;
+        Point position;
+        char* nickname;
+}Node;
+
+int compteur = 0;
+double Xmin;
+double Xmax;
+double Ymin;
+double Ymax;
+int myId = 0;
+char depart = 1;
+Point objectif;
+unsigned char msg[] = {0xff,0x0,0x0,0x0,0x0};
+unsigned char msg2[] = {0xfe,0x0d,0x0,0x0,0x0};
+unsigned char cyan[] = {0x00,0x63,0x79,0x61,0x6E,0x00};
+unsigned char green[] = {0x00,0x67,0x72,0x65,0x65,0x6E,0x00};
+unsigned char blue[] = {0x00,0x62,0x6C,0x75,0x65,0x00};
+unsigned char commande[]={0x10,0xB8,0x0B,0x00,0x00,0xB8,0x0B,0x00,0x00,0x00,0x00,0x00,0x00};
+unsigned char commande2[]={0x10,0xB9,0x0B,0x00,0x00,0xB8,0x0B,0x00,0x00,0x00,0x00,0x00,0x00};
+static int callbackOgar(struct lws *wsi, enum lws_callback_reasons reason, void *user, void *in, size_t len);

@@ -1,6 +1,7 @@
 #IAs des chiens
 
 # ========= FONCTIONS COMMUNES =========
+#Commenter suivre_circuit /revoir fonction ?
 
 Fonction generer_circuit(MAX_X,MAX_Y,vue_bleu)
 # genère une structure circuit a partir de la taille de la map
@@ -83,6 +84,18 @@ Début
 
 Retourne r
 Fin
+ 
+Fonction suivre_circuit(Circuit c, Chien a, Point p) :
+    Entier np
+Début
+    Si pseudo(a) = yellow Alors :
+        np ← point_suivant(p)
+    Sinon Si pseudo(a) = blue Alors :
+        np ← point_precedent(p)
+    FinSi
+
+    aller_point(p, np)
+Fin
 
 # Détermine le point du circuit c le plus proche d'un point p
 Fonction pt_circuit_plus_proche(Circuit c, Point p) : Aucun
@@ -155,10 +168,6 @@ Début
     Sinon
         objectif = aller_sur_circuit(xc,yc)
 Fin
-
-
-
-
 
 
 # ========= YELLOW =========

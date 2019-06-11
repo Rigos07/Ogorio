@@ -36,3 +36,6 @@ int delete_node(NodeList *list, unsigned char id);
 int update_node(NodeList *list, unsigned char id , Node node);
 int get_nodelist_size(Path *head);
 Node *get_node(NodeList *list, unsigned char id);
+
+
+float distance(Point p1, Point p2);

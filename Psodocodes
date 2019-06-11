@@ -31,11 +31,12 @@ Fin
 Fonction inters_plus_proche(Circuit c, Point p) : Point
     Entier d ← TAILLE_MAX
     Entiers i, di
-    Points pi, r
+    Point pi ← point_circuit(c, 0)
+    Point r
 
 Début
     Pour i ← 0 à nombre_points(c) Faire :
-        pi ← point_circuit(c, i)
+        pi ← point_suivant(pi)
         di ← distance(p, pi)
 
         Si di < d Alors :
@@ -64,13 +65,14 @@ Fin
 Fonction est_sur_circuit(Circuit c, Point p) : Point
     Entier i ← 0
     Entier n ← nombre_points(c) + 1
+    Point p1 ← point_circuit(c, 0)
     Point r  ← Rien
-    Points p1, p2
+    Point p2
 
 Début
     TantQue i < n Et r = Rien Faire :
-        p1 ← point_circuit(c, i)
-        p2 ← point_circuit(c, i + 1)
+        p1 ← point_suivant(p1)
+        p2 ← point_suivant(p1)
 
         Si est_sur_segment(c, p, p1, p2) = Vrai Alors :
             r ← p2

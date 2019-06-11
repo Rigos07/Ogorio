@@ -22,6 +22,12 @@ typedef struct NodeList {
     struct NodeList *next;
 } NodeList;
 
+typedef struct Dog {
+    Node node;
+    Point target;
+    NodeList *sheeps;
+} Dog;
+
 // ================== PATH PRIMITIVES ==================
 
 /*

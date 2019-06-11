@@ -27,109 +27,104 @@ Debut
 Fin
 
 
-# Détermine l'index j du point d'intersection le plus proche dans le circuit c pour un point de coordonnées (xc, yc)
-Fonction inters_plus_proche(Circuit c, Entier x, Entier y) : Entier
+# Détermine le point d'intersection le plus proche dans le circuit c pour un point p
+Fonction inters_plus_proche(Circuit c, Point p) : Point
     Entier d ← TAILLE_MAX
-    Entiers i, xi, yi, di, j
+    Entiers i, di
+    Points pi, r
 
 Début
     Pour i ← 0 à nombre_points(c) Faire :
-        xi ← coord_x(c, i)
-        yi ← coord_y(c, i)
-        di ← distance(x, y, xi, yi)
+        pi ← point_circuit(c, i)
+        di ← distance(p, pi)
 
-        Si d2 < d Alors :
+        Si di < d Alors :
             d ← di
-            j ← i
+            r ← pi
         FinSi
     FinPour
-
-Retourne j
-Fin
-
-# Détermine si un point de coordonnées (x, y) appartient à un segment horizontal ou vertical du circuit c repéré par les points d'index i1 et i2
-Fonction est_sur_segment(Circuit c, Entier x, Entier y, Entier i1, Entier i2) : Booléen
-    Entier xs1 ← coord_x(c, i1)
-    Entier xs2 ← coord_y(c, i2)
-    Entier ys1 ← coord_x(c, i1)
-    Entier ys2 ← coord_y(c, i2)
-    Booleen r  ← (x = xs1 Et x = xs2 Et valeur_entre(y, ys1, ys2)) Ou (y = ys1 Et y = ys2 Et valeur_entre(x, xs1, xs2))
 
 Retourne r
 Fin
 
-# Détermine si un point de coordonnées (x, y) est sur le circuit c et retourne l'index du point d'intersection suivante si oui, -1 sinon
-Fonction est_sur_circuit(Circuit c, Entier x, Entier y) : Entier
-    Booléen j ← -1
-    Entier i  ← 0
-    Entier n  ← nombre_points(c)
+# Détermine si un point p appartient à un segment horizontal ou vertical du circuit c repéré par les points p1 et p2
+Fonction est_sur_segment(Circuit c, Point p, Point p1, Point p2) : Booléen
+    Entier x  ← coord_x(p)
+    Entier y  ← coord_y(p)
+    Entier x1 ← coord_x(p1)
+    Entier y1 ← coord_y(p2)
+    Entier x2 ← coord_x(p2)
+    Entier y2 ← coord_y(p2)
+    Booleen r ← (x = x1 Et x = x2 Et valeur_entre(y, y1, y2)) Ou (y = y1 Et y = y2 Et valeur_entre(x, x1, x2))
+
+Retourne r
+Fin
+
+# Détermine si un point p est sur le circuit c et retourne le point d'intersection suivant si oui, Rien sinon
+Fonction est_sur_circuit(Circuit c, Point p) : Point
+    Entier i ← 0
+    Entier n ← nombre_points(c) + 1
+    Point r  ← Rien
+    Points p1, p2
 
 Début
-    Si est_sur_segment(c, x, y, n - 1, 0) = Vrai Alors :
-        j ← 0
-    FinSi
+    TantQue i < n Et r = Rien Faire :
+        p1 ← point_circuit(c, i)
+        p2 ← point_circuit(c, i + 1)
 
-    TantQue i < n Et j = -1 Faire :
-        Si est_sur_segment(c, x, y, i, i + 1) = Vrai Alors :
-            j ← i + 1
+        Si est_sur_segment(c, p, p1, p2) = Vrai Alors :
+            r ← p2
         FinSi
 
         i ← i + 1
     FinTantQue
 
-Retourne j
+Retourne r
 Fin
 
-# Va à la position du point du circuit c le plus proche pour un chien a
-Fonction aller_sur_circuit(Circuit c, Chien a) : Aucun
-    Booléen s ← Faux
-    Entier i  ← 0
-    Entier xc ← coord_x(a)
-    Entier yc ← coord_y(a)
-    Entier n  ← inters_plus_proche(c, xc, yc)
-    Entier x  ← coord_x(c, n)
-    Entier y  ← coord_y(c, n)
-    Entier d  ← distance(xc, yc, x, y)
-    Entiers j, j1, j2, j3, j4
+# Détermine le point du circuit c le plus proche d'un point p
+Fonction pt_circuit_plus_proche(Circuit c, Point p) : Point
+    Entier i ← 0
+    Entier x ← coord_x(p)
+    Entier y ← coord_y(p)
+    Point ps ← inters_plus_proche(c, p)
+    Entier d ← distance(p, ps)
+    Points p1, p2, p3, p4, r, rs
 
 Début
-    TantQue i < arrondir_sup(d) Et s = Faux Faire :
-        j1 ← est_sur_circuit(c, xc - i, yc)
-        j2 ← est_sur_circuit(c, xc + i, yc)
-        j3 ← est_sur_circuit(c, xc, yc - i)
-        j4 ← est_sur_circuit(c, xc, yc + i)
-        s  ← Vrai
+    TantQue i < arrondir_sup(d) Et r = Rien Faire :
+        p1 ← point(x - i, y)
+        p2 ← point(x + i, y)
+        p3 ← point(x, y - i)
+        p4 ← point(x, y + i)
+        ps1 ← est_sur_circuit(c, p1)
+        ps2 ← est_sur_circuit(c, p2)
+        ps3 ← est_sur_circuit(c, p3)
+        ps4 ← est_sur_circuit(c, p4)
         
-        Si j1 > -1 Alors :
-            j ← j1
-            x ← xc - i
-            y ← yc
+        Si ps1 != Rien Alors :
+            r ← p1
+            rs ← ps1
 
-        Sinon Si j2 > -1 Alors :
-            j ← j2
-            x ← xc + i
-            y ← yc
+        Sinon Si ps2 != Rien Alors :
+            r ← p2
+            rs ← ps2
 
-        Sinon Si j3 > -1 Alors :
-            j ← j3
-            x ← xc
-            y ← yc - i
+        Sinon Si ps3 != Rien Alors :
+            r ← p2
+            rs ← ps2
 
-        Sinon Si j4 > -1 Alors :
-            j ← j4
-            x ← xc
-            y ← yc + i
+        Sinon Si ps4 != Rien Alors :
+            r ← p2
+            rs ← ps2
 
-        Sinon :
-            s ← Faux
         FinSi
 
         i ← i + 1
     FinTantQue
 
-    aller_point(a, x, y, j)
+    aller_point(r, rs)
 Fin
-
 
 # ========= BLUE =========
 # Actuellement capable : déterminer le point du circuit le plus proche de sa position de spawn et s'y rendre

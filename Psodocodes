@@ -215,9 +215,7 @@ Fin
 # - protocole joystick
 # vérifier la compatibilité du code avec les fonctions communes
 
-####################################
-####################################MAJ ÇA !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-####################################
+
 Fonction Blue(Dog Blue):
 # Comportement général du Blue
 # Dog Blue node du Blue + sheeps liste vide

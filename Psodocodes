@@ -1,5 +1,6 @@
 #IAs des chiens
 
+
 # ========= FONCTIONS COMMUNES =========
 
 Fonction generer_circuit(MAX_X,MAX_Y,vue_bleu)
@@ -202,10 +203,17 @@ Fin
 
 
 # ========= BLUE =========
-# Actuellement capable : déterminer le point du circuit le plus proche de sa position de spawn et s'y rendre
+# Actuellement capable :
+# - déterminer point du circuit le plus proche
+# - y aller
+# - suivre circuit
+# - enregistrer les moutons
+# - déterminer le plus proche
+
 # A faire :
 # - localiser les Yellow
 # - protocole joystick
+# vérifier la compatibilité du code avec les fonctions communes
 
 ####################################
 ####################################MAJ ÇA !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -240,6 +248,10 @@ Fin
 # Variables externes :
 # - circuit (liste de points)
 # - target Node
+
+# À faire :
+# lire joystick
+# vérifier la compatibilité du code avec les fonctions communes
 
 
 Fonction Yellow(xc,yc,target):
@@ -311,8 +323,6 @@ Fin
 # ========= PURPLE =========
 # A faire :
 # - generation du circuit
-# - ramener une brebis en 2 temps
-
 # - ramener une brebis en 2 temps
 
 

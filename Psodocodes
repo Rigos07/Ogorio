@@ -83,7 +83,7 @@ Retourne r
 Fin
 
 # Détermine le point du circuit c le plus proche d'un point p
-Fonction pt_circuit_plus_proche(Circuit c, Point p) : Point
+Fonction pt_circuit_plus_proche(Circuit c, Point p) : Aucun
     Entier i ← 0
     Entier x ← coord_x(p)
     Entier y ← coord_y(p)

@@ -44,7 +44,7 @@ Path *add_point(Path *last_element, Point new_point);
 * index : index of the point that will be get
 * Return pointer to point if found, NULL otherwise
 */
-Path *get_point(Path *head,int index);
+Path *get_point(Path *head, int index);
 
 /*
 * Get the number of points in a path structure
@@ -90,7 +90,7 @@ int delete_node(NodeList *head, unsigned char id);
 * node : node containing new node data to update
 * Return 1 if successfull, -1 if error occured
 */
-int update_node(NodeList *head, unsigned char id , Node node);
+int update_node(NodeList *head, unsigned char id, Node node);
 
 /*
 * Get the number of nodes in a nodelist structure

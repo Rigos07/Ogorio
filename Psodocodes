@@ -26,6 +26,7 @@ Debut
     Retourner circuit
 Fin
 
+
 # ========= BLUE =========
 # Actuellement capable : déterminer le point du circuit le plus proche de sa position de spawn et s'y rendre
 # A faire :
@@ -34,7 +35,6 @@ Fin
 # - localiser les Yellow
 # - protocole joystick
 # - trouver le mouton le plus proche d'un Yellow
-# - génération du circuit
 
 # Détermine l'index j du point d'intersection le plus proche dans le circuit c pour un point de coordonnées (xc, yc)
 Fonction inters_plus_proche(Circuit c, Entier x, Entier y) : Entier
@@ -148,7 +148,6 @@ Fin
 # A faire :
 # - parcourir le circuit
 # - localiser le bleu le plus proche
-# - creation du circuit (reverse le circuit Blue)
 # Variables externes :
 # - circuit (liste de points)
 # - target Node
@@ -189,7 +188,23 @@ Fin
 
 
 
+Fonction initialiser_Yellow():
+# Genère les structures nécessaires au fonctionnement du Yellow
+# vue_bleu Entier supposé constant pour le moment
+Debut
+    MAX_X , MAX_Y = lire_taille_map()
+    circuit = generer_circuit(MAX_X,MAX_Y,vue_bleu)
+    Yellow = structure yellow (node = lire_position(),target = NULL)
+    Tant que (Vrai)Faire
+        Yellow.position = lire_position()
+        objectif = Yellow(Yellow)
+        aller_point(objectif)
+    Fin
+Fin
+
+
 Fonction ramener_mouton(target,rayon)
+# Retourne le point objectif pour ramener une cible donnée à la bergerie
 # target : Node de la cible (id,position)
 # rayon : Entier rayon du chien
 # bergerie_x,bergerie_x coordonnées du centre de la bergerie (supposées globales)

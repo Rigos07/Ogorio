@@ -6,9 +6,9 @@ typedef struct Point {
 } Point;
 
 typedef struct Path {
-    Path *prev;
+    struct Path *prev;
     Point position;
-    Path *next;
+    struct Path *next;
 } Path;
 
 typedef struct Node {
@@ -19,7 +19,7 @@ typedef struct Node {
 
 typedef struct NodeList {
     Node node;
-    NodeList *next;
+    struct NodeList *next;
 } NodeList;
 
 // ================== PATH PRIMITIVES ==================

@@ -1,5 +1,31 @@
 #IAs des chiens
 
+# ========= FONCTIONS COMMUNES =========
+
+Fonction generer_circuit(MAX_X,MAX_Y,vue_bleu)
+# genère une structure circuit a partir de la taille de la map
+# Entier xmin = MAX_X%400
+# Entier ymin= 0
+# Entier xmax = MAX_X
+# Entier ymax = MAX_Y
+# Entier vue_bleu = 1000
+
+Debut
+    circuit = structure circuit
+    ajouter_point(circuit, xmin + vue_bleu , ymin + vue_bleu)
+    ajouter_point(circuit, xmin - vue_bleu , ymin + vue_bleu)
+    ajouter_point(circuit, xmin - vue_bleu , ymin - vue_bleu)
+    Pour i allant de 0 à (MAX_X//400)-1 Faire:
+        ajouter_point(circuit, xmin - vue_bleu*(4*i + 3) , ymin - vue_bleu)
+        ajouter_point(circuit, xmin - vue_bleu*(4*i + 3) , ymin + vue_bleu*3)
+        ajouter_point(circuit, xmin - vue_bleu*(4*i + 3) , ymin + vue_bleu*3)
+        ajouter_point(circuit, xmin - vue_bleu*(4*i + 3) , ymin - vue_bleu)
+
+    ajouter_point(circuit, xmin + vue_bleu , ymin - vue_bleu)
+
+    Retourner circuit
+Fin
+
 # ========= BLUE =========
 # Actuellement capable : déterminer le point du circuit le plus proche de sa position de spawn et s'y rendre
 # A faire :
@@ -137,18 +163,19 @@ Fonction Yellow(xc,yc,target):
 Debut
     Si target == NULL
         Si est_sur_circuit(xc,yc)
-            Si bleu_en_vue == NULL
+            Si bleu est_dans(nodes_en_vue)
                 objectif = parcourir_circuit(xc,yc)
             Sinon
-                objectif = aller_vers_bleu_le_plus_proche
+                bleus_en_vue = trier_bleus(nodes_en_vue)
+                objectif = aller_vers_bleu_le_plus_proche(bleus_en_vue)
         Sinon
-            Si moutons_en_vue == NULL
+            Si nodes_en_vue == NULL
                 objectif = aller_sur_circuit(xc,yc)
             Sinon
-                target = moutons_en_vue[0]
+                target = nodes_en_vue[0]
                 objectif = ramener_mouton(xc,yc,target)
     Sinon
-        Si target est_dans(moutons_en_vue)
+        Si target est_dans(nodes_en_vue)
             distance_mouton_bergerie = distance(target.x,target.y,bergerie_x,bergerie_y)
             Si distance_mouton_bergerie > rayon_bergerie
                 objectif = ramener_mouton(xc,yc,target)
@@ -156,6 +183,8 @@ Debut
                 target = NULL
         Sinon
             objectif = ( target.x,target.y )
+
+    Retourner objectif
 Fin
 
 
@@ -175,7 +204,6 @@ Debut
     objectif = ( target.x + delta_x , target.y + delta_y )
     Retourner objectif
 Fin
-
 
 # ========= PURPLE =========
 # A faire :

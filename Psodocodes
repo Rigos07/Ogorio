@@ -155,15 +155,38 @@ Début
     aller_point(np)
 Fin
 
+# Compte les brebis de la liste de noeuds ns et les ajoute à la liste du chien a, ou les modifie si elles existent déjà
+Fonction compter_brebis(Chien a, ListeNoeuds ns) : Aucun
+    ListeNoeuds l ← liste_noeuds(a)
+    Noeud n
+
+Début
+    TantQue ns != Rien Faire :
+        n ← noeud(ns)
+
+        Si contient(pseudo(ns), bot) = Vrai Alors :
+            Si chercher_noeud(l, index(ns)) = Rien Alors :
+                ajouter_noeud(l, ns)
+
+            Sinon :
+                modifier_noeud(l, ns)
+            FinSi
+        FinSi
+
+        ns = suivant(ns)
+    FinTantQue
+Fin
+
 # ========= BLUE =========
 # Actuellement capable : déterminer le point du circuit le plus proche de sa position de spawn et s'y rendre
 # A faire :
-# - suivre le circuit
-# - répertorier les brebis trouvées + mise a jours si déjà répertoriées
 # - localiser les Yellow
 # - protocole joystick
 # - trouver le mouton le plus proche d'un Yellow
 
+####################################
+####################################MAJ ÇA !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+####################################
 Fonction Blue(xc,yc,cherche):
 # Comportement général du Blue
 # xc,yc entiers position du chien

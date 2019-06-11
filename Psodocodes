@@ -218,23 +218,26 @@ Fin
 ####################################
 ####################################MAJ ÇA !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ####################################
-Fonction Blue(xc,yc,cherche):
+Fonction Blue(Dog Blue):
 # Comportement général du Blue
-# xc,yc entiers position du chien
+# Dog Blue node du Blue + sheeps liste vide
 # Booléen cherche = initialisé a False
+# marge = constante fixée au début du programme
+# cible = Node indiquant une brebis à donner au Yellow
+# circuit = Circuit bleu généré hors de la fonction
 Début
-    mettre_a_jour_moutons(nodes_en_vue())
-    Si est_sur_circuit(xc,yc)
+    compter_brebis(nodes_en_vue())
+    Si est_sur_circuit(Blue)
         Si detecter_yellow() != NULL
-            Si est_sur_yellow(xc,yc)
-                cible = trouver_mouton_plus_proche(xc,yc)
-                objectif = joystick(cible)
+            Si distance(Blue.node.position, detecter_yellow().node.position) < marge
+                cible = trouver_mouton_plus_proche(Blue)
+                objectif = joystick(Yellow,cible)
             Sinon
-                objectif = xc,yc (s'arreter)
+                objectif = Blue.node.position (s'arreter)
         Sinon
-            objectif = parcourir_circuit(xc,yc"blue")
+            objectif = suivre_circuit(circuit, Blue)
     Sinon
-        objectif = aller_sur_circuit(xc,yc)
+        objectif = suivre_circuit(circuit, Blue)
 Fin
 
 
@@ -243,7 +246,6 @@ Fin
 # - Rejoindre le circuit depuis son spawn
 # - Ramener 1 brebis quand hors circuit et quand assignée en target
 # A faire :
-# - parcourir le circuit
 # - localiser le bleu le plus proche
 # Variables externes :
 # - circuit (liste de points)
@@ -263,12 +265,12 @@ Debut
     Si target == NULL
         Si est_sur_circuit(Yellow)
             Si detecter_blue(nodes_en_vue) == NULL
-                objectif = parcourir_circuit(Yellow)
+                objectif = suivre_circuit(circuit, Yellow)
             Sinon 
                 objectif = aller_vers_bleu_le_plus_proche(nodes_en_vue)
         Sinon
             Si nodes_en_vue == NULL
-                objectif = aller_sur_circuit(Yellow->node)
+                objectif = suivre_circuit(circuit, Yellow)
             Sinon
                 target = mouton_plus_proche(Chien a)
                 objectif = ramener_mouton(xc,yc,target)

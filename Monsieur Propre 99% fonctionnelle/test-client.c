@@ -48,6 +48,8 @@ Point Yellow_behavior(Dog yellow, Point sheepfold_center, int sheepfold_rad, Nod
 		}
 		if(pointer != NULL){
 			*(yellow.target) = pointer->node;
+			printf("\ncible = ");
+			printnode(pointer->node);
 		}
 	}
 	if(yellow.target != NULL){

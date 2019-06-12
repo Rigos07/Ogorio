@@ -241,18 +241,17 @@ void printnode(Node node){
 
 void printlist(NodeList **head){
     NodeList *pointer;
+    int i;
     printf("Node list :\n");
-    printf("de taille : %d\n", get_nodelist_size(head));
     if(*head == NULL){
         printf("Empty list !\n");
     }
     else{
         pointer = *head;
-        while(pointer->next != NULL){
+        for (i = 0; i < get_nodelist_size(head); i++) {
             printnode(pointer->node);
             pointer = pointer->next;
         }
-        printnode(pointer->node);
     }
     printf("End\n\n");
 }

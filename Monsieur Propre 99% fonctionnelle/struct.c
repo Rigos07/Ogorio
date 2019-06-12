@@ -1,267 +1,225 @@
-#include "struct.h"
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-
-
+#include "struct.h"
 
 // ================== PATH PRIMITIVES ==================
 
-Path *create_path(void){
-	Path *path = NULL;
-	return path;
+Point create_point(int x, int y) {
+    Point new_point = {x, y};
+    return new_point;
 }
 
-
-Path *add_point(Path **head, Path **last, Point new_point){
-    Path *new = malloc(sizeof(Path));
-
-    if(new == NULL){
-        fprintf(stderr, "ERROR : No memory for path generation\n");
-        return NULL;
-    }
-
-    new->prev = *last;
-    new->position = new_point;
-    new->next = *head;
-
-    if(*last == NULL){
-        *last = new;
-    }
-    else{
-        (*head)->prev = new;
-        (*last)->next = new;
-    }
-
-    return new;
+Path *create_path(void) {
+    Path *path = NULL;
+    return path;
 }
 
-Path *get_segment(Path **head,int index){
-    int i;
+int get_path_size(Path **head) {
+    Path *pointer = *head;
+    int size = 0;
 
-    if(*head == NULL){
+    if (pointer != NULL) {
+        do {
+            pointer = pointer->next;
+            size++;
+
+        } while (pointer != *head);
+    }
+
+    return size;
+}
+
+Path *get_segment(Path **head, int index) {
+    if (*head == NULL) {
         fprintf(stderr, "ERROR : Trying to get point in empty path\n");
         return NULL;
     }
 
-    Path * element = *head;
-    for (i = 0; i < index; i++){
-        element = element->next;
+    Path *this_element = *head;
+    int i;
+
+    for (i = 0; i < index; i++) {
+        this_element = this_element->next;
     }
 
-    return element;
+    return this_element;
 }
 
-Point *get_point(Path **head,int index){
-    return &(get_segment(head, index)->position);
-}
+Path *add_point(Path **head, Path **tail, Point new_point) {
+    Path *new = malloc(sizeof(Path));
 
-int get_path_size(Path **head){
-    int size = 0;
-    Path *pointer = *head;
-    if(pointer != NULL) {
-        do {
-            size++;
-            pointer = pointer->next;
-        } while(pointer != *head);
+    if (new == NULL) {
+        fprintf(stderr, "ERROR : No memory for path generation\n");
+        return NULL;
     }
-    return size;
-}
 
+    if (*head == NULL) {
+        *head = new;
+    
+    } else {
+        (*head)->prev = new;
+        (*tail)->next = new;
+    }
+
+    new->prev = *tail;
+    new->position = new_point;
+    new->next = *head;
+
+    return new;
+}
 
 // ================== NODE & NODELIST PRIMITIVES ==================
 
-Node *create_node(void){
-	Node *new_node = NULL;
-	return new_node;
+Node create_node(unsigned char id, Point position, unsigned char *nickname) {
+    Node new_node = {id, position, nickname};
+    return new_node;
 }
 
-
-NodeList *create_nodelist(void){
-	NodeList *new_list = NULL;
-	return new_list;
+NodeList *create_nodelist(void) {
+    NodeList *new_list = NULL;
+    return new_list;
 }
 
+int get_nodelist_size(NodeList **head) {
+    NodeList *pointer = *head;
+    int size = 0;
 
-NodeList *add_node(NodeList **last, Node new_node){
+    while (pointer != NULL) {
+        pointer = pointer->next;
+        size++;
+    }
+
+    return size;
+}
+
+NodeList *get_nodelist_portion(NodeList **head, unsigned char id) {
+    if (*head == NULL) {
+        fprintf(stderr, "ERROR : Trying to get node in empty nodelist\n");
+        return NULL;
+    }
+
+    NodeList *this_element = *head;
+    Node this_node = this_element->node;
+
+    while (this_element->next != NULL && this_node.id != id) {
+        this_element = this_element->next;
+        this_node = this_element->node;
+    }
+
+    if (this_node.id != id) {
+        fprintf(stderr, "ERROR : Node to get not found\n");
+        return NULL;
+    }
+
+    return this_element;
+}
+
+NodeList *add_node(NodeList **tail, Node new_node) {
     NodeList *new = malloc(sizeof(NodeList));
 
-    if(new == NULL){
+    if (new == NULL) {
         fprintf(stderr, "ERROR : No memory for node generation\n");
         return NULL;
+    }
+
+    if(*tail == NULL) {
+        *tail = new;
+    
+    } else {
+        (*tail)->next = new;
     }
 
     new->node = new_node;
     new->next = NULL;
 
-    if(*last == NULL){
-        *last = new;
-    }
-    else{
-        (*last)->next = new;
-    }
-
     return new;
 }
 
-int delete_node(NodeList **head, unsigned char id){
-	NodeList *last_element = *head;
-	NodeList *element = *head;
-	if(*head == NULL){
-		fprintf(stderr, "ERROR : Trying to delete empty nodelist\n");
-		return -1;
-	}
+int delete_node(NodeList **head, unsigned char id) {
+    if (*head == NULL) {
+        fprintf(stderr, "ERROR : Trying to delete empty nodelist\n");
+        return -1;
+    }
 
-	if( (*head)->next == NULL){
-		element = (*head);
-		*head = NULL;
-	}
-	else{
-		element = (*head)->next;
-		while(element->next != NULL && element->node.id != id){
-			last_element = last_element->next;
-			element = element->next;
-		}
-	}
+    NodeList *this_element = *head, *prev_element = *head, *next_element = this_element->next;
+    Node this_node = this_element->node;
 
-	if(element->node.id != id){
-		fprintf(stderr, "ERROR : Node to delete not found\n");
-		return -1;
-	}
+    while (next_element != NULL && this_node.id != id) {
+        prev_element = this_element;
+        this_element = this_element->next;
+        next_element = next_element->next;
+        this_node = this_element->node;
+    }
 
-	last_element->next = element->next;
-	free(element);
-	return 1;
+    if (this_node.id != id) {
+        fprintf(stderr, "ERROR : Node to delete not found\n");
+        return -1;
+    }
 
+    if (*head == this_element) {
+        *head = next_element;
+
+    } else {
+        prev_element->next = next_element;
+    }
+
+    free(this_element);
+    return 1;
 }
 
+int update_node(NodeList **head, Node node) {
+    NodeList *this_element = get_nodelist_portion(head, node.id);
 
-int update_node(NodeList **head, Node node){
-	if(*head == NULL){
-		fprintf(stderr, "ERROR : Trying to update node in empty nodelist\n");
-		return -1;
-	}
+    if (this_element == NULL) {
+        return -1;
+    }
 
-	unsigned char id = node.id;
-	NodeList *element = *head;
-	while(element->next != NULL && element->node.id != id){
-		element = element->next;
-	}
-
-	if(element->node.id != id){
-		fprintf(stderr, "ERROR : Node to update not found\n");
-		return -1;
-	}
-
-	element->node = node;
-	return 1;
+    this_element->node = node;
+    return 1;
 }
-
-int get_nodelist_size(NodeList **head){
-	int size = 0;
-	NodeList *pointer = *head;
-	while(pointer != NULL){
-		size++;
-		pointer = pointer->next;
-	}
-	return size;
-}
-
-Node *get_node(NodeList **head, unsigned char id){
-	if(*head == NULL){
-		fprintf(stderr, "ERROR : Trying to get node in empty nodelist\n");
-		return NULL;
-	}
-
-	NodeList * element = *head;
-	while(element->next != NULL && element->node.id != id){
-		element = element->next;
-	}
-
-	if(element->node.id != id){
-		fprintf(stderr, "ERROR : Node to get not found\n");
-		return NULL;
-	}
-
-	return &(element->node);
-}
-
 
 // ================== FUNCTIONS ==================
 
-
-float distance(Point p1, Point p2){
-	int dx = p1.x - p2.x;
-	int dy = p1.y - p2.y;
-	return sqrt( pow((dx),2) + pow((dy),2) );
+float distance(Point p1, Point p2) {
+    int dx = p1.x - p2.x, dy = p1.y - p2.y;
+    return sqrt(pow(dx, 2) + pow(dy, 2));
 }
 
-
-Point *closest_intersection(Path **path, Point point, int max_dist) {
-    int dist = max_dist, i, dist_i;
-    Path* segment_i = get_segment(path, 0);
-    Point *point_i = &(segment_i->position), *result;
-
-    for (i = 0; i < get_path_size(path); i++) {
-        dist_i = distance(point, *point_i);
-
-        if (dist_i < dist) {
-            dist = dist_i;
-            result = point_i;
-        }
-
-        segment_i = segment_i->next;
-        point_i = &(segment_i->position);
-    }
-
-    return result;
-}
-
-
-Path *generate_path(int max_width, int max_height){
-    int xmin = max_width%(BLUE_SIGHT);
-    int ymin = 0;
-    int xmax = max_width;
-    int ymax = max_height;
-
-    Point point1 = {xmin + BLUE_SIGHT , ymax + BLUE_SIGHT};
-    Point point2 = {xmax - BLUE_SIGHT , ymin + BLUE_SIGHT};
-    Point point3 = {xmax - BLUE_SIGHT , ymin - BLUE_SIGHT};
-    Point point4 = {xmin + BLUE_SIGHT , ymax - BLUE_SIGHT};
+Path* generate_path(int max_width, int max_height) {
+    int xmin = max_width % BLUE_SIGHT, ymin = 0,
+        xmax = max_width, ymax = max_height,
+        inter_nb = max_width / (4 * BLUE_SIGHT),
+        i;
 
     Path *head = create_path();
 
-    if(head == NULL){
-        fprintf(stderr, "ERROR : No memory for path generation\n");
-        return NULL;
+    Point point1 = create_point(xmin + BLUE_SIGHT, ymax + BLUE_SIGHT),
+          point2 = create_point(xmax - BLUE_SIGHT, ymin + BLUE_SIGHT),
+          point3 = create_point(xmax - BLUE_SIGHT, ymin - BLUE_SIGHT),
+          point4 = create_point(xmin + BLUE_SIGHT, ymax - BLUE_SIGHT);
+
+    Path *tail = add_point(&head, &head, point1);
+    tail = add_point(&head, &tail, point2);
+    tail = add_point(&head, &tail, point3);
+
+    for (i = 0; i < inter_nb - 1; i++) {
+        Point p1 = create_point(xmin - BLUE_SIGHT * (4 * i + 3), ymin - BLUE_SIGHT),
+              p2 = create_point(xmin - BLUE_SIGHT * (4 * i + 3), ymin + BLUE_SIGHT * 3),
+              p3 = create_point(xmin - BLUE_SIGHT * (4 * i + 5), ymin + BLUE_SIGHT * 3),
+              p4 = create_point(xmin - BLUE_SIGHT * (4 * i + 5), ymin - BLUE_SIGHT);
+        
+        tail = add_point(&head, &tail, p1);
+        tail = add_point(&head, &tail, p2);
+        tail = add_point(&head, &tail, p3);
+        tail = add_point(&head, &tail, p4);
     }
 
-    Path *path = add_point(&head, &head, point1);
-
-    path = add_point(&head, &path, point2);
-
-    path = add_point(&head, &path, point3);
-
-    int i;
-    int inter_nb = max_width/(4*BLUE_SIGHT);
-    //int number_of_points = 4 + 4*inter_nb;
-    for(i = 0 ; i < inter_nb - 1 ; i++){
-        Point p1 = {xmin - BLUE_SIGHT*(4*i + 3) , ymin - BLUE_SIGHT};
-        Point p2 = {xmin - BLUE_SIGHT*(4*i + 3) , ymin + BLUE_SIGHT*3};
-        Point p3 = {xmin - BLUE_SIGHT*(4*i + 5) , ymin + BLUE_SIGHT*3};
-        Point p4 = {xmin - BLUE_SIGHT*(4*i + 5) , ymin - BLUE_SIGHT};
-
-        path = add_point(&head, &path, p1);
-        path = add_point(&head, &path, p2);
-        path = add_point(&head, &path, p3);
-        path = add_point(&head, &path, p4);
-    }
-
-    path = add_point(&head, &path, point4);
+    tail = add_point(&head, &tail, point4);
 
     return head;
 }
+
 
 /*
 What it does is obvious

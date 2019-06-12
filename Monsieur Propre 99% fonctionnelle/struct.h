@@ -1,8 +1,16 @@
-
-
 #define BLUE_SIGHT 1000
 //#define MAXLEN 26
 #define MARGIN 5
+
+///////////////// REPRENDRE COMMENTAIRES !!!!!!!!!!
+
+/* Structure donnée par le prof, au cas où
+
+typedef struct __attribute((__packed__)) Node {
+    int nodeId, x, y;
+    short size;
+    char flag, r, g, b;
+} Node */
 
 typedef struct Point {
     unsigned int x, y;
@@ -26,34 +34,35 @@ typedef struct NodeList {
 } NodeList;
 
 typedef struct Dog {
-    Node *node;
+    Node node;
     Node *target;
     NodeList *sheeps;
 } Dog;
 
-
-
-Point goal;
-
-Point createPoint(unsigned int x,unsigned int y);
-
-
 // ================== PATH PRIMITIVES ==================
 
 /*
-* Creates a new path structure
+* Create new point
+* x : x coordinate of point
+* y : y coordinate of point
+* Return point
+*/
+Point create_point(int x, int y);
+
+/*
+* Create a new path
 * Return pointer to new path if successfully created, NULL otherwise
 */
 Path *create_path(void);
 
 /*
 * Add a point to a path structure
-* head : first element added to path
-* last : last element added to path
+* head : head of the path
+* tail : tail of the path
 * new_point : point that will be added to path
 * Return pointer to new path point if successfully created, NULL otherwise
 */
-Path *add_point(Path **head, Path **last, Point new_point);
+Path *add_point(Path **head, Path **tail, Point new_point);
 
 /*
 * Get precise segment of path using its index
@@ -62,14 +71,6 @@ Path *add_point(Path **head, Path **last, Point new_point);
 * Return pointer to segment if found, NULL otherwise
 */
 Path *get_segment(Path **head, int index);
-
-/*
-* Get precise point of path using its index
-* head : head of the path
-* index : index of the point that will be get
-* Return pointer to point if found, NULL otherwise
-*/
-Point *get_point(Path **head, int index);
 
 /*
 * Get the number of points in a path structure
@@ -84,7 +85,7 @@ int get_path_size(Path **head);
 * Create new node structure
 * Return pointer to new node if successfully created, NULL otherwise
 */
-Node *create_node(void);
+Node create_node(unsigned char id, Point position, unsigned char *nickname);
 
 /*
 * Create new nodelist structure
@@ -94,11 +95,11 @@ NodeList *create_nodelist(void);
 
 /*
 * Add a point to a nodelist structure
-* head : head of nodelist
+* tail : taild of nodelist
 * new_node : node that will be added to list
 * Return pointer to new node if successfully created, NULL otherwise
 */
-NodeList *add_node(NodeList **head, Node new_node);
+NodeList *add_node(NodeList **tail, Node new_node);
 
 /*
 * Delete a node from a nodelist using its id
@@ -125,12 +126,12 @@ int update_node(NodeList **head, Node node);
 int get_nodelist_size(NodeList **head);
 
 /*
-* Get a specific node from nodelist
+* Get a specific portion from nodelist
 * head : head of nodelist
 * id : id of the node to get
-* Return pointer to node if found, NULL otherwise
+* Return pointer to portion if found, NULL otherwise
 */
-Node *get_node(NodeList **head, unsigned char id);
+NodeList *get_nodelist_portion(NodeList **head, unsigned char id);
 
 // ================== FUNCTIONS ==================
 
@@ -142,22 +143,12 @@ Node *get_node(NodeList **head, unsigned char id);
 float distance(Point p1, Point p2);
 
 /*
-* Give the closest intersection to a point
-* path : list of the path's intersections
-* point : point to consider
-* max_dist : maximum distance possible
-* Return pointer to point if found, NULL otherwise
-*/
-Point *closest_intersection(Path **path, Point point, int max_dist);
-
-/*
 * Generate Blue & Yellow dogs path
+* head : head of the path
 * max_width : width of map
 * max_height : height of map
-* Return size of path
 */
 Path *generate_path(int max_width, int max_height);
-
 
 Point goal;
 

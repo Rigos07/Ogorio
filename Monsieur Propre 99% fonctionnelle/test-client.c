@@ -38,22 +38,22 @@ Point bring_back_sheep(Node target,int radius, Point destination){
 	return objective;
 }
 
-Point Yellow_behavior(Dog yellowdog, Point sheepfold_center, int sheepfold_rad, NodeList *nodes_in_sight){
+Point Yellow_behavior(Dog yellow, Point sheepfold_center, int sheepfold_rad, NodeList **nodes_in_sight){
 	Point objective;
 	NodeList *pointer;
 	float distance_to_destination;
-	if(nodes_in_sight != NULL){
+	if((*nodes_in_sight) != NULL){
 		while(pointer != NULL && strncmp("bot",pointer->node.nickname,strlen("bot"))){
 			pointer = pointer->next;
 		}
 		if(pointer != NULL){
-			yellowdog.target = &(pointer->node);
+			*(yellow.target) = pointer->node;
 		}
 	}
-	if(yellowdog.target != NULL){
-		distance_to_destination = distance(yellowdog.target->position,sheepfold_center);
+	if(yellow.target != NULL){
+		distance_to_destination = distance(yellow.target->position,sheepfold_center);
 		if(distance_to_destination > sheepfold_rad ){
-			objective = bring_back_sheep(*(yellowdog.target), 100, sheepfold_center);
+			objective = bring_back_sheep(*(yellow.target), 100, sheepfold_center);
 		}
 		else{
 			objective.x = 4500;
@@ -160,11 +160,11 @@ int getNodeInVision(unsigned char* buf, NodeList** result){
 
 		node->id = buf[i]+(buf[i+1]<<8)+(buf[i+2]<<16);
 
-	  i=i+4;
-	  (node->position).x = buf[i]+(buf[i+1]<<8)+(buf[i+2]<<16);
+		i=i+4;
+		(node->position).x = buf[i]+(buf[i+1]<<8)+(buf[i+2]<<16);
 
 		i=i+4;
-	  (node->position).y = buf[i]+(buf[i+1]<<8)+(buf[i+2]<<16);
+		(node->position).y = buf[i]+(buf[i+1]<<8)+(buf[i+2]<<16);
 
 		i=i+10;
 		int nameLen = strlen(buf+i);
@@ -209,6 +209,8 @@ void affichageVisionFromId(int id, Node* nodeList){
 Fonction pour recevoir les packets
 */
 int receive_packet(struct lws *wsi, unsigned char * buf){
+	Node yellownode = {0,{0,0},"yellow"};
+	Dog yellowdog = {yellownode, NULL, NULL};
 	int i,x,j, nbrNode;
 	char typeMsg = buf[0];
 	NodeList *nodeInVision = NULL;
@@ -246,7 +248,8 @@ int receive_packet(struct lws *wsi, unsigned char * buf){
 				sheepfold_center.y = yMax/2;
 
 			}else{
-				if(get_node(&nodeInVision, myId) != NULL){
+				p = Yellow_behavior(yellowdog, sheepfold_center, radius, &nodeInVision);
+				/*if(get_node(&nodeInVision, myId) != NULL){
 					p = get_node(&nodeInVision, myId)->position;
 				}
 				if(depart == 1){
@@ -260,7 +263,7 @@ int receive_packet(struct lws *wsi, unsigned char * buf){
 				}
 				if(p.x==goal.x && p.y==goal.y){
 					depart =1;
-				}
+				}*/
 				sendToPoint(wsi,p);
 				printf("\nMon id : %d\nPOSITION : x : %d  y : %d\nOBJECTIF : x : %d  y : %d\n",myId, p.x,p.y,goal.x,goal.y);
 				//affichageVisionFromId(myId, nodeInVision);

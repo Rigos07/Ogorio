@@ -34,6 +34,9 @@ int compteur = 0;
 int myId = 0;
 char depart = 1;
 
+/*Node yellownode = {0,{0,0},"yellow"};
+Dog yellowdog = {&yellownode, NULL, NULL};*/
+
 static int callbackOgar(struct lws *wsi, enum lws_callback_reasons reason, void *user, void *in, size_t len);
 
 int sendCommand(struct lws *wsi,unsigned char *buf,unsigned int len);

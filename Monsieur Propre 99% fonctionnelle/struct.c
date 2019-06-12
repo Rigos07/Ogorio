@@ -236,7 +236,7 @@ Path *generate_path(int max_width, int max_height){
         fprintf(stderr, "ERROR : No memory for path generation\n");
         return NULL;
     }
-    
+
     Path *path = add_point(&head, &head, point1);
 
     path = add_point(&head, &path, point2);
@@ -245,13 +245,13 @@ Path *generate_path(int max_width, int max_height){
 
     int i;
     int inter_nb = max_width/(4*BLUE_SIGHT);
-    //int number_of_points = 4 + 4*inter_nb; 
+    //int number_of_points = 4 + 4*inter_nb;
     for(i = 0 ; i < inter_nb - 1 ; i++){
         Point p1 = {xmin - BLUE_SIGHT*(4*i + 3) , ymin - BLUE_SIGHT};
         Point p2 = {xmin - BLUE_SIGHT*(4*i + 3) , ymin + BLUE_SIGHT*3};
         Point p3 = {xmin - BLUE_SIGHT*(4*i + 5) , ymin + BLUE_SIGHT*3};
         Point p4 = {xmin - BLUE_SIGHT*(4*i + 5) , ymin - BLUE_SIGHT};
-        
+
         path = add_point(&head, &path, p1);
         path = add_point(&head, &path, p2);
         path = add_point(&head, &path, p3);

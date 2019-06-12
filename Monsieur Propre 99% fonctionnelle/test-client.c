@@ -11,8 +11,7 @@
 #include "client.h"
 #include "package.h"
 #include "struct.h"
-#include "parsing.h"
-#include "motion.h"
+
 
 // compile with gcc -Wall -g -o sock ./test-client.c -lwebsockets -lm
 
@@ -39,7 +38,7 @@ Point bring_back_sheep(Node target,int radius, Point destination){
 	return objective;
 }
 
-Point Yellow_behavior(Point sheepfold_center, int sheepfold_rad, NodeList *nodes_in_sight){
+Point Yellow_behavior(Dog yellowdog, Point sheepfold_center, int sheepfold_rad, NodeList *nodes_in_sight){
 	Point objective;
 	NodeList *pointer;
 	float distance_to_destination;
@@ -48,13 +47,13 @@ Point Yellow_behavior(Point sheepfold_center, int sheepfold_rad, NodeList *nodes
 			pointer = pointer->next;
 		}
 		if(pointer != NULL){
-			yellow.target = &(pointer->node);
+			yellowdog.target = &(pointer->node);
 		}
 	}
-	if(yellow.target != NULL){
-		distance_to_destination = distance(yellow.target->position,sheepfold_center);
+	if(yellowdog.target != NULL){
+		distance_to_destination = distance(yellowdog.target->position,sheepfold_center);
 		if(distance_to_destination > sheepfold_rad ){
-			objective = bring_back_sheep(*(yellow.target), 100, sheepfold_center);
+			objective = bring_back_sheep(*(yellowdog.target), 100, sheepfold_center);
 		}
 		else{
 			objective.x = 4500;
@@ -154,6 +153,47 @@ unsigned int rand_a_b(int a, int b){
 	return rand()%(b+1-a)+a;
 }
 
+int getNodeInVision(unsigned char* buf, NodeList** result){
+	int i=3, k=0;
+	Node *node;
+	while(buf[i] + buf[i+1] + buf[i+2] + buf[i+3] != 0){
+
+		node->id = buf[i]+(buf[i+1]<<8)+(buf[i+2]<<16);
+
+	  i=i+4;
+	  (node->position).x = buf[i]+(buf[i+1]<<8)+(buf[i+2]<<16);
+
+		i=i+4;
+	  (node->position).y = buf[i]+(buf[i+1]<<8)+(buf[i+2]<<16);
+
+		i=i+10;
+		int nameLen = strlen(buf+i);
+		node->nickname = malloc((nameLen+1)*sizeof(char));
+		strcpy(node->nickname, buf+i);
+
+		add_node(result, *node);
+		i=i+1+nameLen;
+
+		k++;
+	}
+	return k;
+}
+
+int getMyId(unsigned char* buf){
+	return  *(int *)(buf+1);//(buf[1] + (buf[2]<<8) + (buf[3]<<16));
+}
+
+void sendToPoint(struct lws *wsi, Point p){
+	unsigned char buf[13] = {0x10,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00};
+	buf[2]=p.x>>8;
+	buf[1]=p.x;
+	buf[6]=p.y>>8;
+	buf[5]=p.y;
+
+	sendCommand(wsi,buf,sizeof(buf));
+}
+
+
 void affichageVisionFromId(int id, Node* nodeList){
 	int i;
 	printf("Vision :\n=============================================\n");
@@ -181,7 +221,7 @@ int receive_packet(struct lws *wsi, unsigned char * buf){
 
 	switch(typeMsg){
 		case 18:
-			sendCommand(wsi,blue, sizeof(blue));
+			sendCommand(wsi,yellow, sizeof(yellow));
 			break;
 
 		case 16 :
@@ -191,7 +231,7 @@ int receive_packet(struct lws *wsi, unsigned char * buf){
 
 		case 32 :
 			myId = getMyId(buf);
-			yellow.id = myId;
+			//yellowdog.node->id = myId;
 			break;
 
 		case 64:
@@ -206,8 +246,7 @@ int receive_packet(struct lws *wsi, unsigned char * buf){
 				sheepfold_center.y = yMax/2;
 
 			}else{
-				p = Yellow_behavior(sheepfold_center, radius, &nodeInVision);
-				/*if(get_node(&nodeInVision, myId) != NULL){
+				if(get_node(&nodeInVision, myId) != NULL){
 					p = get_node(&nodeInVision, myId)->position;
 				}
 				if(depart == 1){
@@ -221,7 +260,7 @@ int receive_packet(struct lws *wsi, unsigned char * buf){
 				}
 				if(p.x==goal.x && p.y==goal.y){
 					depart =1;
-				}*/
+				}
 				sendToPoint(wsi,p);
 				printf("\nMon id : %d\nPOSITION : x : %d  y : %d\nOBJECTIF : x : %d  y : %d\n",myId, p.x,p.y,goal.x,goal.y);
 				//affichageVisionFromId(myId, nodeInVision);

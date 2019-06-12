@@ -39,7 +39,7 @@ Point bring_back_sheep(Node target,int radius, Point destination){
 	return objective;
 }
 
-Point Yellow_behavior(Dog yellow, Point sheepfold_center, int sheepfold_rad, NodeList *nodes_in_sight){
+Point Yellow_behavior(Point sheepfold_center, int sheepfold_rad, NodeList *nodes_in_sight){
 	Point objective;
 	NodeList *pointer;
 	float distance_to_destination;
@@ -173,6 +173,9 @@ int receive_packet(struct lws *wsi, unsigned char * buf){
 	char typeMsg = buf[0];
 	NodeList *nodeInVision = NULL;
 	Point p;
+	double xMin,yMin,xMax,yMax;
+	Point sheepfold_center;
+	int radius = 900;
 
 	srand(time(NULL));
 
@@ -188,18 +191,25 @@ int receive_packet(struct lws *wsi, unsigned char * buf){
 
 		case 32 :
 			myId = getMyId(buf);
+			yellow.id = myId;
 			break;
 
 		case 64:
 			if(myId == 0){
 				double* border=malloc(4*sizeof(double));
 				border = (double *)(buf+1);
-				/*double xMin = border[0];
-				double yMin = border[1];
-				double xMax = border[2];
-				double yMax = border[3];*/
+				xMin = border[0];
+				yMin = border[1];
+				xMax = border[2];
+				yMax = border[3];
+				sheepfold_center.x = 0;
+				sheepfold_center.y = yMax/2;
+
 			}else{
-				p = get_node(&nodeInVision, myId)->position;
+				p = Yellow_behavior(sheepfold_center, radius, &nodeInVision);
+				/*if(get_node(&nodeInVision, myId) != NULL){
+					p = get_node(&nodeInVision, myId)->position;
+				}
 				if(depart == 1){
 					unsigned int x = rand()%(8960-40)+40;
 					unsigned int y = rand()%(5960-40)+40;
@@ -211,8 +221,8 @@ int receive_packet(struct lws *wsi, unsigned char * buf){
 				}
 				if(p.x==goal.x && p.y==goal.y){
 					depart =1;
-				}
-
+				}*/
+				sendToPoint(wsi,p);
 				printf("\nMon id : %d\nPOSITION : x : %d  y : %d\nOBJECTIF : x : %d  y : %d\n",myId, p.x,p.y,goal.x,goal.y);
 				//affichageVisionFromId(myId, nodeInVision);
 

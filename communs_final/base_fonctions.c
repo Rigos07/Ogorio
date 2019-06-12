@@ -187,16 +187,16 @@ float distance(Point p1, Point p2) {
 }
 
 Path* generate_path(int max_width, int max_height) {
-    int xmin = max_width % BLUE_SIGHT, ymin = 0,
+    int xmin = max_width % (4 * BLUE_SIGHT), ymin = 0,
         xmax = max_width, ymax = max_height,
         inter_nb = max_width / (4 * BLUE_SIGHT),
         i;
 
     Path *head = create_path();
 
-    Point point1 = create_point(xmin + BLUE_SIGHT, ymax + BLUE_SIGHT),
+    Point point1 = create_point(xmin + BLUE_SIGHT, ymin + BLUE_SIGHT),
           point2 = create_point(xmax - BLUE_SIGHT, ymin + BLUE_SIGHT),
-          point3 = create_point(xmax - BLUE_SIGHT, ymin - BLUE_SIGHT),
+          point3 = create_point(xmax - BLUE_SIGHT, ymax - BLUE_SIGHT),
           point4 = create_point(xmin + BLUE_SIGHT, ymax - BLUE_SIGHT);
 
     Path *tail = add_point(&head, &head, point1);
@@ -204,10 +204,10 @@ Path* generate_path(int max_width, int max_height) {
     tail = add_point(&head, &tail, point3);
 
     for (i = 0; i < inter_nb - 1; i++) {
-        Point p1 = create_point(xmin - BLUE_SIGHT * (4 * i + 3), ymin - BLUE_SIGHT),
-              p2 = create_point(xmin - BLUE_SIGHT * (4 * i + 3), ymin + BLUE_SIGHT * 3),
-              p3 = create_point(xmin - BLUE_SIGHT * (4 * i + 5), ymin + BLUE_SIGHT * 3),
-              p4 = create_point(xmin - BLUE_SIGHT * (4 * i + 5), ymin - BLUE_SIGHT);
+        Point p1 = create_point(xmax - BLUE_SIGHT * (4 * i + 3), ymax - BLUE_SIGHT),
+              p2 = create_point(xmax - BLUE_SIGHT * (4 * i + 3), ymin + BLUE_SIGHT * 3),
+              p3 = create_point(xmax - BLUE_SIGHT * (4 * i + 5), ymin + BLUE_SIGHT * 3),
+              p4 = create_point(xmax - BLUE_SIGHT * (4 * i + 5), ymax - BLUE_SIGHT);
         
         tail = add_point(&head, &tail, p1);
         tail = add_point(&head, &tail, p2);
@@ -218,4 +218,24 @@ Path* generate_path(int max_width, int max_height) {
     tail = add_point(&head, &tail, point4);
 
     return head;
+}
+
+Point closest_intersection(Path **path, Point point, int max_dist) {
+    int dist = max_dist, i, dist_i;
+    Path* segment_i = get_segment(path, 0);
+    Point point_i = segment_i->position, result;
+
+    for (i = 0; i < get_path_size(path); i++) {
+        dist_i = distance(point, point_i);
+
+        if (dist_i < dist) {
+            dist = dist_i;
+            result = point_i;
+        }
+
+        segment_i = segment_i->next;
+        point_i = segment_i->position;
+    }
+
+    return result;
 }

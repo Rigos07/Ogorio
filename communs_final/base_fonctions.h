@@ -1,5 +1,6 @@
 #define BLUE_SIGHT 1000
 #define MAXLEN 26
+#define MARGIN 5
 
 typedef struct Point {
     unsigned int x, y;
@@ -7,24 +8,24 @@ typedef struct Point {
 
 typedef struct Path {
     struct Path *prev;
-    Point position;
+    Point *position;
     struct Path *next;
 } Path;
 
 typedef struct Node {
     unsigned char id;
-    Point position;
+    Point *position;
     unsigned char *nickname;
 } Node;
 
 typedef struct NodeList {
-    Node node;
+    Node *node;
     struct NodeList *next;
 } NodeList;
 
 typedef struct Dog {
-    Node node;
-    Point target;
+    Node *node;
+    Node *target;
     NodeList *sheeps;
 } Dog;
 
@@ -39,11 +40,11 @@ Path *create_path(void);
 /*
 * Add a point to a path structure
 * head : first element added to path
-* last : last element added to path
+* tail : last element added to path
 * new_point : point that will be added to path
 * Return pointer to new path point if successfully created, NULL otherwise
 */
-Path *add_point(Path **head, Path **last, Point new_point);
+Path *add_point(Path **head, Path **tail, Point *new_point);
 
 /*
 * Get precise segment of path using its index
@@ -84,11 +85,11 @@ NodeList *create_nodelist(void);
 
 /*
 * Add a point to a nodelist structure
-* head : head of nodelist
+* tail : taild of nodelist
 * new_node : node that will be added to list
 * Return pointer to new node if successfully created, NULL otherwise
 */
-NodeList *add_node(NodeList **head, Node new_node);
+NodeList *add_node(NodeList **tail, Node *new_node);
 
 /*
 * Delete a node from a nodelist using its id
@@ -105,7 +106,7 @@ int delete_node(NodeList **head, unsigned char id);
 * node : node containing new node data to update
 * Return 1 if successfull, -1 if error occured
 */
-int update_node(NodeList **head, Node node);
+int update_node(NodeList **head, Node *node);
 
 /*
 * Get the number of nodes in a nodelist structure
@@ -113,6 +114,14 @@ int update_node(NodeList **head, Node node);
 * Return size of nodelist
 */
 int get_nodelist_size(NodeList **head);
+
+/*
+* Get a specific portion from nodelist
+* head : head of nodelist
+* id : id of the node to get
+* Return pointer to portion if found, NULL otherwise
+*/
+Node *get_nodelist_portion(NodeList **head, unsigned char id);
 
 /*
 * Get a specific node from nodelist

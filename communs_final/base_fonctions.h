@@ -152,4 +152,4 @@ Path *generate_path(int max_width, int max_height);
 
 
 // Le path ne doit pas être vide !!!!!
-Point closest_intersection(Path **path, Point point, int max_dist);
+Point closest_intersection(Path **path, Point point, float max_dist);

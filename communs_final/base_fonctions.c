@@ -3,8 +3,6 @@
 #include <math.h>
 #include "base_fonctions.h"
 
-
-
 // ================== PATH PRIMITIVES ==================
 
 Point create_point(int x, int y) {

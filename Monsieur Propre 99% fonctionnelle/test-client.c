@@ -40,7 +40,7 @@ Point bring_back_sheep(Node target,int radius, Point destination){
 
 Point Yellow_behavior(Dog yellow, Point sheepfold_center, int sheepfold_rad, NodeList **nodes_in_sight){
 	Point objective;
-	NodeList *pointer;
+	NodeList *pointer = *nodes_in_sight;
 	float distance_to_destination;
 	if((*nodes_in_sight) != NULL){
 		while(pointer != NULL && strncmp("bot",pointer->node.nickname,strlen("bot"))){
@@ -52,6 +52,7 @@ Point Yellow_behavior(Dog yellow, Point sheepfold_center, int sheepfold_rad, Nod
 			printnode(pointer->node);
 		}
 	}
+
 	if(yellow.target != NULL){
 		distance_to_destination = distance(yellow.target->position,sheepfold_center);
 		if(distance_to_destination > sheepfold_rad ){
@@ -144,7 +145,7 @@ int writePacket(struct lws *wsi)
 	buf[1]=p.x;
 	buf[6]=p.y>>8;
 	buf[5]=p.y;
-
+printf("BITIETIUOGEZKJEGHIHEGHIEFHJH\n" );
 	sendCommand(wsi,buf,sizeof(buf));
 }*
 
@@ -155,30 +156,51 @@ unsigned int rand_a_b(int a, int b){
 	return rand()%(b+1-a)+a;
 }
 
-int getNodeInVision(unsigned char* buf, NodeList** result){
-	int i=3, k=0;
-	Node *node;
+NodeList* getNodeInVision(unsigned char* buf, NodeList** head){
+	int i=3;
+	Node node;
+	printf("Salut :\n");
+
+	/*int k=0;
+	printf("Buffer :\n");
+	for(k=0;k<200;k++){
+		printf("%x", buf[k]);
+	}
+	printf("\n");*/
+
 	while(buf[i] + buf[i+1] + buf[i+2] + buf[i+3] != 0){
 
-		node->id = buf[i]+(buf[i+1]<<8)+(buf[i+2]<<16);
+		node.id = buf[i]+(buf[i+1]<<8)+(buf[i+2]<<16);
 
 		i=i+4;
-		(node->position).x = buf[i]+(buf[i+1]<<8)+(buf[i+2]<<16);
+		(node.position).x = buf[i]+(buf[i+1]<<8)+(buf[i+2]<<16);
 
 		i=i+4;
-		(node->position).y = buf[i]+(buf[i+1]<<8)+(buf[i+2]<<16);
+		(node.position).y = buf[i]+(buf[i+1]<<8)+(buf[i+2]<<16);
 
 		i=i+10;
 		int nameLen = strlen(buf+i);
-		node->nickname = malloc((nameLen+1)*sizeof(char));
-		strcpy(node->nickname, buf+i);
+		node.nickname = malloc((nameLen+1)*sizeof(char));
+		strcpy(node.nickname, buf+i);
 
-		add_node(result, *node);
+		printf("\n=========NODE==========\n");
+		printnode(node);
+		printf("\n=======================\n");
+
+		add_node(head, node);
+
+
+
+
+		printf("\n=========1============\n");
+		printlist(head);
+		printf("\n=========2============\n");
+
 		i=i+1+nameLen;
 
-		k++;
 	}
-	return k;
+	printf("Au revoir :\n");
+	return NULL;
 }
 
 int getMyId(unsigned char* buf){
@@ -196,26 +218,15 @@ void sendToPoint(struct lws *wsi, Point p){
 }
 
 
-void affichageVisionFromId(int id, Node* nodeList){
-	int i;
-	printf("Vision :\n=============================================\n");
-	for(i=0; i<15; i++){
-		if(id != nodeList[i].id && nodeList[i].id != 0){
-			printf("ID : %d :\nPOSITION : x : %d  y : %d\n", /*nodeList[i].nickname,*/ nodeList[i].id, nodeList[i].position.x, nodeList[i].position.y);
-		}
-	}
-	printf("=============================================\n");
-}
-
 /*
 Fonction pour recevoir les packets
 */
 int receive_packet(struct lws *wsi, unsigned char * buf){
 	Node yellownode = {0,{0,0},"yellow"};
 	Dog yellowdog = {yellownode, NULL, NULL};
-	int i,x,j, nbrNode;
+	int i,x,j;
 	char typeMsg = buf[0];
-	NodeList *nodeInVision = NULL;
+	NodeList *nodeInVision;
 	Point p;
 	double xMin,yMin,xMax,yMax;
 	Point sheepfold_center;
@@ -229,8 +240,17 @@ int receive_packet(struct lws *wsi, unsigned char * buf){
 			break;
 
 		case 16 :
-			nbrNode = getNodeInVision(buf, &nodeInVision);
-			printlist(&nodeInVision);
+			printf("bite\n" );
+			nodeInVision = NULL;
+			if(compteur !=0){
+				getNodeInVision(buf,&nodeInVision);
+				printlist(&nodeInVision);
+				printf("justapré\n" );
+
+			}else{
+				compteur++;
+			}
+			//printlist(&nodeInVision);
 			break;
 
 		case 32 :
@@ -250,7 +270,9 @@ int receive_packet(struct lws *wsi, unsigned char * buf){
 				sheepfold_center.y = yMax/2;
 
 			}else{
+
 				p = Yellow_behavior(yellowdog, sheepfold_center, radius, &nodeInVision);
+
 				/*if(get_node(&nodeInVision, myId) != NULL){
 					p = get_node(&nodeInVision, myId)->position;
 				}
@@ -267,7 +289,7 @@ int receive_packet(struct lws *wsi, unsigned char * buf){
 					depart =1;
 				}*/
 				sendToPoint(wsi,p);
-				printf("\nMon id : %d\nPOSITION : x : %d  y : %d\nOBJECTIF : x : %d  y : %d\n",myId, p.x,p.y,goal.x,goal.y);
+				//printf("\nMon id : %d\nPOSITION : x : %d  y : %d\nOBJECTIF : x : %d  y : %d\n",myId, p.x,p.y,goal.x,goal.y);
 				//affichageVisionFromId(myId, nodeInVision);
 
 

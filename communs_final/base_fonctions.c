@@ -5,7 +5,7 @@
 
 // ================== PATH PRIMITIVES ==================
 
-Point create_point(int x, int y) {
+Point create_point(unsigned int x, unsigned int y) {
     Point new_point = {x, y};
     return new_point;
 }
@@ -220,8 +220,9 @@ Path* generate_path(int max_width, int max_height) {
     return head;
 }
 
-Point closest_intersection(Path **path, Point point, int max_dist) {
-    int dist = max_dist, i, dist_i;
+Point closest_intersection(Path **path, Point point, float max_dist) {
+    float dist = max_dist, dist_i;
+    int i;
     Path* segment_i = get_segment(path, 0);
     Point point_i = segment_i->position, result;
 

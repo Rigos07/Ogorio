@@ -29,6 +29,8 @@ typedef struct Dog {
     NodeList *sheeps;
 } Dog;
 
+Node yellownode = {0,{0,0},"yellow"};
+Dog yellow = {&yellownode, NULL, NULL};
 
 Point goal;
 

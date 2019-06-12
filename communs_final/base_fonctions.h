@@ -47,7 +47,7 @@ typedef struct Dog {
 * y : y coordinate of point
 * Return point
 */
-Point create_point(int x, int y);
+Point create_point(unsigned int x, unsigned int y);
 
 /*
 * Create a new path
@@ -109,6 +109,8 @@ NodeList *add_node(NodeList **tail, Node new_node);
 */
 int delete_node(NodeList **head, unsigned char id);
 
+int empty_nodelist(NodeList **head);
+
 /*
 * Update a node from a nodelist using its id
 * head : head of nodelist
@@ -151,5 +153,4 @@ float distance(Point p1, Point p2);
 Path *generate_path(int max_width, int max_height);
 
 
-// Le path ne doit pas être vide !!!!!
-Point closest_intersection(Path **path, Point point, float max_dist);
+Path *closest_intersection(Path **head, Point point, float max_dist);

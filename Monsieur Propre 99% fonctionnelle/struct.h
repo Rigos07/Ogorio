@@ -95,11 +95,13 @@ NodeList *create_nodelist(void);
 
 /*
 * Add a point to a nodelist structure
-* tail : taild of nodelist
+* head : head of nodelist
 * new_node : node that will be added to list
 * Return pointer to new node if successfully created, NULL otherwise
 */
-NodeList *add_node(NodeList **tail, Node new_node);
+NodeList *add_node(NodeList **head, Node new_node);
+
+int empty_nodelist(NodeList **head);
 
 /*
 * Delete a node from a nodelist using its id

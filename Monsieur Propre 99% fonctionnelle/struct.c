@@ -115,7 +115,7 @@ NodeList *get_nodelist_portion(NodeList **head, unsigned char id) {
     return this_element;
 }
 
-NodeList *add_node(NodeList **tail, Node new_node) {
+/*NodeList *add_node(NodeList **tail, Node new_node) {
     NodeList *new = malloc(sizeof(NodeList));
 
     if (new == NULL) {
@@ -134,6 +134,42 @@ NodeList *add_node(NodeList **tail, Node new_node) {
     new->next = NULL;
 
     return new;
+}*/
+
+NodeList *add_node(NodeList **head, Node new_node) {
+    NodeList *new = malloc(sizeof(NodeList));
+    NodeList *element = *head;
+
+    if (new == NULL) {
+        fprintf(stderr, "ERROR : No memory for node generation\n");
+        return NULL;
+    }
+
+    if(*head == NULL) {
+        *head = new;
+    } 
+    else {
+        element = *head;
+        while(element->next != NULL){
+            element = element->next;
+        }
+        element->next = new;
+    }
+
+    new->node = new_node;
+    new->next = NULL;
+
+    return new;
+}
+
+int empty_nodelist(NodeList **head) {
+    int size = get_nodelist_size(head), i;
+
+    for (i = 0; i < size; i++) {
+        delete_node(head, (*head)->node.id);
+    }
+
+    return 1;
 }
 
 int delete_node(NodeList **head, unsigned char id) {

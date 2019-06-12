@@ -168,6 +168,16 @@ int delete_node(NodeList **head, unsigned char id) {
     return 1;
 }
 
+int empty_nodelist(NodeList **head) {
+    int size = get_nodelist_size(head), i;
+
+    for (i = 0; i < size; i++) {
+        delete_node(head, (*head)->node.id);
+    }
+
+    return 1;
+}
+
 int update_node(NodeList **head, Node node) {
     NodeList *this_element = get_nodelist_portion(head, node.id);
 
@@ -184,6 +194,10 @@ int update_node(NodeList **head, Node node) {
 float distance(Point p1, Point p2) {
     int dx = p1.x - p2.x, dy = p1.y - p2.y;
     return sqrt(pow(dx, 2) + pow(dy, 2));
+}
+
+int is_between(unsigned int a, unsigned int b, unsigned int c) {
+    return a >= b && a < c;
 }
 
 Path* generate_path(int max_width, int max_height) {

@@ -11,8 +11,8 @@ Point create_point(int x, int y) {
 }
 
 Path *create_path(void) {
-	Path *path = NULL;
-	return path;
+    Path *path = NULL;
+    return path;
 }
 
 int get_path_size(Path **head) {
@@ -72,13 +72,13 @@ Path *add_point(Path **head, Path **tail, Point new_point) {
 // ================== NODE & NODELIST PRIMITIVES ==================
 
 Node create_node(unsigned char id, Point position, unsigned char *nickname) {
-	Node new_node = {id, position, nickname};
-	return new_node;
+    Node new_node = {id, position, nickname};
+    return new_node;
 }
 
 NodeList *create_nodelist(void) {
-	NodeList *new_list = NULL;
-	return new_list;
+    NodeList *new_list = NULL;
+    return new_list;
 }
 
 int get_nodelist_size(NodeList **head) {
@@ -137,10 +137,10 @@ NodeList *add_node(NodeList **tail, Node new_node) {
 }
 
 int delete_node(NodeList **head, unsigned char id) {
-	if (*head == NULL) {
-		fprintf(stderr, "ERROR : Trying to delete empty nodelist\n");
-		return -1;
-	}
+    if (*head == NULL) {
+        fprintf(stderr, "ERROR : Trying to delete empty nodelist\n");
+        return -1;
+    }
 
     NodeList *this_element = *head, *prev_element = *head, *next_element = this_element->next;
     Node this_node = this_element->node;
@@ -152,10 +152,10 @@ int delete_node(NodeList **head, unsigned char id) {
         this_node = this_element->node;
     }
 
-	if (this_node.id != id) {
-		fprintf(stderr, "ERROR : Node to delete not found\n");
-		return -1;
-	}
+    if (this_node.id != id) {
+        fprintf(stderr, "ERROR : Node to delete not found\n");
+        return -1;
+    }
 
     if (*head == this_element) {
         *head = next_element;
@@ -165,25 +165,25 @@ int delete_node(NodeList **head, unsigned char id) {
     }
 
     free(this_element);
-	return 1;
+    return 1;
 }
 
 int update_node(NodeList **head, Node node) {
     NodeList *this_element = get_nodelist_portion(head, node.id);
 
-	if (this_element == NULL) {
-		return -1;
-	}
+    if (this_element == NULL) {
+        return -1;
+    }
 
-	this_element->node = node;
-	return 1;
+    this_element->node = node;
+    return 1;
 }
 
 // ================== FUNCTIONS ==================
 
 float distance(Point p1, Point p2) {
     int dx = p1.x - p2.x, dy = p1.y - p2.y;
-	return sqrt(pow(dx, 2) + pow(dy, 2));
+    return sqrt(pow(dx, 2) + pow(dy, 2));
 }
 
 Path* generate_path(int max_width, int max_height) {

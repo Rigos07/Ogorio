@@ -37,13 +37,14 @@ Fonction inters_plus_proche(Circuit c, Point p) : Point
 
 Début
     Pour i ← 0 à nombre_points(c) Faire :
-        pi ← suivant(pi)
         di ← distance(p, pi)
 
         Si di < d Alors :
             d ← di
             r ← pi
         FinSi
+
+        pi ← suivant(pi)
     FinPour
 
 Retourne r
@@ -195,11 +196,12 @@ Début
             d ← di
             r ← m
         FinSi
+
+        l ← suivant(l)
     FinTantQue
 
 Retourne r
 Fin
-
 
 
 # ========= BLUE =========

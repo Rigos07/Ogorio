@@ -38,7 +38,7 @@ Point bring_back_sheep(Node target,int radius, Point destination){
 	return objective;
 }
 
-Point Yellow_behavior(Dog yellow, Point sheepfold_center, int sheepfold_rad, NodeList **nodes_in_sight){
+Point Yellow_behavior(Dog *yellow, Point sheepfold_center, int sheepfold_rad, NodeList **nodes_in_sight){
 	Point objective;
 	NodeList *pointer = *nodes_in_sight;
 	float distance_to_destination;
@@ -47,16 +47,17 @@ Point Yellow_behavior(Dog yellow, Point sheepfold_center, int sheepfold_rad, Nod
 			pointer = pointer->next;
 		}
 		if(pointer != NULL){
-			*(yellow.target) = pointer->node;
-			printf("\ncible = ");
+			yellow->target = &(pointer->node);
+			printf("\nMEINE TARGET ==== \n");
 			printnode(pointer->node);
+			printf("ARH ARH ARH=====\n" );
 		}
 	}
 
-	if(yellow.target != NULL){
-		distance_to_destination = distance(yellow.target->position,sheepfold_center);
+	if(yellow->target != NULL){
+		distance_to_destination = distance(yellow->target->position,sheepfold_center);
 		if(distance_to_destination > sheepfold_rad ){
-			objective = bring_back_sheep(*(yellow.target), 100, sheepfold_center);
+			objective = bring_back_sheep(*(yellow->target), 100, sheepfold_center);
 		}
 		else{
 			objective.x = 4500;
@@ -191,11 +192,6 @@ NodeList* getNodeInVision(unsigned char* buf, NodeList** head){
 
 
 
-
-		printf("\n=========1============\n");
-		printlist(head);
-		printf("\n=========2============\n");
-
 		i=i+1+nameLen;
 
 	}
@@ -240,12 +236,13 @@ int receive_packet(struct lws *wsi, unsigned char * buf){
 			break;
 
 		case 16 :
-			printf("bite\n" );
 			nodeInVision = NULL;
 			if(compteur !=0){
 				getNodeInVision(buf,&nodeInVision);
+
+				printf("\n=========1============\n");
 				printlist(&nodeInVision);
-				printf("justapré\n" );
+				printf("\n=========2============\n");
 
 			}else{
 				compteur++;
@@ -270,8 +267,8 @@ int receive_packet(struct lws *wsi, unsigned char * buf){
 				sheepfold_center.y = yMax/2;
 
 			}else{
-
-				p = Yellow_behavior(yellowdog, sheepfold_center, radius, &nodeInVision);
+				printf("AAAAAAAAAAAH %d\n",sheepfold_center.y );
+				p = Yellow_behavior(&yellowdog, sheepfold_center, radius, &nodeInVision);
 
 				/*if(get_node(&nodeInVision, myId) != NULL){
 					p = get_node(&nodeInVision, myId)->position;

@@ -62,7 +62,7 @@ Point Yellow_behavior(Dog *yellow, Point sheepfold_center, int sheepfold_rad, No
 			if(pointer != NULL){
 				yellow->target = &(pointer->node);
 				distance_to_destination = distance(yellow->target->position,sheepfold_center);
-				if(distance_to_destination >= sheepfold_rad ){
+				if(distance_to_destination >= sheepfold_rad ){ //HAVE A TARGET AND TARGET IS IN SIGHT AND OUTSIDE SHEEPFOLD
 					printf("\nMEINE TARGET\n");
 					printnode(pointer->node);
 					objective = bring_back_sheep(*(yellow->target), 100, sheepfold_center);
@@ -71,20 +71,20 @@ Point Yellow_behavior(Dog *yellow, Point sheepfold_center, int sheepfold_rad, No
 					printf("SHEEPFOLD IS IN %d , %d !!!!\n",sheepfold_center.x,sheepfold_center.y );
 					printf("KEINE GNADE, MEINE KINDER !\n" );
 				}
-				else{
+				else{ //HAVE A TARGET AND TARGET IS IN SIGHT AND INSIDE SHEEPFOLD
 					printf("TARGET BRINGED BACK TO SHEEPFOLD\nMISSION COMPLETE\n");
 					objective.x = 4500;
 					objective.y = 3000;
 					yellow->target = NULL;
 				}
 			}
-			else{
+			else{ //HAVE A TARGET AND TARGET IS NOT IN SIGHT
 				objective.x = 4500;
 				objective.y = 3000;
 				printf("GOING TO DEFAULT POSITION BECAUSE I LOST MY TARGET I AM VERY SAD\n");
 			}
 		}
-		else{
+		else{ //HAVE A TARGET AND NOTHING IN SIGHT
 			objective.x = 4500;
 			objective.y = 3000;
 			printf("NODE LIST IS EMPTY THIS SHOULD NOT HAPPEN\n");
@@ -105,21 +105,20 @@ Point Yellow_behavior(Dog *yellow, Point sheepfold_center, int sheepfold_rad, No
 				}
 
 			}
-			if(pointer != NULL){
+			if(pointer != NULL){ //HAVE NO TARGET AND SHEEP IS IN SIGHT AND OUTSIDE SHEEPFOLD
 				yellow->target = &(pointer->node);
 				printf("\nNEW TARGET\n");
 				printnode(pointer->node);
 				objective = bring_back_sheep(*(yellow->target), 100, sheepfold_center);
 				printf("SHEEPFOLD IS IN %d , %d !!!!\n",sheepfold_center.x,sheepfold_center.y );
-				printf("KEINE GNADE, MEINE KINDER !\n" );
 			}
-			else{
+			else{ //HAVE NO TARGET AND NO POSSIBLE TARGET FOUND
 				objective.x = 4500;
 				objective.y = 3000;
 				printf("GOING TO DEFAULT POSITION\n");
 			}
 		}
-		else{
+		else{ //HAVE NO TARGET AND NOTHING IN SIGHT
 			objective.x = 4500;
 			objective.y = 3000;
 			printf("GOING TO DEFAULT POSITION\n");

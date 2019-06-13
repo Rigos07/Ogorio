@@ -1,6 +1,8 @@
 #define BLUE_SIGHT 1000
 #define MAXLEN 26
 #define MARGIN 5
+#define max(a,b) (a>=b?a:b)
+#define min(a,b) (a<=b?a:b)
 
 ///////////////// REPRENDRE COMMENTAIRES !!!!!!!!!!
 
@@ -62,7 +64,7 @@ Path *create_path(void);
 * new_point : point that will be added to path
 * Return pointer to new path point if successfully created, NULL otherwise
 */
-Path *add_point(Path **head, Path **tail, Point new_point);
+int add_point(Path **head, Point new_point);
 
 /*
 * Get precise segment of path using its index
@@ -99,7 +101,7 @@ NodeList *create_nodelist(void);
 * new_node : node that will be added to list
 * Return pointer to new node if successfully created, NULL otherwise
 */
-NodeList *add_node(NodeList **tail, Node new_node);
+int add_node(NodeList **tail, Node new_node);
 
 /*
 * Delete a node from a nodelist using its id
@@ -152,5 +154,14 @@ float distance(Point p1, Point p2);
 */
 Path *generate_path(int max_width, int max_height);
 
-
 Path *closest_intersection(Path **head, Point point, float max_dist);
+
+int is_near_segment(Point point, Point seg_point1, Point seg_point2);
+
+int is_near_point(Point point1, Point point2);
+
+Path *is_near_path(Path **head, Point p);
+
+Path *closest_point(Path **head, Dog dog, float max_dist);
+
+Point follow_path(Path **head, Dog dog, float max_dist);

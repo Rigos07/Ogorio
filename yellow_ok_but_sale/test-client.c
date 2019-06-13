@@ -73,14 +73,12 @@ Point Yellow_behavior(Dog *yellow, Point sheepfold_center, int sheepfold_rad, No
 				}
 				else{ //HAVE A TARGET AND TARGET IS IN SIGHT AND INSIDE SHEEPFOLD
 					printf("TARGET BRINGED BACK TO SHEEPFOLD\nMISSION COMPLETE\n");
-					objective.x = 4500;
-					objective.y = 3000;
+					objective = follow_path(&path, *yellow , 9999999);
 					yellow->target = NULL;
 				}
 			}
 			else{ //HAVE A TARGET AND TARGET IS NOT IN SIGHT
-				objective.x = 4500;
-				objective.y = 3000;
+				objective = yellow->target->position;
 				printf("GOING TO DEFAULT POSITION BECAUSE I LOST MY TARGET I AM VERY SAD\n");
 			}
 		}
@@ -113,14 +111,12 @@ Point Yellow_behavior(Dog *yellow, Point sheepfold_center, int sheepfold_rad, No
 				printf("SHEEPFOLD IS IN %d , %d !!!!\n",sheepfold_center.x,sheepfold_center.y );
 			}
 			else{ //HAVE NO TARGET AND NO POSSIBLE TARGET FOUND
-				objective.x = 4500;
-				objective.y = 3000;
+				objective = follow_path(&path, *yellow , 9999999);
 				printf("GOING TO DEFAULT POSITION\n");
 			}
 		}
 		else{ //HAVE NO TARGET AND NOTHING IN SIGHT
-			objective.x = 4500;
-			objective.y = 3000;
+			objective = follow_path(&path, *yellow , 9999999);
 			printf("GOING TO DEFAULT POSITION\n");
 		}
 

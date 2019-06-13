@@ -54,7 +54,7 @@ Point Yellow_behavior(Dog *yellow, Point sheepfold_center, int sheepfold_rad, No
 	NodeList *pointer = *nodes_in_sight;
 	float distance_to_destination;
 	int target_found = 0;
-
+	printf("CURRENT POSITION : \n",yellow->node.position.x,yellow->node.position.y);
 	if(yellow->target != NULL){
 		printf("I HAVE A TARGET\n");
 		if((*nodes_in_sight) != NULL){

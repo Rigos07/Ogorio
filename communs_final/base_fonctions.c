@@ -365,7 +365,7 @@ Path *closest_point(Path **head, Dog dog, float max_dist) {
     return result;
 }
 
-Path* follow_path(Path **head, Dog dog, float max_dist) {
+Point follow_path(Path **head, Dog dog, float max_dist) {
     Point position = dog.node.position;
     Path *prev_inters = is_near_path(head, position), *dest = prev_inters;
     
@@ -384,5 +384,5 @@ Path* follow_path(Path **head, Dog dog, float max_dist) {
         }
     }
 
-    return dest;
+    return dest->position;
 }

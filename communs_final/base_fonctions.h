@@ -163,3 +163,5 @@ int is_near_point(Point point1, Point point2);
 Path *is_near_path(Path **head, Point p);
 
 Path *closest_point(Path **head, Dog dog, float max_dist);
+
+Point follow_path(Path **head, Dog dog, float max_dist);

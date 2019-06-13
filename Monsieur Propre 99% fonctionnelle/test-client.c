@@ -50,6 +50,7 @@ Point Yellow_behavior(Dog *yellow, Point sheepfold_center, int sheepfold_rad, No
 			yellow->target = &(pointer->node);
 			printf("\nMEINE TARGET ==== \n");
 			printnode(pointer->node);
+			printf("GOING TO %d , %d !!!!\n",sheepfold_center.x,sheepfold_center.y );
 			printf("ARH ARH ARH=====\n" );
 		}
 	}
@@ -188,7 +189,10 @@ NodeList* getNodeInVision(unsigned char* buf, NodeList** head){
 		printnode(node);
 		printf("\n=======================\n");
 
-		add_node(head, node);
+		if(*head == NULL || get_nodelist_portion(head,node.id) == NULL){
+			add_node(head, node);
+		}
+
 
 
 
@@ -225,7 +229,6 @@ int receive_packet(struct lws *wsi, unsigned char * buf){
 	NodeList *nodeInVision;
 	Point p;
 	double xMin,yMin,xMax,yMax;
-	Point sheepfold_center;
 	int radius = 900;
 
 	srand(time(NULL));
@@ -263,11 +266,11 @@ int receive_packet(struct lws *wsi, unsigned char * buf){
 				yMin = border[1];
 				xMax = border[2];
 				yMax = border[3];
+
 				sheepfold_center.x = 0;
 				sheepfold_center.y = yMax/2;
 
 			}else{
-				printf("AAAAAAAAAAAH %d\n",sheepfold_center.y );
 				p = Yellow_behavior(&yellowdog, sheepfold_center, radius, &nodeInVision);
 
 				/*if(get_node(&nodeInVision, myId) != NULL){

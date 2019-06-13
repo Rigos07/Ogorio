@@ -39,6 +39,7 @@ typedef struct Dog {
     NodeList *sheeps;
 } Dog;
 
+Point sheepfold_center;
 // ================== PATH PRIMITIVES ==================
 
 /*

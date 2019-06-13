@@ -278,7 +278,7 @@ Fonction pour recevoir les packets
 */
 int receive_packet(struct lws *wsi, unsigned char * buf){
 	char typeMsg = buf[0];
-	NodeList *nodeInVision;
+	NodeList *nodeInVision, *dog_node;
 	Point p;
 	double xMin,yMin,xMax,yMax;
 	int radius = 900;
@@ -294,7 +294,10 @@ int receive_packet(struct lws *wsi, unsigned char * buf){
 			nodeInVision = NULL;
 			if(compteur !=0){
 				getNodeInVision(buf,&nodeInVision);
-
+				dog_node = get_nodelist_portion(&nodeInVision,yellowdog.node.id);
+				if(dog_node != NULL){
+					yellowdog.node = dog_node->node;
+				}
 				printf("\n=========1============\n");
 				printlist(&nodeInVision);
 				printf("=========2============\n");
@@ -318,7 +321,7 @@ int receive_packet(struct lws *wsi, unsigned char * buf){
 			if(myId == 0){
 				double* border=malloc(4*sizeof(double));
 				border = (double *)(buf+1);
-				if(border[2] > 0 || border[3] > 0){
+				if(border[2] > 0 || border[3] > 0){ //Pour éviter le paquet malformé négatif
 					xMin = border[0];
 					yMin = border[1];
 					xMax = border[2];

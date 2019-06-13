@@ -192,28 +192,18 @@ int writePacket(struct lws *wsi)
 	return(ret);
 }
 
-/*void sendToPoint(struct lws *wsi, Point p){
-	unsigned char buf[13] = {0x10,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00};
-	buf[2]=p.x>>8;
-	buf[1]=p.x;
-	buf[6]=p.y>>8;
-	buf[5]=p.y;
-printf("BITIETIUOGEZKJEGHIHEGHIEFHJH\n" );
-	sendCommand(wsi,buf,sizeof(buf));
-}*/
 
 /****************************************************************************************************************************/
 
-//A ENLEVER QUAND ON VEUT PLUS FAIRE JOUJOU
+/*A ENLEVER QUAND ON VEUT PLUS FAIRE JOUJOU
 unsigned int rand_a_b(int a, int b){
 	return rand()%(b+1-a)+a;
-}
+}*/
 
 NodeList* getNodeInVision(unsigned char* buf, NodeList** head){
 	int i=3;
 	Node node;
 	printf("Salut :\n");
-
 	/*int k=0;
 	printf("Buffer :\n");
 	for(k=0;k<200;k++){
@@ -244,11 +234,7 @@ NodeList* getNodeInVision(unsigned char* buf, NodeList** head){
 			add_node(head, node);
 		}
 
-
-
-
 		i=i+1+nameLen;
-
 	}
 	printf("Au revoir :\n");
 	return NULL;
@@ -301,7 +287,6 @@ int receive_packet(struct lws *wsi, unsigned char * buf){
 			}else{
 				compteur++;
 			}
-			//printlist(&nodeInVision);
 			break;
 
 		case 32 :
@@ -310,7 +295,6 @@ int receive_packet(struct lws *wsi, unsigned char * buf){
 			yellowdog.node = yellownode;
 			yellowdog.target = NULL;
 			yellowdog.sheeps = NULL;
-			//yellowdog.node->id = myId;
 			break;
 
 		case 64:
@@ -328,28 +312,8 @@ int receive_packet(struct lws *wsi, unsigned char * buf){
 				}
 			}else{
 				p = Yellow_behavior(&yellowdog, sheepfold_center, radius, &nodeInVision);
-				/*if(get_node(&nodeInVision, myId) != NULL){
-					p = get_node(&nodeInVision, myId)->position;
-				}
-				if(depart == 1){
-					unsigned int x = rand()%(8960-40)+40;
-					unsigned int y = rand()%(5960-40)+40;
 
-					goal = createPoint(x,y);
-
-					sendToPoint(wsi,goal);
-					depart = 0;
-				}
-				if(p.x==goal.x && p.y==goal.y){
-					depart =1;
-				}*/
 				sendToPoint(wsi,p);
-				//printf("\nMon id : %d\nPOSITION : x : %d  y : %d\nOBJECTIF : x : %d  y : %d\n",myId, p.x,p.y,goal.x,goal.y);
-				//affichageVisionFromId(myId, nodeInVision);
-
-
-				//for(i=0; i<nbrNode; i++) free(nodeInVision[i].nickname);
-				//free(nodeInVision);
 			}
 			break;
 	}

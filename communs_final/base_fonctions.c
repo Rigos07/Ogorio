@@ -114,7 +114,6 @@ NodeList *get_nodelist_portion(NodeList **head, unsigned char id) {
     }
 
     if (this_node.id != id) {
-        fprintf(stderr, "ERROR : Node to get not found\n");
         return NULL;
     }
 

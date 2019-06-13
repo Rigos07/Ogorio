@@ -54,7 +54,7 @@ Point Yellow_behavior(Dog *yellow, Point sheepfold_center, int sheepfold_rad, No
 	NodeList *pointer = *nodes_in_sight;
 	float distance_to_destination;
 	int target_found = 0;
-
+	printf("CURRENT POSITION : %d , %d\n",yellow->node.position.x,yellow->node.position.y);
 	if(yellow->target != NULL){
 		printf("I HAVE A TARGET\n");
 		if((*nodes_in_sight) != NULL){
@@ -73,14 +73,12 @@ Point Yellow_behavior(Dog *yellow, Point sheepfold_center, int sheepfold_rad, No
 				}
 				else{ //HAVE A TARGET AND TARGET IS IN SIGHT AND INSIDE SHEEPFOLD
 					printf("TARGET BRINGED BACK TO SHEEPFOLD\nMISSION COMPLETE\n");
-					objective.x = 4500;
-					objective.y = 3000;
+					objective = follow_path(&path, *yellow , 9999999);
 					yellow->target = NULL;
 				}
 			}
 			else{ //HAVE A TARGET AND TARGET IS NOT IN SIGHT
-				objective.x = 4500;
-				objective.y = 3000;
+				objective = yellow->target->position;
 				printf("GOING TO DEFAULT POSITION BECAUSE I LOST MY TARGET I AM VERY SAD\n");
 			}
 		}
@@ -113,14 +111,12 @@ Point Yellow_behavior(Dog *yellow, Point sheepfold_center, int sheepfold_rad, No
 				printf("SHEEPFOLD IS IN %d , %d !!!!\n",sheepfold_center.x,sheepfold_center.y );
 			}
 			else{ //HAVE NO TARGET AND NO POSSIBLE TARGET FOUND
-				objective.x = 4500;
-				objective.y = 3000;
+				objective = follow_path(&path, *yellow , 9999999);
 				printf("GOING TO DEFAULT POSITION\n");
 			}
 		}
 		else{ //HAVE NO TARGET AND NOTHING IN SIGHT
-			objective.x = 4500;
-			objective.y = 3000;
+			objective = follow_path(&path, *yellow , 9999999);
 			printf("GOING TO DEFAULT POSITION\n");
 		}
 
@@ -196,28 +192,18 @@ int writePacket(struct lws *wsi)
 	return(ret);
 }
 
-/*void sendToPoint(struct lws *wsi, Point p){
-	unsigned char buf[13] = {0x10,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00};
-	buf[2]=p.x>>8;
-	buf[1]=p.x;
-	buf[6]=p.y>>8;
-	buf[5]=p.y;
-printf("BITIETIUOGEZKJEGHIHEGHIEFHJH\n" );
-	sendCommand(wsi,buf,sizeof(buf));
-}*
 
 /****************************************************************************************************************************/
 
-//A ENLEVER QUAND ON VEUT PLUS FAIRE JOUJOU
+/*A ENLEVER QUAND ON VEUT PLUS FAIRE JOUJOU
 unsigned int rand_a_b(int a, int b){
 	return rand()%(b+1-a)+a;
-}
+}*/
 
 NodeList* getNodeInVision(unsigned char* buf, NodeList** head){
 	int i=3;
 	Node node;
 	printf("Salut :\n");
-
 	/*int k=0;
 	printf("Buffer :\n");
 	for(k=0;k<200;k++){
@@ -240,19 +226,15 @@ NodeList* getNodeInVision(unsigned char* buf, NodeList** head){
 		node.nickname = malloc((nameLen+1)*sizeof(char));
 		strcpy(node.nickname, buf+i);
 
-		printf("\n=========NODE==========\n");
+		/*printf("\n=========NODE==========\n");
 		printnode(node);
-		printf("\n=======================\n");
+		printf("\n=======================\n");*/
 
 		if(*head == NULL || get_nodelist_portion(head,node.id) == NULL){
 			add_node(head, node);
 		}
 
-
-
-
 		i=i+1+nameLen;
-
 	}
 	printf("Au revoir :\n");
 	return NULL;
@@ -277,9 +259,8 @@ void sendToPoint(struct lws *wsi, Point p){
 Fonction pour recevoir les packets
 */
 int receive_packet(struct lws *wsi, unsigned char * buf){
-	int i,x,j;
 	char typeMsg = buf[0];
-	NodeList *nodeInVision;
+	NodeList *nodeInVision, *dog_node;
 	Point p;
 	double xMin,yMin,xMax,yMax;
 	int radius = 900;
@@ -295,15 +276,17 @@ int receive_packet(struct lws *wsi, unsigned char * buf){
 			nodeInVision = NULL;
 			if(compteur !=0){
 				getNodeInVision(buf,&nodeInVision);
-
+				dog_node = get_nodelist_portion(&nodeInVision,yellowdog.node.id);
+				if(dog_node != NULL){
+					yellowdog.node = dog_node->node;
+				}
 				printf("\n=========1============\n");
 				printlist(&nodeInVision);
-				printf("\n=========2============\n");
+				printf("=========2============\n");
 
 			}else{
 				compteur++;
 			}
-			//printlist(&nodeInVision);
 			break;
 
 		case 32 :
@@ -312,45 +295,25 @@ int receive_packet(struct lws *wsi, unsigned char * buf){
 			yellowdog.node = yellownode;
 			yellowdog.target = NULL;
 			yellowdog.sheeps = NULL;
-			//yellowdog.node->id = myId;
 			break;
 
 		case 64:
 			if(myId == 0){
 				double* border=malloc(4*sizeof(double));
 				border = (double *)(buf+1);
-				xMin = border[0];
-				yMin = border[1];
-				xMax = border[2];
-				yMax = border[3];
-
-				sheepfold_center.x = 0;
-				sheepfold_center.y = yMax/2;
-
+				if(border[2] > 0 || border[3] > 0){ //Pour éviter le paquet malformé négatif
+					xMin = border[0];
+					yMin = border[1];
+					xMax = border[2];
+					yMax = border[3];
+					path = generate_main_path(xMax, yMax);
+					sheepfold_center.x = xMin;
+					sheepfold_center.y = yMax/2;
+				}
 			}else{
 				p = Yellow_behavior(&yellowdog, sheepfold_center, radius, &nodeInVision);
-				/*if(get_node(&nodeInVision, myId) != NULL){
-					p = get_node(&nodeInVision, myId)->position;
-				}
-				if(depart == 1){
-					unsigned int x = rand()%(8960-40)+40;
-					unsigned int y = rand()%(5960-40)+40;
 
-					goal = createPoint(x,y);
-
-					sendToPoint(wsi,goal);
-					depart = 0;
-				}
-				if(p.x==goal.x && p.y==goal.y){
-					depart =1;
-				}*/
 				sendToPoint(wsi,p);
-				//printf("\nMon id : %d\nPOSITION : x : %d  y : %d\nOBJECTIF : x : %d  y : %d\n",myId, p.x,p.y,goal.x,goal.y);
-				//affichageVisionFromId(myId, nodeInVision);
-
-
-				//for(i=0; i<nbrNode; i++) free(nodeInVision[i].nickname);
-				//free(nodeInVision);
 			}
 			break;
 	}

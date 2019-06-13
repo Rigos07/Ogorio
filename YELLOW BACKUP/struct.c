@@ -218,7 +218,7 @@ int is_between(unsigned int a, unsigned int b, unsigned int c) {
     return a >= b && a < c;
 }
 
-Path* generate_path(int max_width, int max_height) {
+Path *generate_main_path(int max_width, int max_height) {
     int xmin = max_width % (4 * BLUE_SIGHT), ymin = 0,
         xmax = max_width, ymax = max_height,
         inter_nb = max_width / (4 * BLUE_SIGHT),

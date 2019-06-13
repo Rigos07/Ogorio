@@ -240,9 +240,9 @@ NodeList* getNodeInVision(unsigned char* buf, NodeList** head){
 		node.nickname = malloc((nameLen+1)*sizeof(char));
 		strcpy(node.nickname, buf+i);
 
-		printf("\n=========NODE==========\n");
+		/*printf("\n=========NODE==========\n");
 		printnode(node);
-		printf("\n=======================\n");
+		printf("\n=======================\n");*/
 
 		if(*head == NULL || get_nodelist_portion(head,node.id) == NULL){
 			add_node(head, node);

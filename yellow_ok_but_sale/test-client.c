@@ -318,15 +318,15 @@ int receive_packet(struct lws *wsi, unsigned char * buf){
 			if(myId == 0){
 				double* border=malloc(4*sizeof(double));
 				border = (double *)(buf+1);
-				xMin = border[0];
-				yMin = border[1];
-				xMax = border[2];
-				yMax = border[3];
-				printf("AAAAAAAAAAAAAAAAAAAAAAAAAAAA %f\n",yMax );
-				path = generate_main_path(xMax, yMax);
-				sheepfold_center.x = xMin;
-				sheepfold_center.y = yMax/2;
-
+				if(border[2] > 0 || yMax = border[3]){
+					xMin = border[0];
+					yMin = border[1];
+					xMax = border[2];
+					yMax = border[3];
+					path = generate_main_path(xMax, yMax);
+					sheepfold_center.x = xMin;
+					sheepfold_center.y = yMax/2;
+				}
 			}else{
 				p = Yellow_behavior(&yellowdog, sheepfold_center, radius, &nodeInVision);
 				/*if(get_node(&nodeInVision, myId) != NULL){

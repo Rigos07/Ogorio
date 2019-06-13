@@ -3,31 +3,66 @@
 
 # ========= FONCTIONS COMMUNES =========
 
-Fonction generer_circuit(MAX_X,MAX_Y,vue_bleu)
-# genère une structure circuit a partir de la taille de la map
+Fonction generer_circuit_principal(MAX_X,MAX_Y,VUE_BLEU)
+# genère une structure circuit pour les chiens Yellow et Blue a partir de la taille de la map
 # Entier xmin = MAX_X%400
 # Entier ymin= 0
 # Entier xmax = MAX_X
 # Entier ymax = MAX_Y
-# Entier vue_bleu = 1000
+# Entier VUE_BLEU = 1000, variable globale
 
 Debut
     circuit = structure circuit
-    ajouter_point(circuit, xmin + vue_bleu , ymin + vue_bleu)
-    ajouter_point(circuit, xmin - vue_bleu , ymin + vue_bleu)
-    ajouter_point(circuit, xmin - vue_bleu , ymin - vue_bleu)
-    Pour i allant de 0 à (MAX_X//400)-1 Faire:
-        ajouter_point(circuit, xmin - vue_bleu*(4*i + 3) , ymin - vue_bleu)
-        ajouter_point(circuit, xmin - vue_bleu*(4*i + 3) , ymin + vue_bleu*3)
-        ajouter_point(circuit, xmin - vue_bleu*(4*i + 5) , ymin + vue_bleu*3)
-        ajouter_point(circuit, xmin - vue_bleu*(4*i + 5) , ymin - vue_bleu)
+    p1 ← point(xmin + VUE_BLEU, ymin + VUE_BLEU)
+    p2 ← point(xmax - VUE_BLEU, ymin + VUE_BLEU)
+    p3 ← point(xmax - VUE_BLEU, ymax - VUE_BLEU)
+    p4 ← point(xmin + VUE_BLEU, ymax - VUE_BLEU)
+    
+    ajouter_point(circuit, p1)
+    ajouter_point(circuit, p2)
+    ajouter_point(circuit, p3)
 
-    ajouter_point(circuit, xmin + vue_bleu , ymin - vue_bleu)
+    Pour i allant de 0 à (xmax//(4*VUE_BLEU))-1 Faire:
+        ajouter_point(circuit, xmax - vue_bleu*(4*i + 3) , ymax - vue_bleu)
+        ajouter_point(circuit, xmax - vue_bleu*(4*i + 3) , ymin + vue_bleu*3)
+        ajouter_point(circuit, xmax - vue_bleu*(4*i + 5) , ymin + vue_bleu*3)
+        ajouter_point(circuit, xmax - vue_bleu*(4*i + 5) , ymax - vue_bleu)
+
+    ajouter_point(p4)
 
     Retourner circuit
 Fin
 
 
+Fonction generer_circuit_violet(MAX_X,MAX_Y,VUE_VIOLETX,VUE_VIOLETY)
+# genère une structure circuit pour les chiens Purple a partir de la taille de la map
+# Entier xmin = MAX_X%400
+# Entier ymin= 0
+# Entier xmax = MAX_X
+# Entier ymax = MAX_Y
+# Entier VUE_BLEU = 1000, variable globale
+
+Debut
+    circuit = structure circuit
+    p1 ← point(xmin + VUE_BLEU, ymin + VUE_BLEU)
+    p2 ← point(xmax - VUE_BLEU, ymin + VUE_BLEU)
+    p3 ← point(xmax - VUE_BLEU, ymax - VUE_BLEU)
+    p4 ← point(xmin + VUE_BLEU, ymax - VUE_BLEU)
+    
+    ajouter_point(circuit, p1)
+    ajouter_point(circuit, p2)
+    ajouter_point(circuit, p3)
+
+    Pour i allant de 0 à (xmax//(4*VUE_BLEU))-1 Faire:
+        ajouter_point(circuit, xmax - vue_bleu*(4*i + 3) , ymax - vue_bleu)
+        ajouter_point(circuit, xmax - vue_bleu*(4*i + 3) , ymin + vue_bleu*3)
+        ajouter_point(circuit, xmax - vue_bleu*(4*i + 5) , ymin + vue_bleu*3)
+        ajouter_point(circuit, xmax - vue_bleu*(4*i + 5) , ymax - vue_bleu)
+
+    ajouter_point(p4)
+
+    Retourner circuit
+Fin
 # Détermine le point d'intersection le plus proche dans le circuit c pour un point p
 Fonction inters_plus_proche(Circuit c, Point p) : Point
     Entier d ← TAILLE_MAX

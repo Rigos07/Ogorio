@@ -318,7 +318,7 @@ int receive_packet(struct lws *wsi, unsigned char * buf){
 			if(myId == 0){
 				double* border=malloc(4*sizeof(double));
 				border = (double *)(buf+1);
-				if(border[2] > 0 || yMax = border[3]){
+				if(border[2] > 0 || border[3] > 0){
 					xMin = border[0];
 					yMin = border[1];
 					xMax = border[2];

@@ -158,7 +158,7 @@ printf("BITIETIUOGEZKJEGHIHEGHIEFHJH\n" );
 NodeList* getNodeInVision(unsigned char* buf, NodeList** head){
 	int i=3;
 	Node node;
-	printf("Salut :\n");
+	//printf("Salut :\n");
 
 	/*int k=0;
 	printf("Buffer :\n");
@@ -182,9 +182,9 @@ NodeList* getNodeInVision(unsigned char* buf, NodeList** head){
 		node.nickname = malloc((nameLen+1)*sizeof(char));
 		strcpy(node.nickname, buf+i);
 
-		printf("\n=========NODE==========\n");
-		printnode(node);
-		printf("\n=======================\n");
+		//printf("\n=========NODE==========\n");
+		//printnode(node);
+		//printf("\n=======================\n");
 
 		if(*head == NULL || get_nodelist_portion(head,node.id) == NULL){
 			add_node(head, node);
@@ -196,7 +196,7 @@ NodeList* getNodeInVision(unsigned char* buf, NodeList** head){
 		i=i+1+nameLen;
 
 	}
-	printf("Au revoir :\n");
+	//printf("Au revoir :\n");
 	return NULL;
 }
 
@@ -243,13 +243,13 @@ int receive_packet(struct lws *wsi, unsigned char * buf){
 			if(test != NULL){
 				blueDog.node = test->node;
 			}
-			printf("\n=========1============\n");
-			printlist(&nodeInVision);
-			printf("\n=========2============\n");
+			//printf("\n=========1============\n");
+			//printlist(&nodeInVision);
+			//printf("\n=========2============\n");
 			//printlist(&nodeInVision);
 
 			//p = Yellow_behavior(&yellowdog, sheepfold_center, radius, &nodeInVision);
-			printnode(blueDog.node);
+			//printnode(blueDog.node);
 			p = follow_path(&path, blueDog , 9999999);
 
 			/*if(get_node(&nodeInVision, myId) != NULL){
@@ -291,8 +291,8 @@ int receive_packet(struct lws *wsi, unsigned char * buf){
 				yMin = border[1];
 				xMax = border[2];
 				yMax = border[3];
-
-				path = generate_path(xMax, yMax);
+				printf("------------------t maxi bz %f %f\n", border[2], border[3]);
+				path = generate_path(9000, -3000);
 
 				sheepfold_center.x = 0;
 				sheepfold_center.y = yMax/2;

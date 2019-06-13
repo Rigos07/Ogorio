@@ -374,10 +374,11 @@ Path *closest_point(Path **head, Dog dog, float max_dist) {
 
 Point follow_path(Path **head, Dog dog, float max_dist) {
     Point position = dog.node.position;
-    printpoint(position);
+    //printpoint(position);
     Path *prev_inters = is_near_path(head, position), *dest = prev_inters;
 
     if (prev_inters == NULL) {
+        //printf("------------------------------------------t bz\n");
         dest = closest_point(head, dog, max_dist);
 
     } else {

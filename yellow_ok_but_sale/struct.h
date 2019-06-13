@@ -41,6 +41,7 @@ typedef struct Dog {
     NodeList *sheeps;
 } Dog;
 
+Path* path;
 Point sheepfold_center;
 Node yellownode;
 Dog yellowdog;
@@ -159,7 +160,9 @@ float distance(Point p1, Point p2);
 * max_width : width of map
 * max_height : height of map
 */
-Path *generate_path(int max_width, int max_height);
+Path *generate_main_path(int max_width, int max_height);
+
+Path *generate_purple_path(int max_width, int max_height);
 
 Path *closest_intersection(Path **head, Point point, float max_dist);
 

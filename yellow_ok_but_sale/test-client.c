@@ -204,7 +204,7 @@ int writePacket(struct lws *wsi)
 	buf[5]=p.y;
 printf("BITIETIUOGEZKJEGHIHEGHIEFHJH\n" );
 	sendCommand(wsi,buf,sizeof(buf));
-}*
+}*/
 
 /****************************************************************************************************************************/
 
@@ -277,7 +277,6 @@ void sendToPoint(struct lws *wsi, Point p){
 Fonction pour recevoir les packets
 */
 int receive_packet(struct lws *wsi, unsigned char * buf){
-	int i,x,j;
 	char typeMsg = buf[0];
 	NodeList *nodeInVision;
 	Point p;
@@ -298,7 +297,7 @@ int receive_packet(struct lws *wsi, unsigned char * buf){
 
 				printf("\n=========1============\n");
 				printlist(&nodeInVision);
-				printf("\n=========2============\n");
+				printf("=========2============\n");
 
 			}else{
 				compteur++;
@@ -323,8 +322,9 @@ int receive_packet(struct lws *wsi, unsigned char * buf){
 				yMin = border[1];
 				xMax = border[2];
 				yMax = border[3];
-
-				sheepfold_center.x = 0;
+				printf("AAAAAAAAAAAAAAAAAAAAAAAAAAAA %f\n",yMax );
+				path = generate_main_path(xMax, yMax);
+				sheepfold_center.x = xMin;
 				sheepfold_center.y = yMax/2;
 
 			}else{

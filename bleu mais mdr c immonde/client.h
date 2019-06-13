@@ -30,7 +30,6 @@ struct lws_protocols protocols[] = {
 	}
 };
 
-int compteur = 0;
 int myId = 0;
 char depart = 1;
 

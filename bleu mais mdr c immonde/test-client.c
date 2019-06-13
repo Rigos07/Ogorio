@@ -238,20 +238,42 @@ int receive_packet(struct lws *wsi, unsigned char * buf){
 
 		case 16 :
 			nodeInVision = NULL;
-			if(compteur !=0){
-				getNodeInVision(buf,&nodeInVision);
-				test = get_nodelist_portion(&nodeInVision,blueDog.node.id);
-				if(test != NULL){
-					blueDog.node = test->node;
-				}
-				printf("\n=========1============\n");
-				printlist(&nodeInVision);
-				printf("\n=========2============\n");
-
-			}else{
-				compteur++;
+			getNodeInVision(buf,&nodeInVision);
+			test = get_nodelist_portion(&nodeInVision,blueDog.node.id);
+			if(test != NULL){
+				blueDog.node = test->node;
 			}
+			printf("\n=========1============\n");
+			printlist(&nodeInVision);
+			printf("\n=========2============\n");
 			//printlist(&nodeInVision);
+
+			//p = Yellow_behavior(&yellowdog, sheepfold_center, radius, &nodeInVision);
+			printnode(blueDog.node);
+			p = follow_path(&path, blueDog , 9999999);
+
+			/*if(get_node(&nodeInVision, myId) != NULL){
+				p = get_node(&nodeInVision, myId)->position;
+			}
+			if(depart == 1){
+				unsigned int x = rand()%(8960-40)+40;
+				unsigned int y = rand()%(5960-40)+40;
+
+				goal = createPoint(x,y);
+
+				sendToPoint(wsi,goal);
+				depart = 0;
+			}
+			if(p.x==goal.x && p.y==goal.y){
+				depart =1;
+			}*/
+			sendToPoint(wsi,p);
+			//printf("\nMon id : %d\nPOSITION : x : %d  y : %d\nOBJECTIF : x : %d  y : %d\n",myId, p.x,p.y,goal.x,goal.y);
+			//affichageVisionFromId(myId, nodeInVision);
+
+
+			//for(i=0; i<nbrNode; i++) free(nodeInVision[i].nickname);
+			//free(nodeInVision);
 			break;
 
 		case 32 :
@@ -274,34 +296,6 @@ int receive_packet(struct lws *wsi, unsigned char * buf){
 
 				sheepfold_center.x = 0;
 				sheepfold_center.y = yMax/2;
-
-			}else{
-				//p = Yellow_behavior(&yellowdog, sheepfold_center, radius, &nodeInVision);
-
-				p = follow_path(&path, blueDog , 9999999);
-
-				/*if(get_node(&nodeInVision, myId) != NULL){
-					p = get_node(&nodeInVision, myId)->position;
-				}
-				if(depart == 1){
-					unsigned int x = rand()%(8960-40)+40;
-					unsigned int y = rand()%(5960-40)+40;
-
-					goal = createPoint(x,y);
-
-					sendToPoint(wsi,goal);
-					depart = 0;
-				}
-				if(p.x==goal.x && p.y==goal.y){
-					depart =1;
-				}*/
-				sendToPoint(wsi,p);
-				//printf("\nMon id : %d\nPOSITION : x : %d  y : %d\nOBJECTIF : x : %d  y : %d\n",myId, p.x,p.y,goal.x,goal.y);
-				//affichageVisionFromId(myId, nodeInVision);
-
-
-				//for(i=0; i<nbrNode; i++) free(nodeInVision[i].nickname);
-				//free(nodeInVision);
 			}
 			break;
 	}

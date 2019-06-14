@@ -150,7 +150,7 @@ Message create_message(int id, Point point);
 
 // ================== DOG PRIMITIVES ==================
 
-Dog create_dog(Node node);
+Dog create_dog(Node node, int x_sight, int y_sight);
 
 // ================== FUNCTIONS ==================
 

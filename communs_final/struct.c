@@ -208,7 +208,7 @@ Message create_message(int id, Point point) {
 
 // ================== DOG PRIMITIVES ==================
 
-Dog create_dog(Node node, x_sight, y_sight) {
+Dog create_dog(Node node, int x_sight, int y_sight) {
     Dog new_dog = {node, NULL, create_nodelist(), x_sight, y_sight};
     return new_dog;
 }

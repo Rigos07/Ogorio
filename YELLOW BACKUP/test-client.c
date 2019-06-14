@@ -10,7 +10,7 @@
 
 #include "client.h"
 #include "package.h"
-#include "struct.h"
+#include "yellow.h"
 
 
 // compile with gcc -Wall -g -o sock ./test-client.c -lwebsockets -lm
@@ -276,9 +276,9 @@ int receive_packet(struct lws *wsi, unsigned char * buf){
 			nodeInVision = NULL;
 			if(compteur !=0){
 				getNodeInVision(buf,&nodeInVision);
-				dog_node = get_nodelist_portion(&nodeInVision,yellowdog.node.id);
+				dog_node = get_nodelist_portion(&nodeInVision,yellow_dog.node.id);
 				if(dog_node != NULL){
-					yellowdog.node = dog_node->node;
+					yellow_dog.node = dog_node->node;
 				}
 				printf("\n=========1============\n");
 				printlist(&nodeInVision);
@@ -291,10 +291,8 @@ int receive_packet(struct lws *wsi, unsigned char * buf){
 
 		case 32 :
 			myId = getMyId(buf);
-			yellownode.id = myId;
-			yellowdog.node = yellownode;
-			yellowdog.target = NULL;
-			yellowdog.sheeps = NULL;
+			yellow_node = create_node(myId, create_point(0, 0), "yellow");
+			yellow_dog = create_dog(yellow_node, YELLOW_SIGHTX, YELLOW_SIGHTY);
 			break;
 
 		case 64:
@@ -311,7 +309,7 @@ int receive_packet(struct lws *wsi, unsigned char * buf){
 					sheepfold_center.y = yMax/2;
 				}
 			}else{
-				p = Yellow_behavior(&yellowdog, sheepfold_center, radius, &nodeInVision);
+				p = Yellow_behavior(&yellow_dog, sheepfold_center, radius, &nodeInVision);
 
 				sendToPoint(wsi,p);
 			}

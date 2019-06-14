@@ -303,7 +303,7 @@ int receive_packet(struct lws *wsi, unsigned char * buf){
 					yMin = border[1];
 					xMax = border[2];
 					yMax = border[3];
-					path = generate_path(green_dog, xMax, yMax, GREEN_SIGHTX, GREEN_SIGHTY);
+					path = generate_path(green_dog, xMax, yMax);
 					sheepfold_center.x = xMin;
 					sheepfold_center.y = yMax/2;
 				}

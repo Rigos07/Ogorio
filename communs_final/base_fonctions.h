@@ -165,3 +165,6 @@ Path *is_near_path(Path **head, Point p);
 Path *closest_point(Path **head, Dog dog, float max_dist);
 
 Point follow_path(Path **head, Dog dog, float max_dist);
+
+// Dog.sheeps doit être non vide
+Node closest_sheep(Dog dog, float max_dist);

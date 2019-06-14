@@ -291,7 +291,7 @@ int receive_packet(struct lws *wsi, unsigned char * buf){
 		case 32 :
 			myId = getMyId(buf);
 			green_node = create_node(myId, create_point(0, 0), "green");
-			green_dog = create_dog(green_node);
+			green_dog = create_dog(green_node, GREEN_SIGHTX, GREEN_SIGHTY);
 			break;
 
 		case 64:
@@ -303,7 +303,7 @@ int receive_packet(struct lws *wsi, unsigned char * buf){
 					yMin = border[1];
 					xMax = border[2];
 					yMax = border[3];
-					path = generate_main_path(xMax, yMax);
+					path = generate_path(green_dog, xMax, yMax);
 					sheepfold_center.x = xMin;
 					sheepfold_center.y = yMax/2;
 				}

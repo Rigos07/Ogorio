@@ -5,3 +5,4 @@
 
 Node green_node; 
 Dog green_dog;
+Path * path;

@@ -268,8 +268,8 @@ int receive_packet(struct lws *wsi, unsigned char * buf){
 
 	switch(typeMsg){
 		case 18:
-			printf("UIHFHIHJIKAHUIAHUIZGUJOIAZ\n");
 			sendCommand(wsi,green, sizeof(green));
+			printf("UIHFHIHJIKAHUIAHUIZGUJOIAZ\n");
 			break;
 
 		case 16 :

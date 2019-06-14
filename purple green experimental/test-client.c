@@ -289,6 +289,7 @@ int receive_packet(struct lws *wsi, unsigned char * buf){
 			break;
 
 		case 32 :
+			printf("zegoijjukezgujz\n");
 			myId = getMyId(buf);
 			printf("UIHFHIHJIKAHUIAHUIZGUJOIAZ\n");
 			green_node = create_node(myId, create_point(0, 0), "green");

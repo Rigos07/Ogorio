@@ -208,16 +208,15 @@ Message create_message(int id, Point point) {
 
 // ================== DOG PRIMITIVES ==================
 
-Dog create_dog(Node node) {
-    Dog new_dog = {node, NULL, create_nodelist()};
+Dog create_dog(Node node, x_sight, y_sight) {
+    Dog new_dog = {node, NULL, create_nodelist(), x_sight, y_sight};
     return new_dog;
 }
 
 // ================== FUNCTIONS ==================
 
 float distance(Point p1, Point p2) {
-    int dx = p1.x - p2.x, dy = p1.y - p2.y;
-    return sqrt(pow(dx, 2) + pow(dy, 2));
+    return sqrt(pow(p1.x - p2.x, 2) + pow(p1.y - p2.y, 2));
 }
 
 int is_between(int a, int b, int c) {
@@ -513,7 +512,7 @@ int get_octal_size(int x) {
     return size;
 }
 
-Point get_coordinate(int a) {
+Point (int a) {
     int x = 0, y = 0;
 
     switch (x) {
@@ -558,6 +557,7 @@ Point get_coordinate(int a) {
 
     return create_point(x, y);
 }
+
 
 void printpoint(Point point){
     printf("x : %d\n", point.x);
@@ -605,7 +605,6 @@ void printlist(NodeList **head){
     printf("End\n\n");
 }
 
-
 /*Point send_message(Dog *dog) {
     Message msg = dog->message;
     int size_i = msg.size_i, msg,_i = msg.size_i;
@@ -623,7 +622,13 @@ void printlist(NodeList **head){
             case 2:
                 send_coordinate(get_octal_size(msg.position.y));
         }
+
+        dog->message.size_i++;
+
+    } else {
+        switch (msg_i) 
     }
+
 }*/
 
 /*void read_message(Dog *dog) {

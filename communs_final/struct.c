@@ -256,7 +256,7 @@ Path* generate_main_path(int max_width, int max_height) {
         add_point(&head, create_point(xmax - BLUE_SIGHT * (4 * i + 5), ymax - BLUE_SIGHT));
     }
 
-    add_point(&head, create_point(xmin + BLUE_SIGHT, ymax - BLUE_SIGHT);
+    add_point(&head, create_point(xmin + BLUE_SIGHT, ymax - BLUE_SIGHT));
 
     return head;
 }

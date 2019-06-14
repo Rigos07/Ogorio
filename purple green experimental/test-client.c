@@ -48,23 +48,23 @@ Point bring_back_sheep(Node target,int radius, Point destination){
 	return objective;
 }
 
-Point Yellow_behavior(Dog *yellow, Point sheepfold_center, int sheepfold_rad, NodeList **nodes_in_sight){
+Point green_behavior(Dog *green, Point sheepfold_center, int sheepfold_rad, NodeList **nodes_in_sight){
 	Point objective;
 	NodeList *pointer = *nodes_in_sight;
 	float distance_to_destination;
 	int target_found = 0;
-	printf("CURRENT POSITION : %d , %d\n",yellow->node.position.x,yellow->node.position.y);
-	if(yellow->target != NULL){
+	printf("CURRENT POSITION : %d , %d\n",green->node.position.x,green->node.position.y);
+	if(green->target != NULL){
 		printf("I HAVE A TARGET\n");
 		if((*nodes_in_sight) != NULL){
-			pointer = get_nodelist_portion(nodes_in_sight,yellow->target->id);
+			pointer = get_nodelist_portion(nodes_in_sight,green->target->id);
 			if(pointer != NULL){
-				yellow->target = &(pointer->node);
-				distance_to_destination = distance(yellow->target->position,sheepfold_center);
+				green->target = &(pointer->node);
+				distance_to_destination = distance(green->target->position,sheepfold_center);
 				if(distance_to_destination >= sheepfold_rad ){ //HAVE A TARGET AND TARGET IS IN SIGHT AND OUTSIDE SHEEPFOLD
 					printf("\nMEINE TARGET\n");
 					printnode(pointer->node);
-					objective = bring_back_sheep(*(yellow->target), 100, sheepfold_center);
+					objective = bring_back_sheep(*(green->target), 100, sheepfold_center);
 					printf("GOING TO : %d , %d\n", objective.x, objective.y );
 					printf("DIST = %f\n", distance_to_destination);
 					printf("SHEEPFOLD IS IN %d , %d !!!!\n",sheepfold_center.x,sheepfold_center.y );
@@ -72,12 +72,12 @@ Point Yellow_behavior(Dog *yellow, Point sheepfold_center, int sheepfold_rad, No
 				}
 				else{ //HAVE A TARGET AND TARGET IS IN SIGHT AND INSIDE SHEEPFOLD
 					printf("TARGET BRINGED BACK TO SHEEPFOLD\nMISSION COMPLETE\n");
-					objective = follow_path(&path, *yellow , 9999999);
-					yellow->target = NULL;
+					objective = follow_path(&path, *green , 9999999);
+					green->target = NULL;
 				}
 			}
 			else{ //HAVE A TARGET AND TARGET IS NOT IN SIGHT
-				objective = yellow->target->position;
+				objective = green->target->position;
 				printf("GOING TO DEFAULT POSITION BECAUSE I LOST MY TARGET I AM VERY SAD\n");
 			}
 		}
@@ -103,19 +103,19 @@ Point Yellow_behavior(Dog *yellow, Point sheepfold_center, int sheepfold_rad, No
 
 			}
 			if(pointer != NULL){ //HAVE NO TARGET AND SHEEP IS IN SIGHT AND OUTSIDE SHEEPFOLD
-				yellow->target = &(pointer->node);
+				green->target = &(pointer->node);
 				printf("\nNEW TARGET\n");
 				printnode(pointer->node);
-				objective = bring_back_sheep(*(yellow->target), 100, sheepfold_center);
+				objective = bring_back_sheep(*(green->target), 100, sheepfold_center);
 				printf("SHEEPFOLD IS IN %d , %d !!!!\n",sheepfold_center.x,sheepfold_center.y );
 			}
 			else{ //HAVE NO TARGET AND NO POSSIBLE TARGET FOUND
-				objective = follow_path(&path, *yellow , 9999999);
+				objective = follow_path(&path, *green , 9999999);
 				printf("GOING TO DEFAULT POSITION\n");
 			}
 		}
 		else{ //HAVE NO TARGET AND NOTHING IN SIGHT
-			objective = follow_path(&path, *yellow , 9999999);
+			objective = follow_path(&path, *green , 9999999);
 			printf("GOING TO DEFAULT POSITION\n");
 		}
 
@@ -268,16 +268,16 @@ int receive_packet(struct lws *wsi, unsigned char * buf){
 
 	switch(typeMsg){
 		case 18:
-			sendCommand(wsi,yellow, sizeof(yellow));
+			sendCommand(wsi,green, sizeof(green));
 			break;
 
 		case 16 :
 			nodeInVision = NULL;
 			if(compteur !=0){
 				getNodeInVision(buf,&nodeInVision);
-				dog_node = get_nodelist_portion(&nodeInVision,yellowdog.node.id);
+				dog_node = get_nodelist_portion(&nodeInVision,green_dog.node.id);
 				if(dog_node != NULL){
-					yellowdog.node = dog_node->node;
+					green_dog.node = dog_node->node;
 				}
 				printf("\n=========1============\n");
 				printlist(&nodeInVision);
@@ -308,7 +308,7 @@ int receive_packet(struct lws *wsi, unsigned char * buf){
 					sheepfold_center.y = yMax/2;
 				}
 			}else{
-				p = Yellow_behavior(&yellowdog, sheepfold_center, radius, &nodeInVision);
+				p = green_behavior(&green_dog, sheepfold_center, radius, &nodeInVision);
 
 				sendToPoint(wsi,p);
 			}

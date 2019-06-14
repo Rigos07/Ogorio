@@ -511,7 +511,7 @@ int get_octal_size(int x) {
 
     return size;
 }
-
+/*
 Point (int a) {
     int x = 0, y = 0;
 
@@ -557,7 +557,7 @@ Point (int a) {
 
     return create_point(x, y);
 }
-
+*/
 
 void printpoint(Point point){
     printf("x : %d\n", point.x);

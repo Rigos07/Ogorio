@@ -385,3 +385,24 @@ Point follow_path(Path **head, Dog dog, float max_dist) {
 
     return dest->position;
 }
+
+Node closest_sheep(Dog dog, float max_dist) {
+    Point point = dog.node.position;
+    NodeList *sheeps = dog.sheeps;
+    int dist = max_dist, dist_i;
+    Node sheep, result;
+
+    while (sheeps != NULL) {
+        sheep = sheeps->node;
+        dist_i = distance(point, sheep.position);
+
+        if (dist_i < dist) {
+            dist = dist_i;
+            result = sheep;
+        }
+
+        sheeps = sheeps->next;
+    }
+
+    return result;
+}

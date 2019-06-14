@@ -396,6 +396,24 @@ Point follow_path(Path **head, Dog dog, float max_dist) {
     return dest->position;
 }
 
+void sheep_count(Dog* dog, NodeList** head){
+  NodeList* pointer = *head;
+  Node n;
+  while(pointer != NULL){
+    n = pointer->node;
+    if(strncmp("bot",n.nickname,strlen("bot"))==0){
+      if(get_nodelist_portion(&dog->sheeps, n.id) == NULL){
+        add_node(&dog->sheeps, n);
+      }else{
+        update_node(&dog->sheeps,n);
+      }
+    }
+    pointer = pointer->next;
+  }
+}
+
+
+
 void printpoint(Point point){
     printf("x : %d\n", point.x);
     printf("y : %d\n", point.y);

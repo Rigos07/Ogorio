@@ -203,9 +203,12 @@ void sheep_count(Dog* dog, NodeList** head);
 
 // Dog.sheeps doit être non vide
 Node closest_sheep(Dog dog, float max_dist);
+<<<<<<< HEAD
 
 void printnode(Node node);
 void printpoint(Point point);
 
 void printlist(NodeList **head);
 void printpath(Path **head);
+=======
+>>>>>>> 6ba92b632f779c62e3c93cfe1d55f13c9a9daf1c

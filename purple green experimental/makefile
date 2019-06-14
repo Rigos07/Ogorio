@@ -4,8 +4,8 @@ sock : test-client.o struct.o
 test-client.o : test-client.c client.h package.h
 	gcc -o test-client.o -c test-client.c -Wall -g -lm
 
-struct.o : struct.c struct.h
-	gcc -o struct.o -c struct.c -Wall -g -lm
+struct.o : ../communs_final/struct.c ../communs_final/struct.h
+	gcc -o struct.o -c ../communs_final/struct.c -Wall -g -lm
 
 clean:
 	rm -rf *.o

@@ -1,5 +1,4 @@
 #define BLUE_SIGHT 1000
-#define MAXLEN 26
 #define MARGIN 5
 #define max(a,b) (a>=b?a:b)
 #define min(a,b) (a<=b?a:b)
@@ -204,3 +203,9 @@ void sheep_count(Dog* dog, NodeList** head);
 
 // Dog.sheeps doit être non vide
 Node closest_sheep(Dog dog, float max_dist);
+
+void printnode(Node node);
+void printpoint(Point point);
+
+void printlist(NodeList **head);
+void printpath(Path **head);

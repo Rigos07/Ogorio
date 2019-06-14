@@ -559,6 +559,53 @@ Point get_coordinate(int a) {
     return create_point(x, y);
 }
 
+void printpoint(Point point){
+    printf("x : %d\n", point.x);
+    printf("y : %d\n", point.y);
+}
+
+void printnode(Node node){
+    printf("Node id : %d\n", node.id);
+    printf("x : %d\n", node.position.x);
+    printf("y : %d\n", node.position.y);
+    printf("nom : %s\n", node.nickname);
+}
+
+void printpath(Path **head){
+    Path *pointer;
+    int i;
+    printf("Node list :\n");
+    if(*head == NULL){
+        printf("Empty list !\n");
+    }
+    else{
+        pointer = *head;
+        for (i = 0; i < get_path_size(head); i++) {
+            printpoint(pointer->position);
+            pointer = pointer->next;
+        }
+    }
+    printf("End\n\n");
+}
+
+void printlist(NodeList **head){
+    NodeList *pointer;
+    int i;
+    printf("Node list :\n");
+    if(*head == NULL){
+        printf("Empty list !\n");
+    }
+    else{
+        pointer = *head;
+        for (i = 0; i < get_nodelist_size(head); i++) {
+            printnode(pointer->node);
+            pointer = pointer->next;
+        }
+    }
+    printf("End\n\n");
+}
+
+
 /*Point send_message(Dog *dog) {
     Message msg = dog->message;
     int size_i = msg.size_i, msg,_i = msg.size_i;

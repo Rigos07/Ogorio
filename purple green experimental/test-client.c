@@ -10,8 +10,7 @@
 
 #include "client.h"
 #include "package.h"
-#include "struct.h"
-
+#include "green.h"
 
 // compile with gcc -Wall -g -o sock ./test-client.c -lwebsockets -lm
 
@@ -291,10 +290,8 @@ int receive_packet(struct lws *wsi, unsigned char * buf){
 
 		case 32 :
 			myId = getMyId(buf);
-			yellownode.id = myId;
-			yellowdog.node = yellownode;
-			yellowdog.target = NULL;
-			yellowdog.sheeps = NULL;
+			green_node = create_node(myId, create_point(0, 0), "green");
+			green_dog = create_dog(green_node);
 			break;
 
 		case 64:

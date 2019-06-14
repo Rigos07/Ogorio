@@ -174,6 +174,8 @@ Path *closest_point(Path **head, Dog dog, float max_dist);
 
 Point follow_path(Path **head, Dog dog, float max_dist);
 
+void sheep_count(Dog* dog, NodeList** head);
+
 void printnode(Node node);
 void printpoint(Point point);
 

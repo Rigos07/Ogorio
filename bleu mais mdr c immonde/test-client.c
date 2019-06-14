@@ -243,59 +243,42 @@ int receive_packet(struct lws *wsi, unsigned char * buf){
 			if(test != NULL){
 				blueDog.node = test->node;
 			}
-			//printf("\n=========1============\n");
-			//printlist(&nodeInVision);
-			//printf("\n=========2============\n");
-			//printlist(&nodeInVision);
 
-			//p = Yellow_behavior(&yellowdog, sheepfold_center, radius, &nodeInVision);
-			//printnode(blueDog.node);
 			p = follow_path(&path, blueDog , 9999999);
+			sheep_count(&blueDog, &nodeInVision);
 
-			/*if(get_node(&nodeInVision, myId) != NULL){
-				p = get_node(&nodeInVision, myId)->position;
-			}
-			if(depart == 1){
-				unsigned int x = rand()%(8960-40)+40;
-				unsigned int y = rand()%(5960-40)+40;
-
-				goal = createPoint(x,y);
-
-				sendToPoint(wsi,goal);
-				depart = 0;
-			}
-			if(p.x==goal.x && p.y==goal.y){
-				depart =1;
-			}*/
 			sendToPoint(wsi,p);
-			//printf("\nMon id : %d\nPOSITION : x : %d  y : %d\nOBJECTIF : x : %d  y : %d\n",myId, p.x,p.y,goal.x,goal.y);
-			//affichageVisionFromId(myId, nodeInVision);
+
+
 
 
 			//for(i=0; i<nbrNode; i++) free(nodeInVision[i].nickname);
-			//free(nodeInVision);
+
 			break;
 
 		case 32 :
 			myId = getMyId(buf);
 			blueNode = create_node(myId,create_point(0,0),"blue");
 			blueDog = create_dog(blueNode);
-			//yellowdog.node->id = myId;
+			blueDog.node.id = myId;
 			break;
 
 		case 64:
 			if(myId == 0){
 				double* border=malloc(4*sizeof(double));
 				border = (double *)(buf+1);
-				xMin = border[0];
-				yMin = border[1];
-				xMax = border[2];
-				yMax = border[3];
-				printf("------------------t maxi bz %f %f\n", border[2], border[3]);
-				path = generate_path(9000, -3000);
+				if(border[2]>0 || border[3]>0){
+					xMin = border[0];
+					yMin = border[1];
+					xMax = border[2];
+					yMax = border[3];
 
-				sheepfold_center.x = 0;
-				sheepfold_center.y = yMax/2;
+					printf("------------------t maxi bz %f %f\n", border[2], border[3]);
+					path = generate_path(xMax, yMax);
+
+					sheepfold_center.x = 0;
+					sheepfold_center.y = yMax/2;
+				}
 			}
 			break;
 	}

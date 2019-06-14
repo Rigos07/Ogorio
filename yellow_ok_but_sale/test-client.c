@@ -100,10 +100,12 @@ Point Yellow_behavior(Dog *yellow, Point sheepfold_center, int sheepfold_rad, No
 				}
 
 				if(strncmp("yellow",pointer->node.nickname,strlen("yellow")) == 0){
-					distance_sheep_to_other_yellow = distance(pointer->node.position, yellow->target->position);
-					distance_sheep_to_self = distance(yellow->node.position, yellow->target->position);
-					if(distance_sheep_to_self > distance_sheep_to_other_yellow ){
-						yellow->target = NULL;
+					if(yellow->target != NULL){
+						distance_sheep_to_other_yellow = distance(pointer->node.position, yellow->target->position);
+						distance_sheep_to_self = distance(yellow->node.position, yellow->target->position);
+						if(distance_sheep_to_self > distance_sheep_to_other_yellow ){
+							yellow->target = NULL;
+						}
 					}
 				}
 

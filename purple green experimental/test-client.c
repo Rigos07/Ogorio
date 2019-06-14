@@ -304,10 +304,12 @@ int receive_packet(struct lws *wsi, unsigned char * buf){
 					xMax = border[2];
 					yMax = border[3];
 					path = generate_path(green_dog, xMax, yMax);
+					printf("CHEMIN GENERE\n");
 					sheepfold_center.x = xMin;
 					sheepfold_center.y = yMax/2;
 				}
 			}else{
+				printf("DEBUT COMPORTEMENT\n");
 				p = green_behavior(&green_dog, sheepfold_center, radius, &nodeInVision);
 
 				sendToPoint(wsi,p);

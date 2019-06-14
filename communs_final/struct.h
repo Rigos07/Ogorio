@@ -169,7 +169,7 @@ int is_between(int a, int b, int c);
 * max_width : width of map
 * max_height : height of map
 */
-Path *generate_path(Dog dog, int max_width, int max_height, int x_sight, int y_sight);
+Path *generate_path(Dog dog, int max_width, int max_height);
 
 /*
 * Generate Blue & Yellow dogs path

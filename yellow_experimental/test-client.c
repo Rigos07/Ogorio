@@ -10,7 +10,8 @@
 
 #include "client.h"
 #include "package.h"
-#include "green.h"
+#include "yellow.h"
+
 
 // compile with gcc -Wall -g -o sock ./test-client.c -lwebsockets -lm
 
@@ -48,36 +49,36 @@ Point bring_back_sheep(Node target,int radius, Point destination){
 	return objective;
 }
 
-Point green_behavior(Dog *green, Point sheepfold_center, int sheepfold_rad, NodeList **nodes_in_sight){
+Point Yellow_behavior(Dog *yellow, Point sheepfold_center, int sheepfold_rad, NodeList **nodes_in_sight){
 	Point objective;
 	NodeList *pointer = *nodes_in_sight;
 	float distance_to_destination;
 	int target_found = 0;
-	printf("CURRENT POSITION : %d , %d\n",green->node.position.x,green->node.position.y);
-	if(green->target != NULL){
+	printf("CURRENT POSITION : %d , %d\n",yellow->node.position.x,yellow->node.position.y);
+	if(yellow->target != NULL){
 		printf("I HAVE A TARGET\n");
 		if((*nodes_in_sight) != NULL){
-			pointer = get_nodelist_portion(nodes_in_sight,green->target->id);
+			pointer = get_nodelist_portion(nodes_in_sight,yellow->target->id);
 			if(pointer != NULL){
-				green->target = &(pointer->node);
-				distance_to_destination = distance(green->target->position,sheepfold_center);
+				yellow->target = &(pointer->node);
+				distance_to_destination = distance(yellow->target->position,sheepfold_center);
 				if(distance_to_destination >= sheepfold_rad ){ //HAVE A TARGET AND TARGET IS IN SIGHT AND OUTSIDE SHEEPFOLD
-					printf("\nVOICI MA CIBLE : \n");
+					printf("\nMEINE TARGET\n");
 					printnode(pointer->node);
-					objective = bring_back_sheep(*(green->target), 100, sheepfold_center);
-					printf("ALLONS A : %d , %d\n", objective.x, objective.y );
+					objective = bring_back_sheep(*(yellow->target), 100, sheepfold_center);
+					printf("GOING TO : %d , %d\n", objective.x, objective.y );
 					printf("DIST = %f\n", distance_to_destination);
-					printf("LA BERGERIE C'EST EN %d , %d !!!!\n",sheepfold_center.x,sheepfold_center.y );
-					printf("ALLER, EN MARCHE !\n" );
+					printf("SHEEPFOLD IS IN %d , %d !!!!\n",sheepfold_center.x,sheepfold_center.y );
+					printf("KEINE GNADE, MEINE KINDER !\n" );
 				}
 				else{ //HAVE A TARGET AND TARGET IS IN SIGHT AND INSIDE SHEEPFOLD
 					printf("TARGET BRINGED BACK TO SHEEPFOLD\nMISSION COMPLETE\n");
-					objective = follow_path(&path, *green , 9999999);
-					green->target = NULL;
+					objective = follow_path(&path, *yellow , 9999999);
+					yellow->target = NULL;
 				}
 			}
 			else{ //HAVE A TARGET AND TARGET IS NOT IN SIGHT
-				objective = green->target->position;
+				objective = yellow->target->position;
 				printf("GOING TO DEFAULT POSITION BECAUSE I LOST MY TARGET I AM VERY SAD\n");
 			}
 		}
@@ -103,19 +104,19 @@ Point green_behavior(Dog *green, Point sheepfold_center, int sheepfold_rad, Node
 
 			}
 			if(pointer != NULL){ //HAVE NO TARGET AND SHEEP IS IN SIGHT AND OUTSIDE SHEEPFOLD
-				green->target = &(pointer->node);
+				yellow->target = &(pointer->node);
 				printf("\nNEW TARGET\n");
 				printnode(pointer->node);
-				objective = bring_back_sheep(*(green->target), 100, sheepfold_center);
+				objective = bring_back_sheep(*(yellow->target), 100, sheepfold_center);
 				printf("SHEEPFOLD IS IN %d , %d !!!!\n",sheepfold_center.x,sheepfold_center.y );
 			}
 			else{ //HAVE NO TARGET AND NO POSSIBLE TARGET FOUND
-				objective = follow_path(&path, *green , 9999999);
+				objective = follow_path(&path, *yellow , 9999999);
 				printf("GOING TO DEFAULT POSITION\n");
 			}
 		}
 		else{ //HAVE NO TARGET AND NOTHING IN SIGHT
-			objective = follow_path(&path, *green , 9999999);
+			objective = follow_path(&path, *yellow , 9999999);
 			printf("GOING TO DEFAULT POSITION\n");
 		}
 
@@ -268,16 +269,16 @@ int receive_packet(struct lws *wsi, unsigned char * buf){
 
 	switch(typeMsg){
 		case 18:
-			sendCommand(wsi,green, sizeof(green));
+			sendCommand(wsi,yellow, sizeof(yellow));
 			break;
 
 		case 16 :
 			nodeInVision = NULL;
 			if(compteur !=0){
 				getNodeInVision(buf,&nodeInVision);
-				dog_node = get_nodelist_portion(&nodeInVision,green_dog.node.id);
+				dog_node = get_nodelist_portion(&nodeInVision,yellow_dog.node.id);
 				if(dog_node != NULL){
-					green_dog.node = dog_node->node;
+					yellow_dog.node = dog_node->node;
 				}
 				printf("\n=========1============\n");
 				printlist(&nodeInVision);
@@ -290,8 +291,8 @@ int receive_packet(struct lws *wsi, unsigned char * buf){
 
 		case 32 :
 			myId = getMyId(buf);
-			green_node = create_node(myId, create_point(0, 0), "green");
-			green_dog = create_dog(green_node, GREEN_SIGHTX, GREEN_SIGHTY);
+			yellow_node = create_node(myId, create_point(0, 0), "yellow");
+			yellow_dog = create_dog(yellow_node, YELLOW_SIGHTX, YELLOW_SIGHTY);
 			break;
 
 		case 64:
@@ -303,14 +304,12 @@ int receive_packet(struct lws *wsi, unsigned char * buf){
 					yMin = border[1];
 					xMax = border[2];
 					yMax = border[3];
-					green_node = create_node(myId, create_point(0, 0), "green");
-					green_dog = create_dog(green_node, GREEN_SIGHTX, GREEN_SIGHTY);
-					path = generate_path(green_dog, xMax, yMax);
+					path = generate_main_path(xMax, yMax);
 					sheepfold_center.x = xMin;
 					sheepfold_center.y = yMax/2;
 				}
 			}else{
-				p = green_behavior(&green_dog, sheepfold_center, radius, &nodeInVision);
+				p = Yellow_behavior(&yellow_dog, sheepfold_center, radius, &nodeInVision);
 
 				sendToPoint(wsi,p);
 			}

@@ -52,7 +52,7 @@ Point bring_back_sheep(Node target,int radius, Point destination){
 Point Yellow_behavior(Dog *yellow, Point sheepfold_center, int sheepfold_rad, NodeList **nodes_in_sight){
 	Point objective;
 	NodeList *pointer = *nodes_in_sight;
-	float distance_to_destination;
+	float distance_to_destination, distance_sheep_to_other_yellow, distance_sheep_to_self;
 	int target_found = 0;
 	printf("CURRENT POSITION : %d , %d\n",yellow->node.position.x,yellow->node.position.y);
 	if(yellow->target != NULL){
@@ -91,15 +91,22 @@ Point Yellow_behavior(Dog *yellow, Point sheepfold_center, int sheepfold_rad, No
 	}
 	else{
 		if((*nodes_in_sight) != NULL){
-			while(pointer != NULL && !target_found ){
+			while(pointer != NULL){
 				if(strncmp("bot",pointer->node.nickname,strlen("bot")) == 0){
 					distance_to_destination = distance(pointer->node.position,sheepfold_center);
 					if(distance_to_destination >= sheepfold_rad ){
-						target_found = 1;
+						yellow->target = &(pointer->node);
 					}
 				}
-				if(target_found == 0){
-					pointer = pointer->next;
+
+				if(strncmp("yellow",pointer->node.nickname,strlen("yellow")) == 0){
+					if(yellow->target != NULL){
+						distance_sheep_to_other_yellow = distance(pointer->node.position, yellow->target->position);
+						distance_sheep_to_self = distance(yellow->node.position, yellow->target->position);
+						if(distance_sheep_to_self > distance_sheep_to_other_yellow ){
+							yellow->target = NULL;
+						}
+					}
 				}
 
 			}

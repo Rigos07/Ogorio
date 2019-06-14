@@ -34,36 +34,68 @@ Debut
 Fin
 
 
-Fonction generer_circuit_violet(MAX_X,MAX_Y,VUE_VIOLETX,VUE_VIOLETY)
+Fonction generer_circuit_secondaire(MAX_X,MAX_Y,VUE_X,VUE_Y)
 # genère une structure circuit pour les chiens Purple a partir de la taille de la map
 # Entier xmin = 0
 # Entier ymin= 0
 # Entier xmax = MAX_X%400
 # Entier ymax = MAX_Y
-# Entier VUE_VIOLETX = 800, variable globale
-# Entier VUE_VIOLETX = 200, variable globale
+# Entier VUE_X = 400, vue du chien en x
+# Entier VUE_Y = 400, vue du chien en y
 
 Debut
-    circuit = structure circuit
-    p1 ← point(xmin + VUE_BLEU, ymin + VUE_BLEU)
-    p2 ← point(xmax - VUE_BLEU, ymin + VUE_BLEU)
-    p3 ← point(xmax - VUE_BLEU, ymax - VUE_BLEU)
-    p4 ← point(xmin + VUE_BLEU, ymax - VUE_BLEU)
-    
-    ajouter_point(circuit, p1)
-    ajouter_point(circuit, p2)
-    ajouter_point(circuit, p3)
+    zone_xmin = 0
+    zone_ymin= 0
+    zone_xmax = MAX_WIDTH%400
+    zone_ymax = MAX_HEIGHT
+    circuit = créer_circuit()
 
-    Pour i allant de 0 à (MAX_X//(4*VUE_BLEU))-1 Faire:
-        ajouter_point(circuit, xmax - vue_bleu*(4*i + 3) , ymax - vue_bleu)
-        ajouter_point(circuit, xmax - vue_bleu*(4*i + 3) , ymin + vue_bleu*3)
-        ajouter_point(circuit, xmax - vue_bleu*(4*i + 5) , ymin + vue_bleu*3)
-        ajouter_point(circuit, xmax - vue_bleu*(4*i + 5) , ymax - vue_bleu)
+    Si zone_xmax == zone_xmin :
+        Retourner generer_circuit_principal(MAX_X,MAX_Y,VUE_BLEU)
 
-    ajouter_point(p4)
+    Si zone_xmax - zone_xmin <= 2*vx:
+            ajouter_point(circuit, zone_xmax/2 , zone_ymin + vy)
+            ajouter_point(circuit, zone_xmax/2 , zone_ymax - vy)
+            Retourner circuit
+            
+    Si zone_ymax - zone_ymin <= 2*vx:
+            ajouter_point(circuit, zone_xmin + vx , zone_ymax/2)
+            ajouter_point(circuit, zone_xmax - vx , zone_ymax/2)
+            Retourner circuit
+            
+    ajouter_point(circuit, zone_xmin + vx , zone_ymin + vy)
+    ajouter_point(circuit, zone_xmax - vx , zone_ymin + vy)
+    ajouter_point(circuit, zone_xmax - vx , zone_ymax - vy)
 
+    Si( (zone_ymax - zone_ymin) <= 4*vy ):
+        ajouter_point(circuit, zone_xmin + vx , zone_ymax - vy)
+        Retourner circuit
+
+    Pour i allant de 0 à ((zone_xmax - zone_xmin)//(4*vx))-1) :
+        ajouter_point(circuit, zone_xmax - vx*(4*i+3) , zone_ymax - vy)
+        ajouter_point(circuit, zone_xmax - vx*(4*i+3) , zone_ymin + vy*3)
+        ajouter_point(circuit, zone_xmax - vx*(4*i+5) , zone_ymin + vy*3)
+        ajouter_point(circuit, zone_xmax - vx*(4*i+5) , zone_ymax - vy)
+
+    imax = (zone_xmax - zone_xmin)//(4*vx))-1
+
+    Si (zone_xmax - zone_xmin)%(4*vx) != 0 et (zone_xmax - zone_xmin)%(4*vx) != (zone_xmax - zone_xmin) :
+        if(blue_zone_xmax%(4*vx) > 2*vx):
+            blue_circuit.add_point(blue_zone_xmax - vx*(4*imax+3) , blue_zone_ymax - vy)
+            blue_circuit.add_point(blue_zone_xmax - vx*(4*imax+3) , blue_zone_ymin + vy*3)
+            blue_circuit.add_point(blue_zone_xmax - vx*(4*imax+5) , blue_zone_ymin + vy*3)
+            blue_circuit.add_point(blue_zone_xmax - vx*(4*imax+5) , blue_zone_ymax - vy)
+        elif(blue_zone_xmax%(4*vx) > 0):
+            blue_circuit.add_point(blue_zone_xmax - vx*(4*imax+3) , blue_zone_ymax - vy)
+            blue_circuit.add_point(blue_zone_xmax - vx*(4*imax+3) , blue_zone_ymin + vy*3)
+            blue_circuit.add_point(blue_zone_xmax - vx*(4*imax+3) , blue_zone_ymax - vy)
+
+    blue_circuit.add_point(blue_zone_xmin + vx,blue_zone_ymax -vy)
     Retourner circuit
 Fin
+
+
+
 # Détermine le point d'intersection le plus proche dans le circuit c pour un point p
 Fonction inters_plus_proche(Circuit c, Point p) : Point
     Entier d ← TAILLE_MAX

@@ -91,6 +91,7 @@ Point Yellow_behavior(Dog *yellow, Point sheepfold_center, int sheepfold_rad, No
 	}
 	else{
 		if((*nodes_in_sight) != NULL){
+			yellow->sheeps = *nodes_in_sight;
 			while(pointer != NULL){
 				if(strncmp("bot",pointer->node.nickname,strlen("bot")) == 0){
 					distance_to_destination = distance(pointer->node.position,sheepfold_center);

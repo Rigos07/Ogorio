@@ -146,13 +146,31 @@ NodeList *get_nodelist_portion(NodeList **head, unsigned char id);
 */
 float distance(Point p1, Point p2);
 
+
+/*
+* Generate a path using a dog's color
+* color : color of the dog
+* max_width : width of map
+* max_height : height of map
+*/
+Path *generate_path(unsigned char *color, int max_width, int max_height, int x_sight, int y_sight);
+
 /*
 * Generate Blue & Yellow dogs path
 * head : head of the path
 * max_width : width of map
 * max_height : height of map
 */
-Path *generate_path(int max_width, int max_height);
+Path *generate_main_path(int max_width, int max_height);
+
+/*
+* Generate Green/Purple dogs path
+* head : head of the path
+* max_width : width of map
+* max_height : height of map
+*/
+Path *generate_secondary_path(int max_width, int max_height, int x_sight, int y_sight);
+
 
 Path *closest_intersection(Path **head, Point point, float max_dist);
 

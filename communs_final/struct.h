@@ -1,5 +1,4 @@
 #define BLUE_SIGHT 1000
-#define MAXLEN 26
 #define MARGIN 5
 #define max(a,b) (a>=b?a:b)
 #define min(a,b) (a<=b?a:b)

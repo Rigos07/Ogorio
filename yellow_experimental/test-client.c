@@ -56,7 +56,7 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 	//int target_found = 0;
 	//printf("CURRENT POSITION : %d , %d\n",yellow->node.position.x,yellow->node.position.y);
 	if(yellow->target != NULL){
-		printf("I HAVE A TARGET\n");
+		//printf("I HAVE A TARGET\n");
 		if((*nodes_in_sight) != NULL){
 			pointer = get_nodelist_portion(nodes_in_sight,yellow->target->id);
 			if(pointer != NULL){
@@ -80,7 +80,7 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 			}
 			else{ //HAVE A TARGET AND TARGET IS NOT IN SIGHT
 				objective = yellow->target->position;
-				printf("GOING TO DEFAULT POSITION BECAUSE I LOST MY TARGET I AM VERY SAD\n");
+				printf("GOING TO LAST TARGET POSITION BECAUSE I LOST MY TARGET OF SIGHT I AM VERY SAD\n");
 			}
 		}
 		else{ //HAVE A TARGET AND NOTHING IN SIGHT
@@ -97,28 +97,27 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 				yellow->sheeps = NULL;
 			}
 
-			printf("LETS COUNT SOME SHEEPS\n");
 			sheep_count(yellow, nodes_in_sight, sheepfold_center, sheepfold_radius);
-			printf("NOT STUCK HERE\n");
-			printlist(&yellow->sheeps);
 
 			if(yellow->sheeps != NULL){
 				yellow->target = malloc(sizeof(Node));
 				*(yellow->target) = closest_sheep(*yellow, 9999999);
-				printf("NOT STUCK HERE, FOUND CLOSEST SHEEP\n");
-				printnode(*(yellow->target));
 
 				pointer = *nodes_in_sight;
 				if(is_closest_to_sheep(yellow->target->position, yellow->node, pointer) == 0){
 					printf("OK I LET YOU THIS ONE\n");
 					free(yellow->target);
 					yellow->target = NULL;
+
 				}
-				printf("I SURVIVED THIS TOO\n");
 
 				if(yellow->target != NULL){
 					printf("MY NEW TARGET : \n");
 					printnode(*(yellow->target));
+					objective = bring_back_sheep(*(yellow->target), 100, sheepfold_center);
+				}
+				else{
+					objective = follow_path(&path, *yellow , 9999999);					
 				}
 			}
 			else{ //HAVE NO TARGET AND NO POSSIBLE TARGET FOUND

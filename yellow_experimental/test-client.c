@@ -114,12 +114,10 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 					printf("OK I LET YOU THIS ONE\n");
 					free(yellow->target);
 					yellow->target = NULL;
-
 				}
 
 				if(yellow->target != NULL){
-					printf("MY NEW TARGET : \n");
-					printnode(*(yellow->target));
+					printf("NEW TARGET\n");
 					objective = bring_back_sheep(*(yellow->target), 100, sheepfold_center);
 				}
 				else{

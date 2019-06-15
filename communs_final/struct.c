@@ -101,7 +101,7 @@ int get_nodelist_size(NodeList **head) {
 
 NodeList *get_nodelist_portion(NodeList **head, int id) {
     if (*head == NULL) {
-        fprintf(stderr, "ERROR : Trying to get node in empty nodelist\n");
+        //fprintf(stderr, "ERROR : Trying to get node in empty nodelist\n");
         return NULL;
     }
 

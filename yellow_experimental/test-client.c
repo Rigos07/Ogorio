@@ -61,21 +61,29 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 			pointer = get_nodelist_portion(nodes_in_sight,yellow->target->id);
 			if(pointer != NULL){
 				yellow->target = &(pointer->node);
-				distance_to_destination = distance(yellow->target->position,sheepfold_center);
-				if(distance_to_destination >= sheepfold_radius ){ //HAVE A TARGET AND TARGET IS IN SIGHT AND OUTSIDE SHEEPFOLD
-					//printf("\nMEINE TARGET\n");
-					//printnode(pointer->node);
-					objective = bring_back_sheep(*(yellow->target), 100, sheepfold_center);
-					/*printf("GOING TO : %d , %d\n", objective.x, objective.y );
-					printf("DIST = %f\n", distance_to_destination);
-					printf("SHEEPFOLD IS IN %d , %d !!!!\n",sheepfold_center.x,sheepfold_center.y );
-					printf("KEINE GNADE, MEINE KINDER !\n" );*/
-				}
-				else{ //HAVE A TARGET AND TARGET IS IN SIGHT AND INSIDE SHEEPFOLD
-					printf("TARGET BRINGED BACK TO SHEEPFOLD\nMISSION COMPLETE\n");
-					objective = follow_path(&path, *yellow , 9999999);
+				if(is_closest_to_sheep(yellow->target->position, yellow->node, pointer) == 0){
+					printf("OK I LET YOU THIS ONE\n");
 					free(yellow->target);
 					yellow->target = NULL;
+					objective = follow_path(&path, *yellow , 9999999);	
+				}
+				else{
+					distance_to_destination = distance(yellow->target->position,sheepfold_center);
+					if(distance_to_destination >= sheepfold_radius - MARGIN){ //HAVE A TARGET AND TARGET IS IN SIGHT AND OUTSIDE SHEEPFOLD
+						//printf("\nMEINE TARGET\n");
+						//printnode(pointer->node);
+						objective = bring_back_sheep(*(yellow->target), 100, sheepfold_center);
+						/*printf("GOING TO : %d , %d\n", objective.x, objective.y );
+						printf("DIST = %f\n", distance_to_destination);
+						printf("SHEEPFOLD IS IN %d , %d !!!!\n",sheepfold_center.x,sheepfold_center.y );
+						printf("KEINE GNADE, MEINE KINDER !\n" );*/
+					}
+					else{ //HAVE A TARGET AND TARGET IS IN SIGHT AND INSIDE SHEEPFOLD
+						printf("TARGET BRINGED BACK TO SHEEPFOLD\nMISSION COMPLETE\n");
+						objective = follow_path(&path, *yellow , 9999999);
+						free(yellow->target);
+						yellow->target = NULL;
+					}
 				}
 			}
 			else{ //HAVE A TARGET AND TARGET IS NOT IN SIGHT
@@ -84,11 +92,9 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 			}
 		}
 		else{ //HAVE A TARGET AND NOTHING IN SIGHT
-			objective.x = 4500;
-			objective.y = 3000;
+			objective = follow_path(&path, *yellow , 9999999);
 			printf("NODE LIST IS EMPTY THIS SHOULD NOT HAPPEN\n");
 		}
-
 	}
 	else{
 		if((*nodes_in_sight) != NULL){

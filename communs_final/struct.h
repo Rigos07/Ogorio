@@ -204,6 +204,8 @@ void sheep_count(Dog* dog, NodeList** head);
 // Dog.sheeps doit être non vide
 Node closest_sheep(Dog dog, float max_dist);
 
+int is_closest_to_sheep(Node self, NodeList *others);
+
 void printnode(Node node);
 void printpoint(Point point);
 

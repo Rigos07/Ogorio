@@ -515,8 +515,6 @@ int is_closest_to_sheep(Node self, NodeList *others) {
             dist_other = distance(other_node.position, target);
 
             if (dist_self >= dist_other) {
-                free(self->target);
-                selt->target = NULL;
                 closest = 0;
             }
 

@@ -97,11 +97,14 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 				yellow->sheeps = NULL;
 			}
 
+			printf("LETS COUNT SOME SHEEPS\n");
 			sheep_count(yellow, nodes_in_sight, sheepfold_center, sheepfold_radius);
+			printf("NOT STUCK HERE\n");
 
 			if(yellow->sheeps != NULL){
 				yellow->target = malloc(sizeof(Node));
 				*(yellow->target) = closest_sheep(*yellow, 9999999);
+				printf("NOT STUCK HERE, FOUND CLOSEST SHEEP\n");
 
 				pointer = *nodes_in_sight;
 				if(is_closest_to_sheep(yellow->target->position, yellow->node, pointer) == 0){

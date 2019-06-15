@@ -53,6 +53,7 @@ Point Yellow_behavior(Dog *yellow, Point sheepfold_center, int sheepfold_rad, No
 	Point objective;
 	NodeList *pointer = *nodes_in_sight;
 	float distance_to_destination, distance_other_to_sheep, distance_self_to_sheep;
+	int abort;
 	//int target_found = 0;
 	//printf("CURRENT POSITION : %d , %d\n",yellow->node.position.x,yellow->node.position.y);
 	if(yellow->target != NULL){
@@ -109,16 +110,18 @@ Point Yellow_behavior(Dog *yellow, Point sheepfold_center, int sheepfold_rad, No
 			if(yellow->sheeps != NULL){
 				yellow->target = malloc(sizeof(Node));
 				*(yellow->target) = closest_sheep(*yellow, 9999999);
+				distance_self_to_sheep = distance(yellow->node.position,yellow->target->position);
 				pointer = *nodes_in_sight;
-				while(pointer != NULL){
+				abort = 0;
+				while(pointer != NULL && !abort){
 					if( (!strncmp("yellow",pointer->node.nickname,strlen("yellow")) || !strncmp("green",pointer->node.nickname,strlen("green")) ) && pointer->node.id != yellow->node.id ){
 						printf("HELLO, COWORKER\n");
 						distance_other_to_sheep = distance(pointer->node.position,yellow->target->position);
-						distance_self_to_sheep = distance(yellow->node.position,yellow->target->position);
 						if(distance_self_to_sheep >= distance_other_to_sheep ){
 							printf("OK I LET YOU THIS ONE\n");
 							free(yellow->target);
 							yellow->target = NULL;
+							abort = 1;
 						}
 					}
 					pointer=pointer->next;
@@ -131,21 +134,7 @@ Point Yellow_behavior(Dog *yellow, Point sheepfold_center, int sheepfold_rad, No
 			}
 			else{ //HAVE NO TARGET AND NO POSSIBLE TARGET FOUND
 				objective = follow_path(&path, *yellow , 9999999);
-				//printf("I SEE NO TARGET THAT IS WORTH\n");
 			}
-
-			/*
-			if(pointer != NULL){ //HAVE NO TARGET AND SHEEP IS IN SIGHT AND OUTSIDE SHEEPFOLD
-				yellow->target = &(pointer->node);
-				printf("\nNEW TARGET\n");
-				printnode(pointer->node);
-				objective = bring_back_sheep(*(yellow->target), 100, sheepfold_center);
-				printf("SHEEPFOLD IS IN %d , %d !!!!\n",sheepfold_center.x,sheepfold_center.y );
-			}
-			else{ //HAVE NO TARGET AND NO POSSIBLE TARGET FOUND
-				objective = follow_path(&path, *yellow , 9999999);
-				printf("GOING TO DEFAULT POSITION\n");
-			}*/
 		}
 		else{ //HAVE NO TARGET AND NOTHING IN SIGHT
 			objective = follow_path(&path, *yellow , 9999999);

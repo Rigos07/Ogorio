@@ -58,7 +58,7 @@ int add_point(Path **head, Point new_point) {
 
     if (*head == NULL) {
         *head = new;
-
+    
     } else {
         for (i = 0; i < i_max; i++) {
             element = element->next;
@@ -262,8 +262,8 @@ Path* generate_main_path(int max_width, int max_height) {
 }
 
 Path *generate_secondary_path(int max_width, int max_height, int x_sight, int y_sight) {
-    int zone_min_x = 0, zone_max_x = max_width % (4 * BLUE_SIGHT),
-        zone_min_y = 0, zone_max_y = max_height,
+    int zone_min_x = 0, zone_max_x = 0,
+        zone_min_y = max_width % (4 * BLUE_SIGHT), zone_max_y = max_height,
         i, i_max;
     Path *head = create_path();
     Point last_point = create_point(zone_min_x + x_sight, zone_max_y - y_sight);
@@ -307,7 +307,7 @@ Path *generate_secondary_path(int max_width, int max_height, int x_sight, int y_
             add_point(&head, create_point(zone_max_x - x_sight * (4 * i_max + 3), zone_min_y + y_sight * 3));
             add_point(&head, create_point(zone_max_x - x_sight * (4 * i_max + 5), zone_min_y + y_sight * 3));
             add_point(&head, create_point(zone_max_x - x_sight * (4 * i_max + 5), zone_max_y - y_sight));
-
+        
         } else if ((zone_max_x - zone_min_x) % (4 * x_sight) > 0) {
             add_point(&head, create_point(zone_max_x - x_sight * (4 * i_max + 3), zone_max_y - y_sight));
             add_point(&head, create_point(zone_max_x - x_sight * (4 * i_max + 3), zone_min_y + y_sight * 3));
@@ -442,7 +442,7 @@ Path *closest_point(Path **head, Dog dog, float max_dist) {
 Point follow_path(Path **head, Dog dog, float max_dist) {
     Point position = dog.node.position;
     Path *prev_inters = is_near_path(head, position), *dest = prev_inters;
-
+    
     if (prev_inters == NULL) {
         dest = closest_point(head, dog, max_dist);
 
@@ -502,6 +502,28 @@ Node closest_sheep(Dog dog, float max_dist) {
     return result;
 }
 
+int is_closest_to_sheep(Point target, Node self, NodeList *others) {
+    Node other;
+    int dist_self = distance(self.position, target),
+        dist_other, closest = 1;
+
+    while (others != NULL && closest == 1) {
+        other = others->node;
+
+        if ((!strcmp("yellow", other.nickname) || !strcmp("green", other.nickname)) && self.id != other.id) {
+            dist_other = distance(other.position, target);
+
+            if (dist_self >= dist_other) {
+                closest = 0;
+            }
+
+            others = others->next;
+        }
+    }
+
+    return closest;
+}
+
 int get_octal_size(int x) {
     int size = 1;
 
@@ -511,9 +533,10 @@ int get_octal_size(int x) {
 
     return size;
 }
-/*
-Point (int a) {
+
+Point get_coordinate(Dog dog, int a) {
     int x = 0, y = 0;
+    Point position = dog.node.position;
 
     switch (x) {
         case 0:
@@ -555,9 +578,9 @@ Point (int a) {
             y = 0;
     }
 
-    return create_point(x, y);
+    return create_point(position.x + x, position.y + y);
 }
-*/
+
 
 void printpoint(Point point){
     printf("x : %d\n", point.x);
@@ -607,28 +630,44 @@ void printlist(NodeList **head){
 
 /*Point send_message(Dog *dog) {
     Message msg = dog->message;
-    int size_i = msg.size_i, msg,_i = msg.size_i;
+    int size_i = msg.size_i, msg,_i = msg.msg_i,
+        id_size = get_octal_size(msg.id),
+        x_size = get_octal_size(msg.position.x),
+        y_size = get_octal_size(msg.position.y);
+
+    Point result;
 
     if (size_i < 3) {
         switch (size_i) {
             case 0:
-                send_coordinate(get_octal_size(msg.id));
+                result = get_coordinate(dog, get_octal_size(id_size));
                 break;
 
             case 1:
-                send_coordinate(get_octal_size(msg.position.x));
+                result = get_coordinate(dog, get_octal_size(x_size));
                 break;
 
             case 2:
-                send_coordinate(get_octal_size(msg.position.y));
+                result = get_coordinate(dog, get_octal_size(y_size));
         }
 
         dog->message.size_i++;
 
     } else {
-        switch (msg_i)
+        if (msg_i < id_size) {
+            result = get_coordinate(octal_digit(msg_i));
+
+        } else if (msg_i < id_size + x_size) {
+            result = get_coordinate(octal_digit(msg_i - id_size));
+
+        } else {
+            result = get_coordinate(octal_digit(msg_i - (id_size + x_size)));
+        }
+
+        dog->message.msg_i++;
     }
 
+    return result;
 }*/
 
 /*void read_message(Dog *dog) {

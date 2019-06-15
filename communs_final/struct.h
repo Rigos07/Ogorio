@@ -206,6 +206,12 @@ Node closest_sheep(Dog dog, float max_dist);
 
 int is_closest_to_sheep(Point target, Node self, NodeList *others);
 
+int get_octal_size(int x);
+
+int get_octal_digit(int x, int index);
+
+Point get_coordinate(Dog dog, int a);
+
 void printnode(Node node);
 void printpoint(Point point);
 

@@ -262,8 +262,8 @@ Path* generate_main_path(int max_width, int max_height) {
 }
 
 Path *generate_secondary_path(int max_width, int max_height, int x_sight, int y_sight) {
-    int zone_min_x = 0, zone_max_x = 0,
-        zone_min_y = max_width % (4 * BLUE_SIGHT), zone_max_y = max_height,
+    int zone_min_x = 0, zone_max_x = max_width % (4 * BLUE_SIGHT),
+        zone_min_y = 0, zone_max_y = max_height,
         i, i_max;
     Path *head = create_path();
     Point last_point = create_point(zone_min_x + x_sight, zone_max_y - y_sight);
@@ -510,7 +510,7 @@ int is_closest_to_sheep(Point target, Node self, NodeList *others) {
     while (others != NULL && closest == 1) {
         other = others->node;
 
-        if ((!strcmp("yellow", other.nickname) || !strcmp("green", other.nickname)) && self.id != other.id) {
+        if ((!strcmp("yellow", other.nickname) || !strcmp("green", other.nickname)) && self.id == other.id) {
             dist_other = distance(other.position, target);
 
             if (dist_self >= dist_other) {
@@ -532,6 +532,17 @@ int get_octal_size(int x) {
     };
 
     return size;
+}
+
+int get_octal_digit(int x, int index) {
+    int i_max = get_octal_size(x) - 1, i, pow_i;
+
+    for (i = i_max; i > index; i--) {
+        pow_i = pow(8, i);
+        x %= pow_i;
+    }
+
+    return x / pow(8, index);
 }
 
 Point get_coordinate(Dog dog, int a) {
@@ -655,13 +666,13 @@ void printlist(NodeList **head){
 
     } else {
         if (msg_i < id_size) {
-            result = get_coordinate(octal_digit(msg_i));
+            result = get_coordinate(dog, octal_digit(id_size, msg_i));
 
         } else if (msg_i < id_size + x_size) {
-            result = get_coordinate(octal_digit(msg_i - id_size));
+            result = get_coordinate(dog, octal_digit(x_size, msg_i - id_size));
 
         } else {
-            result = get_coordinate(octal_digit(msg_i - (id_size + x_size)));
+            result = get_coordinate(dog, octal_digit(y_size, msg_i - (id_size + x_size)));
         }
 
         dog->message.msg_i++;

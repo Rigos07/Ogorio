@@ -502,17 +502,16 @@ Node closest_sheep(Dog dog, float max_dist) {
     return result;
 }
 
-int is_closest_to_sheep(Node self, NodeList *others) {
-    Node other_node, self_node = self->node;
-    Point target = self->target->position;
-    int dist_self = distance(self_node.position, target);
+int is_closest_to_sheep(Point target, Node self, NodeList *others) {
+    Node other;
+    int dist_self = distance(self.position, target);
         dist_other, closest = 1;
 
     while (others != NULL && closest == 1) {
-        other_node = others->node;
+        other = others->node;
 
-        if ((!strcmp("yellow", other_node.nickname) || !strcmp("green"), other_node.nickname) && self_node.id == other_node.id) {
-            dist_other = distance(other_node.position, target);
+        if ((!strcmp("yellow", other.nickname) || !strcmp("green"), other.nickname) && self.id != other.id) {
+            dist_other = distance(other.position, target);
 
             if (dist_self >= dist_other) {
                 closest = 0;

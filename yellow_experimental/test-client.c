@@ -114,6 +114,7 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 					free(yellow->target);
 					yellow->target = NULL;
 				}
+				printf("I SURVIVED THIS TOO\n");
 
 				if(yellow->target != NULL){
 					printf("MY NEW TARGET : \n");

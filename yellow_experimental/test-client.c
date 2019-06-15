@@ -100,6 +100,7 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 			printf("LETS COUNT SOME SHEEPS\n");
 			sheep_count(yellow, nodes_in_sight, sheepfold_center, sheepfold_radius);
 			printf("NOT STUCK HERE\n");
+			printlist(&yellow->sheeps);
 
 			if(yellow->sheeps != NULL){
 				yellow->target = malloc(sizeof(Node));

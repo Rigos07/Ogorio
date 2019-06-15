@@ -56,7 +56,7 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 	//int target_found = 0;
 	//printf("CURRENT POSITION : %d , %d\n",yellow->node.position.x,yellow->node.position.y);
 	if(yellow->target != NULL){
-		//printf("I HAVE A TARGET\n");
+		printf("I HAVE A TARGET\n");
 		if((*nodes_in_sight) != NULL){
 			pointer = get_nodelist_portion(nodes_in_sight,yellow->target->id);
 			if(pointer != NULL){

@@ -508,7 +508,7 @@ int is_closest_to_sheep(Node self, NodeList *others) {
     int dist_self = distance(self_node.position, target);
         dist_other, closest = 1;
 
-    while (others == NULL && closest == 1) {
+    while (others != NULL && closest == 1) {
         other_node = others->node;
 
         if ((!strcmp("yellow", other_node.nickname) || !strcmp("green"), other_node.nickname) && self_node.id == other_node.id) {

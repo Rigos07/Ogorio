@@ -284,7 +284,6 @@ int receive_packet(struct lws *wsi, unsigned char * buf){
 	NodeList *nodeInVision, *dog_node;
 	Point p;
 	double xMin,yMin,xMax,yMax;
-	int radius = 900;
 
 	srand(time(NULL));
 

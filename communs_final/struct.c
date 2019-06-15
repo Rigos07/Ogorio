@@ -517,9 +517,8 @@ int is_closest_to_sheep(Point target, Node self, NodeList *others) {
             if (dist_self >= dist_other) {
                 closest = 0;
             }
-
-            others = others->next;
         }
+        others = others->next;
     }
 
     return closest;

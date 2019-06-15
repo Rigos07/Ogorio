@@ -49,7 +49,7 @@ Point bring_back_sheep(Node target,int radius, Point destination){
 	return objective;
 }
 
-Point Yellow_behavior(Dog *yellow, Point sheepfold_center, int sheepfold_rad, NodeList **nodes_in_sight){
+Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 	Point objective;
 	NodeList *pointer = *nodes_in_sight;
 	float distance_to_destination, distance_other_to_sheep, distance_self_to_sheep;
@@ -63,7 +63,7 @@ Point Yellow_behavior(Dog *yellow, Point sheepfold_center, int sheepfold_rad, No
 			if(pointer != NULL){
 				yellow->target = &(pointer->node);
 				distance_to_destination = distance(yellow->target->position,sheepfold_center);
-				if(distance_to_destination >= sheepfold_rad ){ //HAVE A TARGET AND TARGET IS IN SIGHT AND OUTSIDE SHEEPFOLD
+				if(distance_to_destination >= sheepfold_radius ){ //HAVE A TARGET AND TARGET IS IN SIGHT AND OUTSIDE SHEEPFOLD
 					//printf("\nMEINE TARGET\n");
 					//printnode(pointer->node);
 					objective = bring_back_sheep(*(yellow->target), 100, sheepfold_center);
@@ -101,7 +101,7 @@ Point Yellow_behavior(Dog *yellow, Point sheepfold_center, int sheepfold_rad, No
 			while(pointer != NULL){
 				if(strncmp("bot",pointer->node.nickname,strlen("bot")) == 0){
 					distance_to_destination = distance(pointer->node.position,sheepfold_center);
-					if(distance_to_destination >= sheepfold_rad ){
+					if(distance_to_destination >= sheepfold_radius ){
 						add_node(&(yellow->sheeps),pointer->node);
 					}
 				}
@@ -328,9 +328,10 @@ int receive_packet(struct lws *wsi, unsigned char * buf){
 					path = generate_main_path(xMax, yMax);
 					sheepfold_center.x = xMin;
 					sheepfold_center.y = yMax/2;
+					sheepfold_radius = xMax/10;
 				}
 			}else{
-				p = Yellow_behavior(&yellow_dog, sheepfold_center, radius, &nodeInVision);
+				p = Yellow_behavior(&yellow_dog, &nodeInVision);
 
 				sendToPoint(wsi,p);
 			}

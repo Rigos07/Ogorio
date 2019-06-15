@@ -7,4 +7,6 @@
 Node green_node; 
 Dog green_dog;
 Path * path;
+
+
 Point sheepfold_center;

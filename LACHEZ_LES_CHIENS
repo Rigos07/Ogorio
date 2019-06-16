@@ -1,0 +1,6 @@
+gnome-terminal -e "./yellow_experimental/sock -o agar.io -p 2002 192.168.130.150"
+gnome-terminal -e "./yellow_experimental/sock -o agar.io -p 2002 192.168.130.150"
+gnome-terminal -e "./yellow_experimental/sock -o agar.io -p 2002 192.168.130.150"
+gnome-terminal -e "./yellow_experimental/sock -o agar.io -p 2002 192.168.130.150"
+gnome-terminal -e "./blue_experimental/sock -o agar.io -p 2002 192.168.130.150"
+gnome-terminal -e "./purple\ green\ experimental/sock -o agar.io -p 2002 192.168.130.150"

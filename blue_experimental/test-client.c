@@ -17,8 +17,44 @@
 Point Blue_behavior(Dog *blue, NodeList **nodes_in_sight){
 	Point objective = {0,0};
 	Point yellow_pos = create_point(0,0);
+	Node sheep;
 	NodeList *pointer = *nodes_in_sight;
-	//  ===================  MET TON CODE ICI YANNU =======================
+	sheep_count(blue, nodes_in_sight, sheepfold_center, sheepfold_radius);
+	if(is_near_path(&path, blue->node.position) && (blue->sheeps != NULL) ){
+		pointer = nl_portion_by_nick(nodes_in_sight, "yellow");
+		if(pointer != NULL){
+			if(blue->message.started){
+				if(!blue->message.done){
+
+					sheep = closest_sheep(*blue, 9999999);
+					blue->message = create_message(sheep.id , sheep.position);
+					
+					printf("JE TRANSMETS  : \n");
+					printnode(sheep);
+					objective = encode_msg(&(blue->message), yellow_pos);
+				}
+				else{
+					printf("AYE FINI\n");
+					blue->message.started = 0;
+					objective = follow_path(&path, *blue, 9999999);
+				}
+			}
+			else{
+				if(is_near_point(blue->node.position, yellow_pos, 0)){
+					blue->message.started = 1;
+				}
+				objective = blue->node.position;
+			}
+		}
+		else{
+			objective = follow_path(&path, *blue, 9999999);
+		}
+	}
+	else{
+		objective = follow_path(&path, *blue, 9999999);
+	}
+
+
 	if( is_near_point(blue->node.position, create_point(4500,3000), 40) ){
 		if((*nodes_in_sight) != NULL){
 			while(pointer != NULL){
@@ -227,7 +263,7 @@ int receive_packet(struct lws *wsi, unsigned char * buf){
 			myId = getMyId(buf);
 			blue_node = create_node(myId, create_point(0, 0), "blue");
 			blue_dog = create_dog(blue_node, BLUE_SIGHTX, BLUE_SIGHTY);
-			blue_dog.message = create_message(8, create_point(500,722));
+			blue_dog.message = create_message(0, create_point(0,0));
 			break;
 
 		case 64:

@@ -1,6 +1,7 @@
 
 #define YELLOW_SIGHTX 400
 #define YELLOW_SIGHTY 400
+#define YELLOW_RADIUS 100
 #include "../communs_final/struct.h"
 
 // ================== PACKETS ==================

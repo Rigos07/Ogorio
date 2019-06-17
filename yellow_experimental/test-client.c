@@ -19,63 +19,37 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 	NodeList *pointer = *nodes_in_sight;
 	Point blue_pos = create_point(0,0);
 	float distance_to_destination;
-	if(is_near_point(yellow->node.position, create_point(4500,3000), MARGIN)){
-		if((*nodes_in_sight) != NULL){
-			pointer = nl_portion_by_nick(nodes_in_sight, "blue");
-			if(pointer != NULL){
-				blue_pos = pointer->node.position;
-			}
-			if(yellow->message.started){
-				decode_msg(yellow,blue_pos);
-				printf("blue pos : %d %d\n", blue_pos.x, blue_pos.y);
-				printf("OK ALORS : size i : %d id i : %d x i : %d y i : %d\n", yellow->message.size_i,yellow->message.id_i,yellow->message.x_i,yellow->message.y_i);
-				if(yellow->message.done){
-					printf("J'AI COMPRIS : BREBIS N° %d  EN : %d , %d\n",yellow->message.id, yellow->message.position.x, yellow->message.position.y);
-				}
-			}
-			else{
-				if(yellow->node.position.x == blue_pos.x && yellow->node.position.y == blue_pos.y ){
-					yellow->message.started = 1;
-				}
-				objective = create_point(4500,3000);
-			}
-			
-		}
-		else{
-			printf("EMPTY SIGHT\n");
-		}
-		objective = create_point(4500,3000);
-	}
-	else{
-		objective = create_point(4500,3000);
-	}
-	//int target_found = 0;
-	//printf("CURRENT POSITION : %d , %d\n",yellow->node.position.x,yellow->node.position.y);
-	/*if(yellow->target != NULL){
-		//printf("I HAVE A TARGET\n");
-		if((*nodes_in_sight) != NULL){
+
+	printf("================= START ===============\n");
+	if((*nodes_in_sight) != NULL){
+		printf("CURRENT POSITION : %d , %d\n",yellow->node.position.x,yellow->node.position.y);
+		if(yellow->target != NULL){
+			//TARGET UPDATING
 			pointer = get_nodelist_portion(nodes_in_sight,yellow->target->id);
 			if(pointer != NULL){
 				yellow->target = &(pointer->node);
 				if(is_closest_to_sheep(yellow->target->position, yellow->node, pointer) == 0){
-					printf("OK I LET YOU THIS ONE\n");
+					//ABORTING
+					printf("\nMEINE TARGET\n");
+					printnode(*(yellow->target));
+					printf("ABORTING : OTHER KOLLEGE IS CLOSEST TO SHEEP\n");
 					free(yellow->target);
 					yellow->target = NULL;
 					objective = follow_path(&path, *yellow , 9999999);	
 				}
 				else{
+					//SHEEP CHASING
 					distance_to_destination = distance(yellow->target->position,sheepfold_center);
 					if(distance_to_destination >= sheepfold_radius - MARGIN){ //HAVE A TARGET AND TARGET IS IN SIGHT AND OUTSIDE SHEEPFOLD
-						//printf("\nMEINE TARGET\n");
-						//printnode(pointer->node);
-						objective = bring_back_sheep(*(yellow->target), 100, sheepfold_center);*/
-						/*printf("GOING TO : %d , %d\n", objective.x, objective.y );
-						printf("DIST = %f\n", distance_to_destination);
-						printf("SHEEPFOLD IS IN %d , %d !!!!\n",sheepfold_center.x,sheepfold_center.y );
-						printf("KEINE GNADE, MEINE KINDER !\n" );*/
-					/*}
+						objective = bring_back_sheep(*(yellow->target), YELLOW_RADIUS, sheepfold_center);
+						printf("\nI'M BRINGING MY TARGET BACK HOME : \n");
+						printf("I'M TARGETING %s, LOCATED AT %d , %d\n", yellow->target->nickname, yellow->target->position.x, yellow->target->position.y);
+						printf("GOING TO : %d , %d\n", objective.x, objective.y );
+						printf("DISTANCE TO SHEEPFOLD : %f\n", distance_to_destination);
+						printf("KEINE GNADE, MEINE KINDER !\n" );
+					}
 					else{ //HAVE A TARGET AND TARGET IS IN SIGHT AND INSIDE SHEEPFOLD
-						printf("TARGET BRINGED BACK TO SHEEPFOLD\nMISSION COMPLETE\n");
+						printf("TARGET BRINGED BACK TO SHEEPFOLD, AUF WIDERSEHEN MEINE SCHAF\n* MISSION COMPLETE *\n");
 						objective = follow_path(&path, *yellow , 9999999);
 						free(yellow->target);
 						yellow->target = NULL;
@@ -84,16 +58,14 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 			}
 			else{ //HAVE A TARGET AND TARGET IS NOT IN SIGHT
 				objective = yellow->target->position;
-				printf("GOING TO LAST TARGET POSITION BECAUSE I LOST MY TARGET OF SIGHT I AM VERY SAD\n");
+				printf("\nGOING TO A TARGET OUT OF SIGHT : \n");
+				printf("I'M TARGETING %s, LOCATED AT %d , %d\n", yellow->target->nickname, yellow->target->position.x, yellow->target->position.y);
+				printf("GOING TO : %d , %d\n", objective.x, objective.y );
+				printf("FINDE ES MEINE BRÜDER !\n" );
 			}
 		}
-		else{ //HAVE A TARGET AND NOTHING IN SIGHT
-			objective = follow_path(&path, *yellow , 9999999);
-			printf("NODE LIST IS EMPTY THIS SHOULD NOT HAPPEN\n");
-		}
-	}
-	else{
-		if((*nodes_in_sight) != NULL){
+		else{
+			//TARGET FINDING
 			if(yellow->sheeps != NULL){
 				empty_nodelist(&yellow->sheeps);
 				yellow->sheeps = NULL;
@@ -107,29 +79,52 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 
 				pointer = *nodes_in_sight;
 				if(is_closest_to_sheep(yellow->target->position, yellow->node, pointer) == 0){
-					printf("OK I LET YOU THIS ONE\n");
 					free(yellow->target);
 					yellow->target = NULL;
 				}
 
 				if(yellow->target != NULL){
-					printf("NEW TARGET\n");
-					objective = bring_back_sheep(*(yellow->target), 100, sheepfold_center);
+					printf("MEINE NEUES ZIEL : \n");
+					objective = bring_back_sheep(*(yellow->target), YELLOW_RADIUS, sheepfold_center);
 				}
 				else{
+					printf("FOLLOWING DEFAULT PATH, NO TARGET FOUND\n");
 					objective = follow_path(&path, *yellow , 9999999);					
 				}
 			}
 			else{ //HAVE NO TARGET AND NO POSSIBLE TARGET FOUND
-				objective = follow_path(&path, *yellow , 9999999);
+				pointer = nl_portion_by_nick(nodes_in_sight, "blue");
+				if(pointer != NULL){
+					if(pointer != NULL){
+						blue_pos = pointer->node.position;
+					}
+					if(yellow->message.started){
+						decode_msg(yellow,blue_pos);
+						if(yellow->message.done){
+							printf("J'AI COMPRIS : BREBIS N° %d  EN : %d , %d\n",yellow->message.id, yellow->message.position.x, yellow->message.position.y);
+							yellow->target = malloc(sizeof(Node));
+							*(yellow->target) = create_node(yellow->message.id, yellow->message.position, "UN TRUC");
+						}
+					}
+					else{
+						if(is_near_point(yellow->node.position, blue_pos, 0)){
+							yellow->message.started = 1;
+						}
+						objective = blue_pos;
+					}
+				}
+				else{
+					printf("FOLLOWING DEFAULT PATH\n");
+					objective = follow_path(&path, *yellow , 9999999);
+				}
 			}
 		}
-		else{ //HAVE NO TARGET AND NOTHING IN SIGHT
-			objective = follow_path(&path, *yellow , 9999999);
-			printf("EMPTY SIGHT, SHOULD NOT HAPPEN THO\n");
-		}
-
-	}*/
+	}
+	else{ //NOTHING IN SIGHT
+		objective = follow_path(&path, *yellow , 9999999);
+		printf("NODE LIST IS EMPTY THIS SHOULD NOT HAPPEN\n");
+	}
+	printf("================ END ================\n");
 	return objective;
 }
 

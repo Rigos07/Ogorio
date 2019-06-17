@@ -684,7 +684,8 @@ void decode_msg(Dog *dog, Point info) {
     int size_i = msg.size_i,
         id_i = msg.id_i, x_i = msg.x_i, y_i = msg.y_i,
         result = decode_coordinate(point);
-    
+    printf("PK SA MARCH PO RESULT = %d X = %d Y = %d\n", result, point.x, point.y);
+
     if (size_i < 3) {
         switch (size_i) {
             case 0:

@@ -573,42 +573,42 @@ Point encode_coordinate(int a) {
 
     switch (a) {
         case 0:
-            x = -100;
-            y = -100;
+            x = -40;
+            y = -40;
             break;
 
         case 1:
             x = 0;
-            y = -100;
+            y = -40;
             break;
 
         case 2:
-            x = 100;
-            y = -100;
+            x = 40;
+            y = -40;
             break;
 
         case 3:
-            x = 100;
+            x = 40;
             y = 0;
             break;
 
         case 4:
-            x = 100;
-            y = 100;
+            x = 40;
+            y = 40;
             break;
 
         case 5:
             x = 0;
-            y = 100;
+            y = 40;
             break;
 
         case 6:
-            x = -100;
-            y = 100;
+            x = -40;
+            y = 40;
             break;
 
         case 7:
-            x = -100;
+            x = -40;
             y = 0;
     }
 
@@ -617,6 +617,7 @@ Point encode_coordinate(int a) {
 
 int decode_coordinate(Point p) {
     int a;
+
     if (is_near_point(p, create_point(-40, -40), MARGIN)) a = 0;
     else if (is_near_point(p, create_point(0, -40), MARGIN)) a = 1;
     else if (is_near_point(p, create_point(40, -40), MARGIN)) a = 2;
@@ -625,6 +626,7 @@ int decode_coordinate(Point p) {
     else if (is_near_point(p, create_point(0, 40), MARGIN)) a = 5;
     else if (is_near_point(p, create_point(-40, 40), MARGIN)) a = 6;
     else if (is_near_point(p, create_point(-40, 0), MARGIN)) a = 7;
+
     return a;
 }
 
@@ -678,7 +680,6 @@ int decode_msg(Dog *dog, Point info) {
     Message msg = dog->message;
     Point position = dog->node.position,
           point = create_point(info.x - position.x, info.y - position.y);
-
     int size_i = msg.size_i,
         id_i = msg.id_i, x_i = msg.x_i, y_i = msg.y_i,
         result = decode_coordinate(point);
@@ -686,7 +687,6 @@ int decode_msg(Dog *dog, Point info) {
     if (is_near_point(point, ORIGIN, MARGIN)) return 0;
 
     if (size_i < 3) {
-        //printf("RESULT : %d\n", result);
         switch (size_i) {
             case 0:
                 dog->message.id_i = result;

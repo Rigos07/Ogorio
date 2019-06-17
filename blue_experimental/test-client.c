@@ -20,7 +20,6 @@ Point Blue_behavior(Dog *blue, NodeList **nodes_in_sight){
 	//  ===================  MET TON CODE ICI YANNU =======================
 	if( is_near_point(blue->node.position, create_point(4500,3000), 40) ){
 		if(!blue->message.done){
-			blue->message = create_message(8, create_point(500,722));
 			objective = encode_msg(blue);
 			printf("LE POINT : \n");
 			printpoint(objective);
@@ -205,6 +204,7 @@ int receive_packet(struct lws *wsi, unsigned char * buf){
 			myId = getMyId(buf);
 			blue_node = create_node(myId, create_point(0, 0), "blue");
 			blue_dog = create_dog(blue_node, BLUE_SIGHTX, BLUE_SIGHTY);
+			blue->message = create_message(8, create_point(500,722));
 			break;
 
 		case 64:

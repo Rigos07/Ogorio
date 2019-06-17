@@ -31,8 +31,8 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 				printf("OK ALORS : size i : %d id i : %d x i : %d y i : %d\n", yellow->message.size_i,yellow->message.id_i,yellow->message.x_i,yellow->message.y_i);
 				if(yellow->message.done){
 					printf("J'AI COMPRIS : BREBIS N° %d  EN : %d , %d\n",yellow->message.id, yellow->message.position.x, yellow->message.position.y);
-					blue->message.started = 0;
-					blue->message.done = 0;
+					yellow->message.started = 0;
+					yellow->message.done = 0;
 					objective = yellow->message.position;
 				}
 				else{

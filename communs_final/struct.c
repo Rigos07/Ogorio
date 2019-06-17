@@ -804,20 +804,3 @@ void printlist(NodeList **head){
     }
     printf("End\n\n");
 }
-
-int main() {
-
-    Dog dog = create_dog(create_node(9, create_point(4500, 3000), "salut"), 9999, 9999),
-        dog2 = create_dog(create_node(10, create_point(4500, 3000), "salut2"), 9999, 9999);
-    Point x;
-    dog.message = create_message(8, create_point(500, 722));
-
-    while (!dog2.message.done) {
-        x = encode_msg(&dog.message, dog2.node.position);
-        dog.node.position = x;
-        decode_msg(&dog2, x);
-        //printf("\n");
-    }
-
-    printf("%d %d %d\n", dog2.message.id, dog2.message.position.x, dog2.message.position.y);
-}

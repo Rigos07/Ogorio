@@ -14,13 +14,12 @@
 
 // compile with gcc -Wall -g -o sock ./test-client.c -lwebsockets -lm
 
+
 Point Blue_behavior(Dog *blue, NodeList **nodes_in_sight){
-	Point objective;
+	Point objective = {0,0};
 	Point yellow_pos = create_point(0,0);
-	Node sheep;
 	NodeList *pointer = *nodes_in_sight;
-	sheep_count(blue, nodes_in_sight, sheepfold_center, sheepfold_radius);
-	printlist(&blue->sheeps);
+	//  ===================  MET TON CODE ICI YANNU =======================
 	if( is_near_point(blue->node.position, create_point(4500,3000), 40) ){
 		if((*nodes_in_sight) != NULL){
 			while(pointer != NULL){
@@ -99,8 +98,8 @@ Point Blue_behavior(Dog *blue, NodeList **nodes_in_sight){
 	else{
 		objective = follow_path(&path, *blue, 9999999);
 	}
-	printf("===================== END =====================\n");
-	return objective;*/
+	printf("===================== END =====================\n");*/
+	return objective;
 }
 
 

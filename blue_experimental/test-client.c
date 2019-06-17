@@ -21,7 +21,9 @@ Point Blue_behavior(Dog *blue, NodeList **nodes_in_sight){
 	if( is_near_point(blue->node.position, create_point(4500,3000), 40) ){
 		if(!blue->message.done){
 			blue->message = create_message(8, create_point(500,722));
-		objective = encode_msg(blue);
+			objective = encode_msg(blue);
+			printf("LE POINT : \n");
+			printpoint(objective);
 		}
 		else{
 			printf("AYE FINI\n");

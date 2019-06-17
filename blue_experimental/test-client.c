@@ -28,7 +28,7 @@ Point Blue_behavior(Dog *blue, NodeList **nodes_in_sight){
 				}
 				pointer = pointer->next;
 			}
-			if(is_near_point(blue->node.position, yellow_pos, MARGIN)){
+			if(blue->message.start){
 				if(!blue->message.done){
 					objective = encode_msg(blue);
 					printf("LE POINT : \n");
@@ -40,6 +40,9 @@ Point Blue_behavior(Dog *blue, NodeList **nodes_in_sight){
 				}
 			}
 			else{
+				if(blue->node.position.x == yellow_pos.x && blue->node.position.y == yellow_pos.y ){
+					blue->message.start = 1;
+				}
 				objective = create_point(4500,3000);
 			}
 		}

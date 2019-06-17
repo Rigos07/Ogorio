@@ -15,18 +15,20 @@
 // compile with gcc -Wall -g -o sock ./test-client.c -lwebsockets -lm
 
 Point Blue_behavior(Dog *blue, NodeList **nodes_in_sight){
-	Point objective = {0,0};
+	Point objective;
 	Point yellow_pos = create_point(0,0);
 	Node sheep;
 	NodeList *pointer = *nodes_in_sight;
+	printf("===================== START ====================\n");
 	sheep_count(blue, nodes_in_sight, sheepfold_center, sheepfold_radius);
 	if(is_near_path(&path, blue->node.position) && (blue->sheeps != NULL) ){
 		printlist(&blue->sheeps);
 		pointer = nl_portion_by_nick(nodes_in_sight, "yellow");
 		if(pointer != NULL){
 			yellow_pos = pointer->node.position;
+			printf("YELLOW POS : %d %d\n", yellow_pos.x, yellow_pos.y);
 			if(blue->message.started){
-				if(!blue->message.done){
+				if(!(blue->message.done)){
 
 					sheep = closest_sheep(*blue, 9999999);
 					blue->message = create_message(sheep.id , sheep.position);
@@ -45,7 +47,7 @@ Point Blue_behavior(Dog *blue, NodeList **nodes_in_sight){
 				if(is_near_point(blue->node.position, yellow_pos, 1)){
 					blue->message.started = 1;
 					printf("DEBUT DE LA COM\n");
-				}
+				} 
 				printf("ATTENTE DE SYNCHRONISATION\n");
 				objective = blue->node.position;
 			}
@@ -57,6 +59,7 @@ Point Blue_behavior(Dog *blue, NodeList **nodes_in_sight){
 	else{
 		objective = follow_path(&path, *blue, 9999999);
 	}
+	printf("===================== END =====================\n");
 	return objective;
 }
 

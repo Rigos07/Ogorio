@@ -9,7 +9,6 @@
 #include <math.h>
 
 #include "client.h"
-#include "package.h"
 #include "blue.h"
 
 

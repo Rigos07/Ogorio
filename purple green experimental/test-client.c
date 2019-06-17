@@ -9,7 +9,6 @@
 #include <math.h>
 
 #include "client.h"
-#include "package.h"
 #include "green.h"
 
 // compile with gcc -Wall -g -o sock ./test-client.c -lwebsockets -lm

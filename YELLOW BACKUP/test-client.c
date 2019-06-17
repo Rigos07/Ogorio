@@ -9,7 +9,6 @@
 #include <math.h>
 
 #include "client.h"
-#include "package.h"
 #include "yellow.h"
 
 
@@ -31,8 +30,8 @@ Point bring_back_sheep(Node target,int radius, Point destination){
 		return objective;
 	}
 
-	delta_x = ( ((radius - 90)*dx) / distance_to_destination );
-	delta_y = ( ((radius - 90)*dy) / distance_to_destination );
+	delta_x = ( ((radius*SHEEP_PUSHING_PERCENT)*dx) / distance_to_destination );
+	delta_y = ( ((radius*SHEEP_PUSHING_PERCENT)*dy) / distance_to_destination );
 
 
 	finalx = floor(target.position.x + delta_x);
@@ -70,13 +69,13 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 				else{
 					distance_to_destination = distance(yellow->target->position,sheepfold_center);
 					if(distance_to_destination >= sheepfold_radius - MARGIN){ //HAVE A TARGET AND TARGET IS IN SIGHT AND OUTSIDE SHEEPFOLD
-						//printf("\nMEINE TARGET\n");
-						//printnode(pointer->node);
-						objective = bring_back_sheep(*(yellow->target), 100, sheepfold_center);
-						/*printf("GOING TO : %d , %d\n", objective.x, objective.y );
+						printf("\nMEINE TARGET\n");
+						printnode(pointer->node);
+						objective = bring_back_sheep(*(yellow->target), YELLOW_RADIUS, sheepfold_center);
+						printf("GOING TO : %d , %d\n", objective.x, objective.y );
 						printf("DIST = %f\n", distance_to_destination);
 						printf("SHEEPFOLD IS IN %d , %d !!!!\n",sheepfold_center.x,sheepfold_center.y );
-						printf("KEINE GNADE, MEINE KINDER !\n" );*/
+						printf("KEINE GNADE, MEINE KINDER !\n" );
 					}
 					else{ //HAVE A TARGET AND TARGET IS IN SIGHT AND INSIDE SHEEPFOLD
 						printf("TARGET BRINGED BACK TO SHEEPFOLD\nMISSION COMPLETE\n");

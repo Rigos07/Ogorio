@@ -568,51 +568,51 @@ int get_octal_digit(int x, int index) {
     return x / pow(8, index);
 }
 
-Point encode_coordinate(Point p, int a) {
+Point encode_coorint a) {
     int x = 0, y = 0;
 
     switch (a) {
         case 0:
-            x = -40;
-            y = -40;
+            x = -100;
+            y = -100;
             break;
 
         case 1:
             x = 0;
-            y = -40;
+            y = -100;
             break;
 
         case 2:
-            x = 40;
-            y = -40;
+            x = 100;
+            y = -100;
             break;
 
         case 3:
-            x = 40;
+            x = 100;
             y = 0;
             break;
 
         case 4:
-            x = 40;
-            y = 40;
+            x = 100;
+            y = 100;
             break;
 
         case 5:
             x = 0;
-            y = 40;
+            y = 100;
             break;
 
         case 6:
-            x = -40;
-            y = 40;
+            x = -100;
+            y = 100;
             break;
 
         case 7:
-            x = -1000;
+            x = -100;
             y = 0;
     }
 
-    return create_point(p.x + x, p.y + y);
+    return create_point(x, y);
 }
 
 int decode_coordinate(Point p) {
@@ -629,7 +629,7 @@ int decode_coordinate(Point p) {
 }
 
 Point encode_msg(Message *msg, Point reset) {
-    Point result = reset;
+    Point result = create_point(-reset.x, -reset.y);
     int size_i = msg->size_i,
         id_i = msg->id_i, x_i = msg->x_i, y_i = msg->y_i,
         id = msg->id, x = msg->position.x, y = msg->position.y,
@@ -640,15 +640,15 @@ Point encode_msg(Message *msg, Point reset) {
     if (size_i < 5) {
         switch (size_i) {
             case 0:
-                result = encode_coordinate(reset, id_size);
+                result = encode_coordinate(id_size);
                 break;
 
             case 2:
-                result = encode_coordinate(reset, x_size);
+                result = encode_coordinate(x_size);
                 break;
 
             case 4:
-                result = encode_coordinate(reset, y_size);
+                result = encode_coordinate(y_size);
                 break;
         }
 
@@ -656,15 +656,15 @@ Point encode_msg(Message *msg, Point reset) {
 
     } else {
         if (id_i < id_size * 2) {
-            if (id_i % 2) result = encode_coordinate(reset, get_octal_digit(id, id_size - id_i / 2 - 1));
+            if (id_i % 2) result = encode_coordinate(get_octal_digit(id, id_size - id_i / 2 - 1));
             msg->id_i++;
 
         } else if (x_i < x_size * 2) {
-            if (x_i % 2) result = encode_coordinate(reset, get_octal_digit(x, x_size - x_i / 2 - 1));
+            if (x_i % 2) result = encode_coordinate(get_octal_digit(x, x_size - x_i / 2 - 1));
             msg->x_i++;
 
         } else {
-            if (y_i % 2) result = encode_coordinate(reset, get_octal_digit(y, y_size - y_i / 2 - 1));
+            if (y_i % 2) result = encode_coordinate(get_octal_digit(y, y_size - y_i / 2 - 1));
             msg->y_i++;
         }
 

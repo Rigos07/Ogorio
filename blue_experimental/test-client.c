@@ -16,7 +16,7 @@
 
 
 Point Blue_behavior(Dog *blue, NodeList **nodes_in_sight){
-	Point objective = {0,0};
+	Point objective = {0,0}, offset;
 	Point yellow_pos = create_point(0,0);
 	Node sheep;
 	NodeList *pointer = *nodes_in_sight;
@@ -33,7 +33,9 @@ Point Blue_behavior(Dog *blue, NodeList **nodes_in_sight){
 			if(blue->message.started){
 				if(!blue->message.done){
 					printf("J'ENVOIE : id : %d pos : %d , %d\n", blue->message.id,blue->message.position.x,blue->message.position.y);
-					objective = encode_msg(&(blue->message), yellow_pos);
+					offset = encode_msg(&(blue->message), yellow_pos);
+					objective.x = blue->node.position.x + offset.x;
+					objective.y = blue->node.position.y + offset.y;
 					printpoint(objective);
 				}
 				else{

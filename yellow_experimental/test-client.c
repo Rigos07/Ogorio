@@ -50,7 +50,7 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 		}
 	}
 	else{
-		objective = blue_pos;
+		objective = create_point(1000,1000);
 	}
 
 	return objective;

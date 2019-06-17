@@ -17,15 +17,33 @@
 
 Point Blue_behavior(Dog *blue, NodeList **nodes_in_sight){
 	Point objective = {0,0};
+	Point yellow_pos;
 	//  ===================  MET TON CODE ICI YANNU =======================
 	if( is_near_point(blue->node.position, create_point(4500,3000), 40) ){
-		if(!blue->message.done){
-			objective = encode_msg(blue);
-			printf("LE POINT : \n");
-			printpoint(objective);
+		if((*nodes_in_sight) != NULL){
+			while(pointer != NULL){
+				if(!strcmp(pointer->node.nickname, "yellow")){
+					yellow_pos = pointer->node.position;
+				}
+				pointer = pointer->next;
+			}
+			if(is_near_point(yellow->node.position, yellow_pos, 40)){
+				if(!blue->message.done){
+					objective = encode_msg(blue);
+					printf("LE POINT : \n");
+					printpoint(objective);
+				}
+				else{
+					printf("AYE FINI\n");
+					objective = create_point(4500,3000);
+				}
+			}
+			else{
+				objective = create_point(4500,3000);
+			}
 		}
 		else{
-			printf("AYE FINI\n");
+			printf("EMPTY NODE SIGHT\n");
 			objective = create_point(4500,3000);
 		}
 	}

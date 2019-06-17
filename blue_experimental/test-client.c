@@ -204,7 +204,7 @@ int receive_packet(struct lws *wsi, unsigned char * buf){
 			myId = getMyId(buf);
 			blue_node = create_node(myId, create_point(0, 0), "blue");
 			blue_dog = create_dog(blue_node, BLUE_SIGHTX, BLUE_SIGHTY);
-			blue->message = create_message(8, create_point(500,722));
+			blue_dog.message = create_message(8, create_point(500,722));
 			break;
 
 		case 64:

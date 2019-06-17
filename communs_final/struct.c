@@ -574,7 +574,7 @@ Point encode_coordinate(Point p, int a) {
     switch (a) {
         case 0:
             x = -1000;
-            y = -100;
+            y = -1000;
             break;
 
         case 1:

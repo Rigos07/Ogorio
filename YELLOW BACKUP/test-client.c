@@ -41,9 +41,9 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 					if(distance_to_destination >= sheepfold_radius - MARGIN){ //HAVE A TARGET AND TARGET IS IN SIGHT AND OUTSIDE SHEEPFOLD
 						objective = bring_back_sheep(*(yellow->target), YELLOW_RADIUS, sheepfold_center);
 						printf("\nI'M BRINGING MY TARGET BACK HOME : \n");
-						printnode(pointer->node);
+						printf("I'M TARGETING %s, LOCATED AT %d , %d\n", yellow->target->id, yellow->target->position.x, yellow->target->position.y);
 						printf("GOING TO : %d , %d\n", objective.x, objective.y );
-						printf("DIST = %f\n", distance_to_destination);
+						printf("DISTANCE TO SHEEPFOLD : %f\n", distance_to_destination);
 						printf("KEINE GNADE, MEINE KINDER !\n" );
 					}
 					else{ //HAVE A TARGET AND TARGET IS IN SIGHT AND INSIDE SHEEPFOLD
@@ -83,12 +83,12 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 					objective = bring_back_sheep(*(yellow->target), YELLOW_RADIUS, sheepfold_center);
 				}
 				else{
-					printf("FOLLOWING DEFAULT PATH, NO TARGET FOUND : \n");
+					printf("FOLLOWING DEFAULT PATH, NO TARGET FOUND\n");
 					objective = follow_path(&path, *yellow , 9999999);					
 				}
 			}
 			else{ //HAVE NO TARGET AND NO POSSIBLE TARGET FOUND
-				printf("FOLLOWING DEFAULT PATH : \n");
+				printf("FOLLOWING DEFAULT PATH\n");
 				objective = follow_path(&path, *yellow , 9999999);
 			}
 		}

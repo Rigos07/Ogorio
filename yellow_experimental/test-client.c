@@ -19,6 +19,8 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 	NodeList *pointer = *nodes_in_sight;
 	Point blue_pos = create_point(0,0);
 	float distance_to_destination;
+	int wait = 1;
+
 	pointer = nl_portion_by_nick(nodes_in_sight, "blue");
 	if(pointer != NULL){
 		blue_pos = pointer->node.position;
@@ -42,11 +44,11 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 		}
 		else{
 			if(yellow->node.position.x == blue_pos.x && yellow->node.position.y == blue_pos.y){
-				yellow->message.started = 1;
+				blue->message.started = 1;
 				printf("START COMMUNICATION\n");
 			}
 			printf("SYNCHRONISING....\n");
-			objective = blue_pos;
+			objective = create_point(1000,1000);
 		}
 	}
 	else{

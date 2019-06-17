@@ -19,8 +19,42 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 	NodeList *pointer = *nodes_in_sight;
 	Point blue_pos = create_point(0,0);
 	float distance_to_destination;
-
-	printf("================= START ===============\n");
+	if(is_near_point(yellow->node.position, create_point(1000,1000), 0)){
+		pointer = nl_portion_by_nick(nodes_in_sight, "blue");
+		if(pointer != NULL){
+			blue_pos = pointer->node.position;
+			printf("YELLOW POS : %d %d\n", blue_pos.x, blue_pos.y);
+			printf("BLUE POS : %d %d\n", yellow->node.position.x, yellow->node.position.y);
+			if(yellow->message.started){
+				decode_msg(yellow,blue_pos);
+				printf("OUAIS OK JE VOIS\n");
+				if(yellow->message.done){
+					printf("J'AI COMPRIS : BREBIS N° %d  EN : %d , %d\n",yellow->message.id, yellow->message.position.x, yellow->message.position.y);
+					yellow->target = malloc(sizeof(Node));
+					*(yellow->target) = create_node(yellow->message.id, yellow->message.position, "UN TRUC");
+					printnode(*(yellow->target));
+					yellow->message.started = 0;
+					objective = yellow->target->position;
+				}
+				else{
+					objective = yellow->node.position;
+					//objective = blue_pos;
+				}
+			}
+			else{
+				if(yellow->node.position.x == blue_pos.x && yellow->node.position.y == blue_pos.y){
+					yellow->message.started = 1;
+					printf("START COMMUNICATION\n");
+				}
+				printf("SYNCHRONISING....\n");
+				objective = yellow->node.position;
+			}
+		}
+	}else{
+		objective = create_point(1000,1000);
+	}
+	return objective;
+	/*printf("================= START ===============\n");
 	if((*nodes_in_sight) != NULL){
 		printf("CURRENT POSITION : %d , %d\n",yellow->node.position.x,yellow->node.position.y);
 		if(yellow->target != NULL){
@@ -135,7 +169,7 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 		printf("NODE LIST IS EMPTY THIS SHOULD NOT HAPPEN\n");
 	}
 	printf("================ END ================\n");
-	return objective;
+	return objective;*/
 }
 
 

@@ -18,7 +18,6 @@ Point Blue_behavior(Dog *blue, NodeList **nodes_in_sight){
 	Point objective;
 	Point yellow_pos = create_point(0,0);
 	Node sheep;
-	int wait = 1;
 	NodeList *pointer = *nodes_in_sight;
 	sheep_count(blue, nodes_in_sight, sheepfold_center, sheepfold_radius);
 	printlist(&blue->sheeps);

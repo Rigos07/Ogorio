@@ -52,10 +52,28 @@ Point bring_back_sheep(Node target,int radius, Point destination){
 Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 	Point objective;
 	NodeList *pointer = *nodes_in_sight;
+	Point blue_pos = create_point(0,0);
 	float distance_to_destination;
+	if(is_near_point(yellow->node.position, create_point(4500,3000))){
+		if(nodes_in_sight != NULL){
+			while(pointer != NULL){
+				if(!strcmp(pointer->node.nickname, "blue")){
+					blue_pos = pointer->node.position;
+				}
+				pointer = pointer->next;
+			}
+			decode_msg(yellow,blue_pos);
+		}
+		else{
+			printf("EMPTY SIGHT\n");
+		}
+	}
+	else{
+		objective = create_point(4500,3000);
+	}
 	//int target_found = 0;
 	//printf("CURRENT POSITION : %d , %d\n",yellow->node.position.x,yellow->node.position.y);
-	if(yellow->target != NULL){
+	/*if(yellow->target != NULL){
 		//printf("I HAVE A TARGET\n");
 		if((*nodes_in_sight) != NULL){
 			pointer = get_nodelist_portion(nodes_in_sight,yellow->target->id);
@@ -72,12 +90,12 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 					if(distance_to_destination >= sheepfold_radius - MARGIN){ //HAVE A TARGET AND TARGET IS IN SIGHT AND OUTSIDE SHEEPFOLD
 						//printf("\nMEINE TARGET\n");
 						//printnode(pointer->node);
-						objective = bring_back_sheep(*(yellow->target), 100, sheepfold_center);
+						objective = bring_back_sheep(*(yellow->target), 100, sheepfold_center);*/
 						/*printf("GOING TO : %d , %d\n", objective.x, objective.y );
 						printf("DIST = %f\n", distance_to_destination);
 						printf("SHEEPFOLD IS IN %d , %d !!!!\n",sheepfold_center.x,sheepfold_center.y );
 						printf("KEINE GNADE, MEINE KINDER !\n" );*/
-					}
+					/*}
 					else{ //HAVE A TARGET AND TARGET IS IN SIGHT AND INSIDE SHEEPFOLD
 						printf("TARGET BRINGED BACK TO SHEEPFOLD\nMISSION COMPLETE\n");
 						objective = follow_path(&path, *yellow , 9999999);
@@ -133,7 +151,7 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 			printf("EMPTY SIGHT, SHOULD NOT HAPPEN THO\n");
 		}
 
-	}
+	}*/
 	return objective;
 }
 

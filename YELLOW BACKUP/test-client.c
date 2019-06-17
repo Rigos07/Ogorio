@@ -53,71 +53,84 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 	Point objective;
 	NodeList *pointer = *nodes_in_sight;
 	float distance_to_destination;
-	int target_found = 0;
-	printf("CURRENT POSITION : %d , %d\n",yellow->node.position.x,yellow->node.position.y);
+	//int target_found = 0;
+	//printf("CURRENT POSITION : %d , %d\n",yellow->node.position.x,yellow->node.position.y);
 	if(yellow->target != NULL){
-		printf("I HAVE A TARGET\n");
+		//printf("I HAVE A TARGET\n");
 		if((*nodes_in_sight) != NULL){
 			pointer = get_nodelist_portion(nodes_in_sight,yellow->target->id);
 			if(pointer != NULL){
 				yellow->target = &(pointer->node);
-				distance_to_destination = distance(yellow->target->position,sheepfold_center);
-				if(distance_to_destination >= sheepfold_radius ){ //HAVE A TARGET AND TARGET IS IN SIGHT AND OUTSIDE SHEEPFOLD
-					printf("\nMEINE TARGET\n");
-					printnode(pointer->node);
-					objective = bring_back_sheep(*(yellow->target), 100, sheepfold_center);
-					printf("GOING TO : %d , %d\n", objective.x, objective.y );
-					printf("DIST = %f\n", distance_to_destination);
-					printf("SHEEPFOLD IS IN %d , %d !!!!\n",sheepfold_center.x,sheepfold_center.y );
-					printf("KEINE GNADE, MEINE KINDER !\n" );
-				}
-				else{ //HAVE A TARGET AND TARGET IS IN SIGHT AND INSIDE SHEEPFOLD
-					printf("TARGET BRINGED BACK TO SHEEPFOLD\nMISSION COMPLETE\n");
-					objective = follow_path(&path, *yellow , 9999999);
+				if(is_closest_to_sheep(yellow->target->position, yellow->node, pointer) == 0){
+					printf("OK I LET YOU THIS ONE\n");
+					free(yellow->target);
 					yellow->target = NULL;
+					objective = follow_path(&path, *yellow , 9999999);	
+				}
+				else{
+					distance_to_destination = distance(yellow->target->position,sheepfold_center);
+					if(distance_to_destination >= sheepfold_radius - MARGIN){ //HAVE A TARGET AND TARGET IS IN SIGHT AND OUTSIDE SHEEPFOLD
+						//printf("\nMEINE TARGET\n");
+						//printnode(pointer->node);
+						objective = bring_back_sheep(*(yellow->target), 100, sheepfold_center);
+						/*printf("GOING TO : %d , %d\n", objective.x, objective.y );
+						printf("DIST = %f\n", distance_to_destination);
+						printf("SHEEPFOLD IS IN %d , %d !!!!\n",sheepfold_center.x,sheepfold_center.y );
+						printf("KEINE GNADE, MEINE KINDER !\n" );*/
+					}
+					else{ //HAVE A TARGET AND TARGET IS IN SIGHT AND INSIDE SHEEPFOLD
+						printf("TARGET BRINGED BACK TO SHEEPFOLD\nMISSION COMPLETE\n");
+						objective = follow_path(&path, *yellow , 9999999);
+						free(yellow->target);
+						yellow->target = NULL;
+					}
 				}
 			}
 			else{ //HAVE A TARGET AND TARGET IS NOT IN SIGHT
 				objective = yellow->target->position;
-				printf("GOING TO DEFAULT POSITION BECAUSE I LOST MY TARGET I AM VERY SAD\n");
+				printf("GOING TO LAST TARGET POSITION BECAUSE I LOST MY TARGET OF SIGHT I AM VERY SAD\n");
 			}
 		}
 		else{ //HAVE A TARGET AND NOTHING IN SIGHT
-			objective.x = 4500;
-			objective.y = 3000;
+			objective = follow_path(&path, *yellow , 9999999);
 			printf("NODE LIST IS EMPTY THIS SHOULD NOT HAPPEN\n");
 		}
-
 	}
 	else{
 		if((*nodes_in_sight) != NULL){
-			while(pointer != NULL && !target_found ){
-				if(strncmp("bot",pointer->node.nickname,strlen("bot")) == 0){
-					distance_to_destination = distance(pointer->node.position,sheepfold_center);
-					if(distance_to_destination >= sheepfold_radius ){
-						target_found = 1;
-					}
-				}
-				if(target_found == 0){
-					pointer = pointer->next;
+			if(yellow->sheeps != NULL){
+				empty_nodelist(&yellow->sheeps);
+				yellow->sheeps = NULL;
+			}
+
+			sheep_count(yellow, nodes_in_sight, sheepfold_center, sheepfold_radius);
+
+			if(yellow->sheeps != NULL){
+				yellow->target = malloc(sizeof(Node));
+				*(yellow->target) = closest_sheep(*yellow, 9999999);
+
+				pointer = *nodes_in_sight;
+				if(is_closest_to_sheep(yellow->target->position, yellow->node, pointer) == 0){
+					printf("OK I LET YOU THIS ONE\n");
+					free(yellow->target);
+					yellow->target = NULL;
 				}
 
-			}
-			if(pointer != NULL){ //HAVE NO TARGET AND SHEEP IS IN SIGHT AND OUTSIDE SHEEPFOLD
-				yellow->target = &(pointer->node);
-				printf("\nNEW TARGET\n");
-				printnode(pointer->node);
-				objective = bring_back_sheep(*(yellow->target), 100, sheepfold_center);
-				printf("SHEEPFOLD IS IN %d , %d !!!!\n",sheepfold_center.x,sheepfold_center.y );
+				if(yellow->target != NULL){
+					printf("NEW TARGET\n");
+					objective = bring_back_sheep(*(yellow->target), 100, sheepfold_center);
+				}
+				else{
+					objective = follow_path(&path, *yellow , 9999999);					
+				}
 			}
 			else{ //HAVE NO TARGET AND NO POSSIBLE TARGET FOUND
 				objective = follow_path(&path, *yellow , 9999999);
-				printf("GOING TO DEFAULT POSITION\n");
 			}
 		}
 		else{ //HAVE NO TARGET AND NOTHING IN SIGHT
 			objective = follow_path(&path, *yellow , 9999999);
-			printf("GOING TO DEFAULT POSITION\n");
+			printf("EMPTY SIGHT, SHOULD NOT HAPPEN THO\n");
 		}
 
 	}
@@ -203,7 +216,7 @@ unsigned int rand_a_b(int a, int b){
 NodeList* getNodeInVision(unsigned char* buf, NodeList** head){
 	int i=3;
 	Node node;
-	printf("Salut :\n");
+	//printf("Salut :\n");
 	/*int k=0;
 	printf("Buffer :\n");
 	for(k=0;k<200;k++){
@@ -236,7 +249,7 @@ NodeList* getNodeInVision(unsigned char* buf, NodeList** head){
 
 		i=i+1+nameLen;
 	}
-	printf("Au revoir :\n");
+	//printf("Au revoir :\n");
 	return NULL;
 }
 
@@ -263,7 +276,6 @@ int receive_packet(struct lws *wsi, unsigned char * buf){
 	NodeList *nodeInVision, *dog_node;
 	Point p;
 	double xMin,yMin,xMax,yMax;
-	int radius = 900;
 
 	srand(time(NULL));
 
@@ -280,9 +292,9 @@ int receive_packet(struct lws *wsi, unsigned char * buf){
 				if(dog_node != NULL){
 					yellow_dog.node = dog_node->node;
 				}
-				printf("\n=========1============\n");
+				/*printf("\n=========1============\n");
 				printlist(&nodeInVision);
-				printf("=========2============\n");
+				printf("=========2============\n");*/
 
 			}else{
 				compteur++;

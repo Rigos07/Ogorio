@@ -1,3 +1,3 @@
-gnome-terminal -e "./sock -o agar.io -p 1443 10.0.2.15"
-gnome-terminal -e "./sock -o agar.io -p 1443 10.0.2.15"
-gnome-terminal -e "./sock -o agar.io -p 1443 10.0.2.15"
+gnome-terminal -e "./sock -o agar.io -p 2003 192.168.130.150"
+gnome-terminal -e "./sock -o agar.io -p 2003 192.168.130.150"
+gnome-terminal -e "./sock -o agar.io -p 2003 192.168.130.150"

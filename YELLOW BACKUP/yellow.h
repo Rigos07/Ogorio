@@ -10,4 +10,3 @@ Path * path;
 
 Point sheepfold_center;
 int sheepfold_radius;
-

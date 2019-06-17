@@ -62,7 +62,7 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 				}
 				pointer = pointer->next;
 			}
-			if(is_near_point(yellow->node.position, create_point(4500,3000), MARGIN)){
+			if(is_near_point(yellow->node.position, blue_pos, MARGIN)){
 				decode_msg(yellow,blue_pos);
 				printf("blue pos : %d %d\n", blue_pos.x, blue_pos.y);
 				printf("OK ALORS : size i : %d id i : %d x i : %d y i : %d\n", yellow->message.size_i,yellow->message.id_i,yellow->message.x_i,yellow->message.y_i);

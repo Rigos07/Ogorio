@@ -573,46 +573,46 @@ int get_octal_digit(int x, int index) {
 }
 
 Point encode_coordinate(int a) {
-    int x = 0, y = 0;
+    int x = 0, y = 0, length = 40;
 
     switch (a) {
         case 0:
-            x = -100;
-            y = -100;
+            x = -length;
+            y = -length;
             break;
 
         case 1:
             x = 0;
-            y = -100;
+            y = -length;
             break;
 
         case 2:
-            x = 100;
-            y = -100;
+            x = length;
+            y = -length;
             break;
 
         case 3:
-            x = 100;
+            x = length;
             y = 0;
             break;
 
         case 4:
-            x = 100;
-            y = 100;
+            x = length;
+            y = length;
             break;
 
         case 5:
             x = 0;
-            y = 100;
+            y = length;
             break;
 
         case 6:
-            x = -100;
-            y = 100;
+            x = -length;
+            y = length;
             break;
 
         case 7:
-            x = -100;
+            x = -length;
             y = 0;
     }
 
@@ -620,16 +620,16 @@ Point encode_coordinate(int a) {
 }
 
 int decode_coordinate(Point p) {
-    int a;
+    int a, length = 40, radius = length * sqrt(2);
 
-    if (is_near_point(p, create_point(-40, -40), MARGIN)) a = 0;
-    else if (is_near_point(p, create_point(0, -40), MARGIN)) a = 1;
-    else if (is_near_point(p, create_point(40, -40), MARGIN)) a = 2;
-    else if (is_near_point(p, create_point(40, 0), MARGIN)) a = 3;
-    else if (is_near_point(p, create_point(40, 40), MARGIN)) a = 4;
-    else if (is_near_point(p, create_point(0, 40), MARGIN)) a = 5;
-    else if (is_near_point(p, create_point(-40, 40), MARGIN)) a = 6;
-    else if (is_near_point(p, create_point(-40, 0), MARGIN)) a = 7;
+    if (is_near_point(p, create_point(-radius, -radius), MARGIN)) a = 0;
+    else if (is_near_point(p, create_point(0, -length), MARGIN)) a = 1;
+    else if (is_near_point(p, create_point(radius, -radius), MARGIN)) a = 2;
+    else if (is_near_point(p, create_point(length, 0), MARGIN)) a = 3;
+    else if (is_near_point(p, create_point(radius, radius), MARGIN)) a = 4;
+    else if (is_near_point(p, create_point(0, length), MARGIN)) a = 5;
+    else if (is_near_point(p, create_point(-radius, radius), MARGIN)) a = 6;
+    else if (is_near_point(p, create_point(-length, 0), MARGIN)) a = 7;
 
     return a;
 }

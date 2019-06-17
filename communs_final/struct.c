@@ -461,14 +461,16 @@ Point follow_path(Path **head, Dog dog, float max_dist) {
     return dest->position;
 }
 
-void sheep_count(Dog* dog, NodeList** head) {
+void sheep_count(Dog* dog, NodeList** head, Point sheepfold_center, int sheepfold_radius) {
+    float distance_to_sheepfold;
     NodeList* pointer = *head;
     Node n;
 
     while (pointer != NULL) {
         n = pointer->node;
+        distance_to_sheepfold = distance(n.position, sheepfold_center);
 
-        if (!strncmp("bot", n.nickname, 3)) {
+        if (!strncmp("bot", n.nickname, 3) && distance_to_sheepfold >= sheepfold_radius - MARGIN) {
             if (get_nodelist_portion(&dog->sheeps, n.id) == NULL) {
                 add_node(&dog->sheeps, n);
 

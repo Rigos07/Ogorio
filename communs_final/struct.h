@@ -144,6 +144,8 @@ int get_nodelist_size(NodeList **head);
 */
 NodeList *get_nodelist_portion(NodeList **head, int id);
 
+NodeList* nl_portion_by_nick(NodeList **head, char* nick);
+
 // ================== MESSAGE PRIMITIVES ==================
 
 Message create_message(int id, Point point);

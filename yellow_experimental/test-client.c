@@ -46,7 +46,7 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 				if(yellow->target != NULL){
 					printf("YES JE RENTRE LA\n");
 					objective = yellow->target->position;
-					printnode(*(yellow->target));
+					printpoint(yellow->target->position);
 				}
 				else{
 					if(yellow->node.position.x == blue_pos.x && yellow->node.position.y == blue_pos.y ){

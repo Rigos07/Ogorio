@@ -20,7 +20,7 @@ Point Blue_behavior(Dog *blue, NodeList **nodes_in_sight){
 	Node sheep;
 	NodeList *pointer = *nodes_in_sight;
 	sheep_count(blue, nodes_in_sight, sheepfold_center, sheepfold_radius);
-	if(is_near_point(blue->node.position, create_point(1000,1000), 0)){
+	if(is_near_point(blue->node.position, create_point(1000,1000), 1)){
 		printlist(&blue->sheeps);
 		pointer = nl_portion_by_nick(nodes_in_sight, "yellow");
 		if(pointer != NULL){

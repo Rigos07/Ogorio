@@ -19,7 +19,7 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 	NodeList *pointer = *nodes_in_sight;
 	Point blue_pos = create_point(0,0);
 	float distance_to_destination;
-	if(is_near_point(yellow->node.position, create_point(1000,1000), 0)){
+	if(is_near_point(yellow->node.position, create_point(1000,1000), 1)){
 		pointer = nl_portion_by_nick(nodes_in_sight, "blue");
 		if(pointer != NULL){
 			blue_pos = pointer->node.position;

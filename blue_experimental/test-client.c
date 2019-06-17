@@ -44,7 +44,7 @@ Point Blue_behavior(Dog *blue, NodeList **nodes_in_sight){
 				}
 			}
 			else{
-				if(blue->node.position.x == yellow_pos.x && blue->node.position.y == yellow_pos.y){
+				if(is_near_point(blue->node.position, create_point(1000,1000), 1)){
 					blue->message.started = 1;
 					printf("DEBUT DE LA COM\n");
 				} 

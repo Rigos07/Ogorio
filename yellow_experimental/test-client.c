@@ -42,7 +42,7 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 				}
 			}
 			else{
-				if(yellow->node.position.x == blue_pos.x && yellow->node.position.y == blue_pos.y){
+				if(is_near_point(yellow->node.position, create_point(1000,1000), 1)){
 					yellow->message.started = 1;
 					printf("START COMMUNICATION\n");
 				}

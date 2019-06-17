@@ -53,45 +53,6 @@ Point Blue_behavior(Dog *blue, NodeList **nodes_in_sight){
 	else{
 		objective = follow_path(&path, *blue, 9999999);
 	}
-
-
-	if( is_near_point(blue->node.position, create_point(4500,3000), 40) ){
-		if((*nodes_in_sight) != NULL){
-			while(pointer != NULL){
-				if(!strcmp(pointer->node.nickname, "yellow")){
-					yellow_pos = pointer->node.position;
-				}
-				pointer = pointer->next;
-			}
-			if(blue->message.started){
-				if(!blue->message.done){
-					objective = encode_msg(&(blue->message), yellow_pos);
-					printf("OU JE SUIS : \n");
-					printpoint(blue->node.position);
-					printf("LE POINT : \n");
-					printpoint(objective);
-				}
-				else{
-					printf("AYE FINI\n");
-					objective = create_point(4500,3000);
-				}
-			}
-			else{
-				if(blue->node.position.x == yellow_pos.x && blue->node.position.y == yellow_pos.y ){
-					blue->message.started = 1;
-				}
-				objective = create_point(4500,3000);
-			}
-		}
-		else{
-			printf("EMPTY NODE SIGHT\n");
-			objective = create_point(4500,3000);
-		}
-	}
-	else{
-		objective.x = 4500;
-		objective.y = 3000;
-	}
 	return objective;
 }
 

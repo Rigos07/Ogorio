@@ -218,7 +218,7 @@ Point encode_coordinate(int a);
 
 int decode_coordinate(Point p);
 
-Point encode_msg(Message *msg, Point reset);
+Point encode_msg(Message *msg);
 
 int decode_msg(Dog *dog, Point info);
 

@@ -37,7 +37,7 @@ typedef struct NodeList {
 typedef struct Message {
     int id;
     Point position;
-    int size_i, id_i, x_i, y_i, done;
+    int size_i, id_i, x_i, y_i, started, done;
 } Message;
 
 typedef struct Dog {

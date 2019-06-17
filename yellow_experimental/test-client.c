@@ -20,38 +20,35 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 	Point blue_pos = create_point(0,0);
 	float distance_to_destination;
 
-	pointer = nl_portion_by_nick(nodes_in_sight, "blue");
-	if(pointer != NULL){
-		blue_pos = pointer->node.position;
-		printf("YELLOW POS : %d %d\n", blue_pos.x, blue_pos.y);
-		printf("BLUE POS : %d %d\n", yellow->node.position.x, yellow->node.position.y);
-		if(yellow->message.started){
-			decode_msg(yellow,blue_pos);
-			printf("OUAIS OK JE VOIS\n");
-			if(yellow->message.done){
-				printf("J'AI COMPRIS : BREBIS N° %d  EN : %d , %d\n",yellow->message.id, yellow->message.position.x, yellow->message.position.y);
-				yellow->target = malloc(sizeof(Node));
-				*(yellow->target) = create_node(yellow->message.id, yellow->message.position, "UN TRUC");
-				printnode(*(yellow->target));
-				yellow->message.started = 0;
-				objective = yellow->target->position;
+	if(is_near_point(yellow->node.position, create_point(4500,3000), MARGIN)){
+		if((*nodes_in_sight) != NULL){
+			pointer = nl_portion_by_nick(nodes_in_sight, "blue");
+			if(pointer != NULL){
+				blue_pos = pointer->node.position;
+			}
+			if(yellow->message.started){
+				decode_msg(yellow,blue_pos);
+				printf("blue pos : %d %d\n", blue_pos.x, blue_pos.y);
+				printf("OK ALORS : size i : %d id i : %d x i : %d y i : %d\n", yellow->message.size_i,yellow->message.id_i,yellow->message.x_i,yellow->message.y_i);
+				if(yellow->message.done){
+					printf("J'AI COMPRIS : BREBIS N° %d  EN : %d , %d\n",yellow->message.id, yellow->message.position.x, yellow->message.position.y);
+				}
 			}
 			else{
-				objective = yellow->node.position;
-				//objective = blue_pos;
+				if(yellow->node.position.x == blue_pos.x && yellow->node.position.y == blue_pos.y ){
+					yellow->message.started = 1;
+				}
+				objective = create_point(4500,3000);
 			}
+
 		}
 		else{
-			if(yellow->node.position.x == blue_pos.x && yellow->node.position.y == blue_pos.y){
-				yellow->message.started = 1;
-				printf("START COMMUNICATION\n");
-			}
-			printf("SYNCHRONISING....\n");
-			objective = create_point(1000,1000);
+			printf("EMPTY SIGHT\n");
 		}
+		objective = create_point(4500,3000);
 	}
 	else{
-		objective = create_point(1000,1000);
+		objective = create_point(4500,3000);
 	}
 
 	return objective;

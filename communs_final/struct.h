@@ -214,11 +214,11 @@ int get_octal_size(int x);
 
 int get_octal_digit(int x, int index);
 
-Point encode_coordinate(int a);
+Point encode_coordinate(Point p, int a);
 
 int decode_coordinate(Point p);
 
-Point encode_msg(Dog *dog);
+Point encode_msg(Message *msg, Point reset);
 
 int decode_msg(Dog *dog, Point info);
 

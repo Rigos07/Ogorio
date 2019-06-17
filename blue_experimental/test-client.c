@@ -36,7 +36,7 @@ Point Blue_behavior(Dog *blue, NodeList **nodes_in_sight){
 					//blue->message = create_message(sheep.id, sheep.position);
 					printf("J'ENVOIE : id : %d pos : %d , %d\n", blue->message.id,blue->message.position.x,blue->message.position.y);
 					objective = encode_msg(&(blue->message), yellow_pos);
-					printf("LE MESSAGE : \n",blue->message.done);
+					printf("LE MESSAGE : %d \n",blue->message.done);
 				}
 				else{
 					printf("AYE FINI\n");

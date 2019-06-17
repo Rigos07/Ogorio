@@ -95,7 +95,6 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 			else{ //HAVE NO TARGET AND NO POSSIBLE TARGET FOUND
 				pointer = nl_portion_by_nick(nodes_in_sight, "blue");
 				if(pointer != NULL){
-					if(pointer != NULL){
 					blue_pos = pointer->node.position;
 					if(yellow->message.started){
 						decode_msg(yellow,blue_pos);

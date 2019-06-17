@@ -625,7 +625,7 @@ int decode_coordinate(Point p) {
     else if (is_near_point(p, create_point(0, 40), 2 * MARGIN)) a = 5;
     else if (is_near_point(p, create_point(-40, 40), 2 * MARGIN)) a = 6;
     else if (is_near_point(p, create_point(-40, 0), 2 * MARGIN)) a = 7;
-    printf("AAAAAAAAAAAAAAAAAAAAA %d\n", a);
+    printf("OSKOUR %d\n", is_near_point(p, create_point(-40, -40), 2 * MARGIN));
     return a;
 }
 

@@ -20,7 +20,7 @@ Point Blue_behavior(Dog *blue, NodeList **nodes_in_sight){
 	//  ===================  MET TON CODE ICI YANNU =======================
 	if(blue->node.position.x == 4500 && blue->node.position.y == 3000){
 		blue->message = create_message(8, create_point(500,722));
-		encode_msg(blue);
+		objective = encode_msg(blue);
 	}
 	else{
 		objective.x = 4500;

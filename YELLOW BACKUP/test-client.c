@@ -56,7 +56,10 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 			}
 			else{ //HAVE A TARGET AND TARGET IS NOT IN SIGHT
 				objective = yellow->target->position;
-				printf("TARGET LOST, GOING TO LAST POSITION REGISTERED\n");
+				printf("\nGOING TO A TARGET OUT OF SIGHT : \n");
+				printf("I'M TARGETING %s, LOCATED AT %d , %d\n", yellow->target->nickname, yellow->target->position.x, yellow->target->position.y);
+				printf("GOING TO : %d , %d\n", objective.x, objective.y );
+				printf("FINDE MEINE BRÜDER !\n" );
 			}
 		}
 		else{

@@ -67,6 +67,7 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 		else{
 			printf("EMPTY SIGHT\n");
 		}
+		objective = create_point(4500,3000);
 	}
 	else{
 		objective = create_point(4500,3000);

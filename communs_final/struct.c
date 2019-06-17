@@ -573,42 +573,42 @@ Point encode_coordinate(Point p, int a) {
 
     switch (a) {
         case 0:
-            x = -40;
-            y = -40;
+            x = -100;
+            y = -100;
             break;
 
         case 1:
             x = 0;
-            y = -40;
+            y = -100;
             break;
 
         case 2:
-            x = 40;
-            y = -40;
+            x = 100;
+            y = -100;
             break;
 
         case 3:
-            x = 40;
+            x = 100;
             y = 0;
             break;
 
         case 4:
-            x = 40;
-            y = 40;
+            x = 100;
+            y = 100;
             break;
 
         case 5:
             x = 0;
-            y = 40;
+            y = 100;
             break;
 
         case 6:
-            x = -40;
-            y = 40;
+            x = -100;
+            y = 100;
             break;
 
         case 7:
-            x = -40;
+            x = -100;
             y = 0;
     }
 
@@ -617,14 +617,14 @@ Point encode_coordinate(Point p, int a) {
 
 int decode_coordinate(Point p) {
     int a;
-    if (is_near_point(p, create_point(-40, -40), 3 * MARGIN)) a = 0;
-    else if (is_near_point(p, create_point(0, -40), 3 * MARGIN)) a = 1;
-    else if (is_near_point(p, create_point(40, -40), 3 * MARGIN)) a = 2;
-    else if (is_near_point(p, create_point(40, 0), 3 * MARGIN)) a = 3;
-    else if (is_near_point(p, create_point(40, 40), 3 * MARGIN)) a = 4;
-    else if (is_near_point(p, create_point(0, 40), 3 * MARGIN)) a = 5;
-    else if (is_near_point(p, create_point(-40, 40), 3 * MARGIN)) a = 6;
-    else if (is_near_point(p, create_point(-40, 0), 3 * MARGIN)) a = 7;
+    if (is_near_point(p, create_point(-40, -40), MARGIN)) a = 0;
+    else if (is_near_point(p, create_point(0, -40), MARGIN)) a = 1;
+    else if (is_near_point(p, create_point(40, -40), MARGIN)) a = 2;
+    else if (is_near_point(p, create_point(40, 0), MARGIN)) a = 3;
+    else if (is_near_point(p, create_point(40, 40), MARGIN)) a = 4;
+    else if (is_near_point(p, create_point(0, 40), MARGIN)) a = 5;
+    else if (is_near_point(p, create_point(-40, 40), MARGIN)) a = 6;
+    else if (is_near_point(p, create_point(-40, 0), MARGIN)) a = 7;
     return a;
 }
 

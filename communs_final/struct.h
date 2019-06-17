@@ -214,7 +214,7 @@ int get_octal_size(int x);
 
 int get_octal_digit(int x, int index);
 
-Point encode_coordinate(Point p, int a);
+Point encode_coordinate(int a);
 
 int decode_coordinate(Point p);
 

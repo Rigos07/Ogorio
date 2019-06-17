@@ -41,6 +41,7 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 			}
 			else{
 				if(yellow->node.position.x == blue_pos.x && yellow->node.position.y == blue_pos.y ){
+					create_message(0, create_point(0,0));
 					yellow->message.started = 1;
 				}
 				objective = create_point(4500,3000);

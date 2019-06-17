@@ -688,6 +688,7 @@ int decode_msg(Dog *dog, Point info) {
     if (is_near_point(point, ORIGIN, MARGIN)) return 0;
 
     if (size_i < 3) {
+        printf("RESULT : %d\n", result);
         switch (size_i) {
             case 0:
                 dog->message.id_i = result;

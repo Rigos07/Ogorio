@@ -101,7 +101,7 @@ int get_nodelist_size(NodeList **head) {
 
 NodeList *get_nodelist_portion(NodeList **head, int id) {
     if (*head == NULL) {
-        //fprintf(stderr, "ERROR : Trying to get node in empty nodelist\n");
+        fprintf(stderr, "ERROR : Trying to get node in empty nodelist\n");
         return NULL;
     }
 
@@ -202,14 +202,14 @@ int update_node(NodeList **head, Node node) {
 // ================== MESSAGE PRIMITIVES ==================
 
 Message create_message(int id, Point point) {
-    Message new_message = {id, point, 0};
+    Message new_message = {id, point, 0, 0, 0, 0, 0};
     return new_message;
 }
 
 // ================== DOG PRIMITIVES ==================
 
 Dog create_dog(Node node, int x_sight, int y_sight) {
-    Dog new_dog = {node, NULL, create_nodelist(), x_sight, y_sight};
+    Dog new_dog = {node, x_sight, y_sight, NULL, create_nodelist(), create_message(0, create_point(0, 0))};
     return new_dog;
 }
 
@@ -345,19 +345,19 @@ Path *closest_intersection(Path **head, Point point, float max_dist) {
     return result;
 }
 
-int is_near_segment(Point point, Point seg_point1, Point seg_point2) {
+int is_near_segment(Point point, Point seg_point1, Point seg_point2, int margin) {
     int x = point.x, y = point.y,
                  seg_x1 = seg_point1.x, seg_y1 = seg_point1.y,
                  seg_x2 = seg_point2.x, seg_y2 = seg_point2.y,
-                 margin_x1 = min(seg_x1, seg_x2) - MARGIN, margin_y1 = min(seg_y1, seg_y2) - MARGIN,
-                 margin_x2 = max(seg_x1, seg_x2) + MARGIN, margin_y2 = max(seg_y1, seg_y2) + MARGIN;
+                 margin_x1 = min(seg_x1, seg_x2) - margin, margin_y1 = min(seg_y1, seg_y2) - margin,
+                 margin_x2 = max(seg_x1, seg_x2) + margin, margin_y2 = max(seg_y1, seg_y2) + margin;
 
     return (seg_x1 == seg_x2 && is_between(x, margin_x1, margin_x2) && is_between(y, margin_y1, margin_y2))
         || (seg_y1 == seg_y2 && is_between(y, margin_y1, margin_y2) && is_between(x, margin_x1, margin_x2));
 }
 
-int is_near_point(Point point1, Point point2) {
-    return is_near_segment(point1, point2, point2);
+int is_near_point(Point point1, Point point2, int margin) {
+    return is_near_segment(point1, point2, point2, margin);
 }
 
 Path *is_near_path(Path **head, Point point) {
@@ -370,7 +370,7 @@ Path *is_near_path(Path **head, Point point) {
 
     segment2 = segment1->next;
     while (i < i_max && result == NULL) {
-        if (is_near_segment(point, segment1->position, segment2->position)) {
+        if (is_near_segment(point, segment1->position, segment2->position, MARGIN)) {
             result = segment1;
         }
 
@@ -450,10 +450,10 @@ Point follow_path(Path **head, Dog dog, float max_dist) {
         if (!strcmp(dog.node.nickname, "yellow")) {
             dest = dest->next;
 
-            if (is_near_point(position, dest->position)) {
+            if (is_near_point(position, dest->position, MARGIN)) {
                 dest = dest->next;
             }
-        } else if (is_near_point(position, dest->position)) {
+        } else if (is_near_point(position, dest->position, MARGIN)) {
             dest = dest->prev;
         }
     }
@@ -461,15 +461,14 @@ Point follow_path(Path **head, Dog dog, float max_dist) {
     return dest->position;
 }
 
-void sheep_count(Dog* dog, NodeList** head, Point sheepfold_center, int sheepfold_radius) {
+void sheep_count(Dog* dog, NodeList** head) {
     NodeList* pointer = *head;
     Node n;
-    float distance_to_sheepfold;
 
     while (pointer != NULL) {
         n = pointer->node;
-        distance_to_sheepfold = distance(n.position, sheepfold_center);
-        if (!strncmp("bot", n.nickname, 3) && distance_to_sheepfold >= sheepfold_radius - MARGIN) {
+
+        if (!strncmp("bot", n.nickname, 3)) {
             if (get_nodelist_portion(&dog->sheeps, n.id) == NULL) {
                 add_node(&dog->sheeps, n);
 
@@ -518,6 +517,7 @@ int is_closest_to_sheep(Point target, Node self, NodeList *others) {
                 closest = 0;
             }
         }
+
         others = others->next;
     }
 
@@ -545,11 +545,10 @@ int get_octal_digit(int x, int index) {
     return x / pow(8, index);
 }
 
-Point get_coordinate(Dog dog, int a) {
+Point encode_coordinate(int a) {
     int x = 0, y = 0;
-    Point position = dog.node.position;
 
-    switch (x) {
+    switch (a) {
         case 0:
             x = -40;
             y = -40;
@@ -573,6 +572,7 @@ Point get_coordinate(Dog dog, int a) {
         case 4:
             x = 40;
             y = 40;
+            break;
 
         case 5:
             x = 0;
@@ -589,9 +589,112 @@ Point get_coordinate(Dog dog, int a) {
             y = 0;
     }
 
-    return create_point(position.x + x, position.y + y);
+    return create_point(x, y);
 }
 
+int decode_coordinate(Point p) {
+    int a;
+
+    if (is_near_point(p, create_point(-38, -41), 2 * MARGIN)) a = 0;
+    else if (is_near_point(p, create_point(3, -42), 2 * MARGIN)) a = 1;
+    else if (is_near_point(p, create_point(39, -40), 2 * MARGIN)) a = 2;
+    else if (is_near_point(p, create_point(44, 2), 2 * MARGIN)) a = 3;
+    else if (is_near_point(p, create_point(40, 38), 2 * MARGIN)) a = 4;
+    else if (is_near_point(p, create_point(-1, 41), 2 * MARGIN)) a = 5;
+    else if (is_near_point(p, create_point(-42, 39), 2 * MARGIN)) a = 6;
+    else if (is_near_point(p, create_point(-39, 4), 2 * MARGIN)) a = 7;
+
+    return a;
+}
+
+Point encode_msg(Dog *dog) {
+    Message msg = dog->message;
+    Point position = dog->node.position, result;
+    int size_i = msg.size_i,
+        id_i = msg.id_i, x_i = msg.x_i, y_i = msg.y_i,
+        id = msg.id, x = msg.position.x, y = msg.position.y,
+        id_size = get_octal_size(id),
+        x_size = get_octal_size(x),
+        y_size = get_octal_size(y);
+
+    if (size_i < 3) {
+        switch (size_i) {
+            case 0:
+                result = encode_coordinate(id_size);
+                break;
+
+            case 1:
+                result = encode_coordinate(x_size);
+                break;
+
+            case 2:
+                result = encode_coordinate(y_size);
+        }
+
+        dog->message.size_i++;
+
+    } else {
+        if (id_i < id_size) {
+            result = encode_coordinate(get_octal_digit(id, id_size - id_i - 1));
+            dog->message.id_i++;
+
+        } else if (x_i < x_size) {
+            result = encode_coordinate(get_octal_digit(x, x_size - x_i - 1));
+            dog->message.x_i++;
+
+        } else {
+            result = encode_coordinate(get_octal_digit(y, y_size - y_i - 1));
+            dog->message.y_i++;
+        }
+
+        if (y_i == y_size - 1) dog->message.done = 1;
+    }
+
+    return create_point(position.x + result.x, position.y + result.y);
+}
+
+void decode_msg(Dog *dog, Point info) {
+    Message msg = dog->message;
+    Point position = dog->node.position,
+          point = create_point(info.x - position.x, info.y - position.y);
+
+    int size_i = msg.size_i,
+        id_i = msg.id_i, x_i = msg.x_i, y_i = msg.y_i,
+        result = decode_coordinate(point);
+    
+    if (size_i < 3) {
+        switch (size_i) {
+            case 0:
+                dog->message.id_i = result;
+                break;
+
+            case 1:
+                dog->message.x_i = result;
+                break;
+
+            case 2:
+                dog->message.y_i = result;
+        }
+
+        dog->message.size_i++;
+    
+    } else {
+        if (id_i > 0) {
+            dog->message.id += result * pow(8, id_i - 1);
+            dog->message.id_i--;
+
+        } else if (x_i > 0) {
+            dog->message.position.x += result * pow(8, x_i - 1);
+            dog->message.x_i--;
+
+        } else {
+            dog->message.position.y += result * pow(8, y_i - 1);
+            dog->message.y_i--;
+        }
+
+        if (y_i == 1) dog->message.done = 1;
+    }
+}
 
 void printpoint(Point point){
     printf("x : %d\n", point.x);
@@ -639,48 +742,19 @@ void printlist(NodeList **head){
     printf("End\n\n");
 }
 
-/*Point send_message(Dog *dog) {
-    Message msg = dog->message;
-    int size_i = msg.size_i, msg,_i = msg.msg_i,
-        id_size = get_octal_size(msg.id),
-        x_size = get_octal_size(msg.position.x),
-        y_size = get_octal_size(msg.position.y);
+int main() {
+    Dog dog = create_dog(create_node(9, create_point(4543, 4878), "salut"), 9999, 9999),
+        dog2 = create_dog(create_node(10, create_point(4547, 4874), "salut2"), 9999, 9999);
+    Point x;
+    dog.message = create_message(59, create_point(48794, 59849));
 
-    Point result;
+    while (!dog2.message.done) {
+        x = encode_msg(&dog);
+        decode_msg(&dog2, x);
 
-    if (size_i < 3) {
-        switch (size_i) {
-            case 0:
-                result = get_coordinate(dog, get_octal_size(id_size));
-                break;
-
-            case 1:
-                result = get_coordinate(dog, get_octal_size(x_size));
-                break;
-
-            case 2:
-                result = get_coordinate(dog, get_octal_size(y_size));
-        }
-
-        dog->message.size_i++;
-
-    } else {
-        if (msg_i < id_size) {
-            result = get_coordinate(dog, octal_digit(id_size, msg_i));
-
-        } else if (msg_i < id_size + x_size) {
-            result = get_coordinate(dog, octal_digit(x_size, msg_i - id_size));
-
-        } else {
-            result = get_coordinate(dog, octal_digit(y_size, msg_i - (id_size + x_size)));
-        }
-
-        dog->message.msg_i++;
+        printpoint(x);
+        printf("\n");
     }
 
-    return result;
-}*/
-
-/*void read_message(Dog *dog) {
-
-}*/
+    printf("%d %d %d\n", dog2.message.id, dog2.message.position.x, dog2.message.position.y);
+}

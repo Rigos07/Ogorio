@@ -37,14 +37,14 @@ typedef struct NodeList {
 typedef struct Message {
     int id;
     Point position;
-    int size_i, msg_i;
+    int size_i, id_i, x_i, y_i, done;
 } Message;
 
 typedef struct Dog {
     Node node;
+    int x_sight, y_sight;
     Node *target;
     NodeList *sheeps;
-    int x_sight, y_sight;
     Message message;
 } Dog;
 
@@ -104,11 +104,11 @@ NodeList *create_nodelist(void);
 
 /*
 * Add a point to a nodelist structure
-* tail : taild of nodelist
+* tail : tail of nodelist
 * new_node : node that will be added to list
 * Return pointer to new node if successfully created, NULL otherwise
 */
-int add_node(NodeList **tail, Node new_node);
+int add_node(NodeList **head, Node new_node);
 
 /*
 * Delete a node from a nodelist using its id
@@ -189,9 +189,9 @@ Path *generate_secondary_path(int max_width, int max_height, int x_sight, int y_
 
 Path *closest_intersection(Path **head, Point point, float max_dist);
 
-int is_near_segment(Point point, Point seg_point1, Point seg_point2);
+int is_near_segment(Point point, Point seg_point1, Point seg_point2, int margin);
 
-int is_near_point(Point point1, Point point2);
+int is_near_point(Point point1, Point point2, int margin);
 
 Path *is_near_path(Path **head, Point p);
 
@@ -199,7 +199,7 @@ Path *closest_point(Path **head, Dog dog, float max_dist);
 
 Point follow_path(Path **head, Dog dog, float max_dist);
 
-void sheep_count(Dog* dog, NodeList** head, Point sheepfold_center, int sheepfold_radius);
+void sheep_count(Dog* dog, NodeList** head);
 
 // Dog.sheeps doit être non vide
 Node closest_sheep(Dog dog, float max_dist);
@@ -210,7 +210,8 @@ int get_octal_size(int x);
 
 int get_octal_digit(int x, int index);
 
-Point get_coordinate(Dog dog, int a);
+Point encode_coordinate(int a);
+Point encode_msg(Dog *dog);
 
 void printnode(Node node);
 void printpoint(Point point);

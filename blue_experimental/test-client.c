@@ -21,7 +21,7 @@ Point Blue_behavior(Dog *blue, NodeList **nodes_in_sight){
 	Node sheep;
 	NodeList *pointer = *nodes_in_sight;
 	sheep_count(blue, nodes_in_sight, sheepfold_center, sheepfold_radius);
-	printf("===================== START ==========================\n");
+	printf("\n===========================================\n");
 	//  ===================  MET TON CODE ICI YANNU =======================
 	if( is_near_point(blue->node.position, create_point(4500,3000), 40) ){
 		if((*nodes_in_sight) != NULL){
@@ -34,6 +34,7 @@ Point Blue_behavior(Dog *blue, NodeList **nodes_in_sight){
 			if(blue->message.started){
 				if(!blue->message.done){
 					//printf("J'ENVOIE : id : %d pos : %d , %d\n", blue->message.id,blue->message.position.x,blue->message.position.y);
+					printf("OK ALORS : size i : %d id i : %d x i : %d y i : %d\n", yellow->message.size_i,yellow->message.id_i,yellow->message.x_i,yellow->message.y_i);
 					offset = encode_msg(&(blue->message), create_point(0,0));
 					printf("OFFSET : %d, %d\n",offset.x, offset.y);
 					objective.x = blue->node.position.x + offset.x;
@@ -65,7 +66,6 @@ Point Blue_behavior(Dog *blue, NodeList **nodes_in_sight){
 		objective.x = 4500;
 		objective.y = 3000;
 	}
-	printf("===================== END ==========================\n");
 	/*printf("===================== START ====================\n");
 	sheep_count(blue, nodes_in_sight, sheepfold_center, sheepfold_radius);
 	if(is_near_path(&path, blue->node.position) && (blue->sheeps != NULL) ){

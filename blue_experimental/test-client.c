@@ -24,6 +24,7 @@ Point Blue_behavior(Dog *blue, NodeList **nodes_in_sight){
 		printlist(&blue->sheeps);
 		pointer = nl_portion_by_nick(nodes_in_sight, "yellow");
 		if(pointer != NULL){
+			yellow_pos = pointer->node.position;
 			if(blue->message.started){
 				if(!blue->message.done){
 

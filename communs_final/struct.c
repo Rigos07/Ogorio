@@ -620,7 +620,7 @@ Point encode_coordinate(int a) {
 }
 
 int decode_coordinate(Point p) {
-    int a, length = 40, radius = length * sqrt(2);
+    int a, length = 40, radius = length / sqrt(2);
 
     if (is_near_point(p, create_point(-radius, -radius), MARGIN)) a = 0;
     else if (is_near_point(p, create_point(0, -length), MARGIN)) a = 1;

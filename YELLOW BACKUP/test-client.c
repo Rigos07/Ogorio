@@ -41,7 +41,7 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 					if(distance_to_destination >= sheepfold_radius - MARGIN){ //HAVE A TARGET AND TARGET IS IN SIGHT AND OUTSIDE SHEEPFOLD
 						objective = bring_back_sheep(*(yellow->target), YELLOW_RADIUS, sheepfold_center);
 						printf("\nI'M BRINGING MY TARGET BACK HOME : \n");
-						printf("I'M TARGETING %s, LOCATED AT %d , %d\n", yellow->target->id, yellow->target->position.x, yellow->target->position.y);
+						printf("I'M TARGETING %s, LOCATED AT %d , %d\n", yellow->target->nickname, yellow->target->position.x, yellow->target->position.y);
 						printf("GOING TO : %d , %d\n", objective.x, objective.y );
 						printf("DISTANCE TO SHEEPFOLD : %f\n", distance_to_destination);
 						printf("KEINE GNADE, MEINE KINDER !\n" );

@@ -56,7 +56,10 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 	float distance_to_destination;
 	if(is_near_point(yellow->node.position, create_point(4500,3000), MARGIN)){
 		if((*nodes_in_sight) != NULL){
-			blue_pos = nl_portion_by_nick(nodes_in_sight, "blue")->node.position;
+			pointer = nl_portion_by_nick(nodes_in_sight, "blue");
+			if(pointer != NULL){
+				blue_pos = pointer->node.position;
+			}
 			if(is_near_point(yellow->node.position, blue_pos, MARGIN)){
 				decode_msg(yellow,blue_pos);
 				printf("blue pos : %d %d\n", blue_pos.x, blue_pos.y);

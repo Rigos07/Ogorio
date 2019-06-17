@@ -617,7 +617,7 @@ Point encode_coordinate(Point p, int a) {
 
 int decode_coordinate(Point p) {
     int a;
-
+    printpoint(p);
     if (is_near_point(p, create_point(-40, -40), 2 * MARGIN)) a = 0;
     else if (is_near_point(p, create_point(0, -40), 2 * MARGIN)) a = 1;
     else if (is_near_point(p, create_point(40, -40), 2 * MARGIN)) a = 2;

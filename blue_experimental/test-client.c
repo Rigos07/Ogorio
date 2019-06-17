@@ -20,39 +20,34 @@ Point Blue_behavior(Dog *blue, NodeList **nodes_in_sight){
 	Node sheep;
 	NodeList *pointer = *nodes_in_sight;
 	sheep_count(blue, nodes_in_sight, sheepfold_center, sheepfold_radius);
-	if(is_near_point(blue->node.position, create_point(1000,1000), 1)){
-		printlist(&blue->sheeps);
-		pointer = nl_portion_by_nick(nodes_in_sight, "yellow");
-		if(pointer != NULL){
-			yellow_pos = pointer->node.position;
-			printf("YELLOW POS : %d %d\n", yellow_pos.x, yellow_pos.y);
-			printf("BLUE POS : %d %d\n", blue->node.position.x, blue->node.position.y);
-			if(blue->message.started){
-				if(!(blue->message.done)){
+	printlist(&blue->sheeps);
+	pointer = nl_portion_by_nick(nodes_in_sight, "yellow");
+	if(pointer != NULL){
+		yellow_pos = pointer->node.position;
+		printf("YELLOW POS : %d %d\n", yellow_pos.x, yellow_pos.y);
+		printf("BLUE POS : %d %d\n", blue->node.position.x, blue->node.position.y);
+		if(blue->message.started){
+			if(!(blue->message.done)){
 
-					sheep = closest_sheep(*blue, 9999999);
-					blue->message = create_message(sheep.id , sheep.position);
-					
-					printf("JE TRANSMETS  : \n");
-					printnode(sheep);
-					objective = encode_msg(&(blue->message), yellow_pos);
-				}
-				else{
-					printf("AYE FINI\n");
-					blue->message.started = 0;
-					objective = create_point(1000,1000);
-				}
+				sheep = closest_sheep(*blue, 9999999);
+				blue->message = create_message(sheep.id , sheep.position);
+				
+				printf("JE TRANSMETS  : \n");
+				printnode(sheep);
+				objective = encode_msg(&(blue->message), yellow_pos);
 			}
 			else{
-				if(is_near_point(blue->node.position, create_point(1000,1000), 1)){
-					blue->message.started = 1;
-					printf("DEBUT DE LA COM\n");
-				} 
-				printf("ATTENTE DE SYNCHRONISATION\n");
+				printf("AYE FINI\n");
+				blue->message.started = 0;
 				objective = create_point(1000,1000);
 			}
 		}
 		else{
+			if(is_near_point(blue->node.position, create_point(1000,1000), 1)){
+				blue->message.started = 1;
+				printf("DEBUT DE LA COM\n");
+			} 
+			printf("ATTENTE DE SYNCHRONISATION\n");
 			objective = create_point(1000,1000);
 		}
 	}

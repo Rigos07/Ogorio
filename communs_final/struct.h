@@ -1,6 +1,6 @@
 #define BLUE_SIGHT 1000
 #define MARGIN 5
-#define SHEEP_PUSHING_PERCENT 0.9
+#define SHEEP_PUSHING_PERCENT 0.1
 #define max(a,b) (a>=b?a:b)
 #define min(a,b) (a<=b?a:b)
 

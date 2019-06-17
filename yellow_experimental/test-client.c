@@ -110,8 +110,8 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 							objective = yellow->target->position;
 						}
 						else{
-							//objective = yellow->node.position;
-							objective = blue_pos;
+							objective = yellow->node.position;
+							//objective = blue_pos;
 						}
 					}
 					else{

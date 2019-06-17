@@ -20,7 +20,6 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 	Point blue_pos = create_point(0,0);
 	float distance_to_destination;
 	printf("=======================================\n");
-	printf("target : %x \n", yellow->target);
 	if(is_near_point(yellow->node.position, create_point(4500,3000), MARGIN)){
 		if((*nodes_in_sight) != NULL){
 			pointer = nl_portion_by_nick(nodes_in_sight, "blue");
@@ -45,6 +44,7 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 			}
 			else{
 				if(yellow->target != NULL){
+					printf("YES JE RENTRE LA\n");
 					objective = yellow->target->position;
 				}
 				else{
@@ -65,7 +65,13 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 		objective = create_point(4500,3000);
 	}
 	else{
-		objective = create_point(4500,3000);
+		if(yellow->target != NULL){
+			printf("YES JE RENTRE LA\n");
+			objective = yellow->target->position;
+		}
+		else{
+			objective = create_point(4500,3000);
+		}
 	}
 	return objective;
 	/*printf("================= START ===============\n");

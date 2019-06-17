@@ -17,7 +17,7 @@
 
 Point Blue_behavior(Dog *blue, NodeList **nodes_in_sight){
 	Point objective = {0,0};
-	Point yellow_pos;
+	Point yellow_pos = create_point(0,0);
 	NodeList *pointer;
 	//  ===================  MET TON CODE ICI YANNU =======================
 	if( is_near_point(blue->node.position, create_point(4500,3000), 40) ){

@@ -618,14 +618,14 @@ Point encode_coordinate(int a) {
 int decode_coordinate(Point p) {
     int a;
 
-    if (is_near_point(p, create_point(-38, -41), 2 * MARGIN)) a = 0;
-    else if (is_near_point(p, create_point(3, -42), 2 * MARGIN)) a = 1;
-    else if (is_near_point(p, create_point(39, -40), 2 * MARGIN)) a = 2;
-    else if (is_near_point(p, create_point(44, 2), 2 * MARGIN)) a = 3;
-    else if (is_near_point(p, create_point(40, 38), 2 * MARGIN)) a = 4;
-    else if (is_near_point(p, create_point(-1, 41), 2 * MARGIN)) a = 5;
-    else if (is_near_point(p, create_point(-42, 39), 2 * MARGIN)) a = 6;
-    else if (is_near_point(p, create_point(-39, 4), 2 * MARGIN)) a = 7;
+    if (is_near_point(p, create_point(-40, -40), 2 * MARGIN)) a = 0;
+    else if (is_near_point(p, create_point(0, -40), 2 * MARGIN)) a = 1;
+    else if (is_near_point(p, create_point(40, -40), 2 * MARGIN)) a = 2;
+    else if (is_near_point(p, create_point(40, 0), 2 * MARGIN)) a = 3;
+    else if (is_near_point(p, create_point(40, 40), 2 * MARGIN)) a = 4;
+    else if (is_near_point(p, create_point(0, 40), 2 * MARGIN)) a = 5;
+    else if (is_near_point(p, create_point(-40, 40), 2 * MARGIN)) a = 6;
+    else if (is_near_point(p, create_point(-40, 0), 2 * MARGIN)) a = 7;
 
     return a;
 }
@@ -640,43 +640,47 @@ Point encode_msg(Dog *dog) {
         x_size = get_octal_size(x),
         y_size = get_octal_size(y);
 
-    if (size_i < 3) {
+    if (size_i < 5) {
         switch (size_i) {
             case 0:
                 result = encode_coordinate(id_size);
                 break;
 
-            case 1:
+            case 2:
                 result = encode_coordinate(x_size);
                 break;
 
-            case 2:
+            case 4:
                 result = encode_coordinate(y_size);
+                break;
+
+            default:
+                result = ORIGIN;
         }
 
         dog->message.size_i++;
 
     } else {
-        if (id_i < id_size) {
-            result = encode_coordinate(get_octal_digit(id, id_size - id_i - 1));
+        if (id_i < id_size * 2) {
+            result = id_i % 2 ? ORIGIN : encode_coordinate(get_octal_digit(id, id_size - id_i / 2 - 1));
             dog->message.id_i++;
 
-        } else if (x_i < x_size) {
-            result = encode_coordinate(get_octal_digit(x, x_size - x_i - 1));
+        } else if (x_i < x_size * 2) {
+            result = x_i % 2 ? ORIGIN : encode_coordinate(get_octal_digit(x, x_size - x_i / 2 - 1));
             dog->message.x_i++;
 
         } else {
-            result = encode_coordinate(get_octal_digit(y, y_size - y_i - 1));
+            result = y_i % 2 ? ORIGIN : encode_coordinate(get_octal_digit(y, y_size - y_i / 2 - 1));
             dog->message.y_i++;
         }
 
-        if (y_i == y_size - 1) dog->message.done = 1;
+        if (y_i == y_size * 2 - 1) dog->message.done = 1;
     }
 
     return create_point(position.x + result.x, position.y + result.y);
 }
 
-void decode_msg(Dog *dog, Point info) {
+int decode_msg(Dog *dog, Point info) {
     Message msg = dog->message;
     Point position = dog->node.position,
           point = create_point(info.x - position.x, info.y - position.y);
@@ -684,7 +688,8 @@ void decode_msg(Dog *dog, Point info) {
     int size_i = msg.size_i,
         id_i = msg.id_i, x_i = msg.x_i, y_i = msg.y_i,
         result = decode_coordinate(point);
-    printf("PK SA MARCH PO RESULT = %d X = %d Y = %d\n", result, point.x, point.y);
+
+    if (is_near_point(point, ORIGIN, MARGIN)) return 0;
 
     if (size_i < 3) {
         switch (size_i) {
@@ -718,8 +723,9 @@ void decode_msg(Dog *dog, Point info) {
 
         if (y_i == 1) dog->message.done = 1;
     }
-}
 
+    return 1;
+}
 
 // ================= BRINGING FONCTIONS ===================
 
@@ -756,7 +762,6 @@ Point bring_back_sheep(Node target,int radius, Point destination){
     objective.y = finaly;
     return objective;
 }
-
 
 void printpoint(Point point){
     printf("x : %d\n", point.x);
@@ -802,4 +807,21 @@ void printlist(NodeList **head){
         }
     }
     printf("End\n\n");
+}
+
+int main() {
+
+    Dog dog = create_dog(create_node(9, create_point(4500, 3000), "salut"), 9999, 9999),
+        dog2 = create_dog(create_node(10, create_point(4500, 3000), "salut2"), 9999, 9999);
+    Point x;
+    dog.message = create_message(59, create_point(48794, 59849));
+
+    while (!dog2.message.done) {
+        x = encode_msg(&dog);
+        decode_msg(&dog2, x);
+        printpoint(x);
+        printf("\n");
+    }
+
+    printf("%d %d %d\n", dog2.message.id, dog2.message.position.x, dog2.message.position.y);
 }

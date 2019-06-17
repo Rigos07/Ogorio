@@ -3,6 +3,7 @@
 #define SHEEP_PUSHING_PERCENT 0.1
 #define max(a,b) (a>=b?a:b)
 #define min(a,b) (a<=b?a:b)
+#define ORIGIN create_point(0, 0)
 
 ///////////////// REPRENDRE COMMENTAIRES !!!!!!!!!!
 
@@ -219,9 +220,12 @@ int decode_coordinate(Point p);
 
 Point encode_msg(Dog *dog);
 
-void decode_msg(Dog *dog, Point info);
+int decode_msg(Dog *dog, Point info);
 
-Point bring_back_sheep(Node target,int radius, Point destination);
+
+// ================= BRINGING FONCTIONS ===================
+
+Point bring_back_sheep(Node target, int radius, Point destination);
 
 void printnode(Node node);
 void printpoint(Point point);

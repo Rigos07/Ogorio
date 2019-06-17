@@ -38,6 +38,7 @@ Point Blue_behavior(Dog *blue, NodeList **nodes_in_sight){
 				else{
 					printf("AYE FINI\n");
 					blue->message.started = 0;
+					blue->message.done = 0;
 					objective = create_point(4500,3000);
 				}
 			}

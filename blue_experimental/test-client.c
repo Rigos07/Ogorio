@@ -48,8 +48,8 @@ Point Blue_behavior(Dog *blue, NodeList **nodes_in_sight){
 			else{
 				if(blue->node.position.x == yellow_pos.x && blue->node.position.y == yellow_pos.y ){
 					sheep = closest_sheep(*blue, 999999);
-					blue->message = create_message(239, create_point(239,239));
-					//blue->message = create_message(sheep.id, sheep.position);
+					//blue->message = create_message(239, create_point(239,239));
+					blue->message = create_message(sheep.id, sheep.position);
 					blue->message.started = 1;
 				}
 				objective = create_point(4500,3000);

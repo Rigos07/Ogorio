@@ -573,7 +573,7 @@ int get_octal_digit(int x, int index) {
 }
 
 Point encode_coordinate(int a) {
-    int x = 0, y = 0, length = 40;
+    int x = 0, y = 0, length = 100;
 
     switch (a) {
         case 0:

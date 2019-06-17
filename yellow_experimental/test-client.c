@@ -46,11 +46,11 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 				printf("START COMMUNICATION\n");
 			}
 			printf("SYNCHRONISING....\n");
-			objective = create_point(1000,1000);
+			objective = blue_pos;
 		}
 	}
 	else{
-		objective = create_point(1000,1000);
+		objective = blue_pos;
 	}
 
 	return objective;

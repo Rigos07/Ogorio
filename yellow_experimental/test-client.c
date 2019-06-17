@@ -55,7 +55,8 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 	Point blue_pos = create_point(0,0);
 	float distance_to_destination;
 	if(is_near_point(yellow->node.position, create_point(4500,3000), MARGIN)){
-		if(nodes_in_sight != NULL){
+		if(*nodes_in_sight != NULL){
+			printf("LAAAAAAAAA %x\n", nodes_in_sight);
 			printlist(&nodes_in_sight);
 			while(pointer != NULL){
 				printnode(pointer->node);

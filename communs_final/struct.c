@@ -630,8 +630,8 @@ int decode_coordinate(Point p) {
     return a;
 }
 
-Point encode_msg(Message *msg, Point reset) {
-    Point result = create_point(-reset.x, -reset.y);
+Point encode_msg(Message *msg) {
+    Point result;
     int size_i = msg->size_i,
         id_i = msg->id_i, x_i = msg->x_i, y_i = msg->y_i,
         id = msg->id, x = msg->position.x, y = msg->position.y,
@@ -639,38 +639,45 @@ Point encode_msg(Message *msg, Point reset) {
         x_size = get_octal_size(x),
         y_size = get_octal_size(y);
 
-    if (size_i < 5) {
+    if (size_i < 6) {
         switch (size_i) {
-            case 0:
+            case 0: case 1:
                 result = encode_coordinate(id_size);
                 break;
 
-            case 2:
+            case 2: case 3:
                 result = encode_coordinate(x_size);
                 break;
 
-            case 4:
+            case 4: case 5:
                 result = encode_coordinate(y_size);
                 break;
         }
 
+        if (size_i % 2) result = create_point(-result.x, -result.y);
         msg->size_i++;
 
     } else {
         if (id_i < id_size * 2) {
-            if (id_i % 2) result = encode_coordinate(get_octal_digit(id, id_size - id_i / 2 - 1));
+            result = encode_coordinate(get_octal_digit(id, id_size - id_i / 2 - 1));
+
+            if (id_i % 2) result = create_point(-result.x, -result.y);
             msg->id_i++;
 
         } else if (x_i < x_size * 2) {
-            if (x_i % 2) result = encode_coordinate(get_octal_digit(x, x_size - x_i / 2 - 1));
+            result = encode_coordinate(get_octal_digit(x, x_size - x_i / 2 - 1));
+
+            if (x_i % 2) result = create_point(-result.x, -result.y);
             msg->x_i++;
 
         } else {
-            if (y_i % 2) result = encode_coordinate(get_octal_digit(y, y_size - y_i / 2 - 1));
+            result = encode_coordinate(get_octal_digit(y, y_size - y_i / 2 - 1));
+
+            if (y_i % 2) result = create_point(-result.x, -result.y);
             msg->y_i++;
         }
 
-        if (y_i == y_size * 2 - 1) msg->done = 1;
+        if (y_i == y_size * 2) msg->done = 1;
     }
 
     return result;

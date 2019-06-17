@@ -96,8 +96,7 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 				pointer = nl_portion_by_nick(nodes_in_sight, "blue");
 				if(pointer != NULL){
 					if(pointer != NULL){
-						blue_pos = pointer->node.position;
-					}
+					blue_pos = pointer->node.position;
 					if(yellow->message.started){
 						decode_msg(yellow,blue_pos);
 						printf("OUAIS OK JE VOIS\n");
@@ -106,7 +105,7 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 							yellow->target = malloc(sizeof(Node));
 							*(yellow->target) = create_node(yellow->message.id, yellow->message.position, "UN TRUC");
 							printnode(*(yellow->target));
-							yellow->message.started = 1;
+							yellow->message.started = 0;
 							objective = yellow->target->position;
 						}
 						else{

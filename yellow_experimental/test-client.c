@@ -44,7 +44,7 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 			}
 			else{
 				if(yellow->target != NULL){
-					printf("YES JE RENTRE LA\n");
+					printf("GO A LA BREBIS\n");
 					objective = yellow->target->position;
 					printpoint(yellow->target->position);
 				}
@@ -67,14 +67,12 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 	}
 	else{
 		if(yellow->target != NULL){
-			printf("YES JE RENTRE LA, JE SUIS ASSES LOIN DU POINT\n");
 			objective = yellow->target->position;
 		}
 		else{
 			objective = create_point(4500,3000);
 		}
 	}
-	printf("OBJECTIF FINAL : %d , %d\n", objective.x, objective.y);
 	return objective;
 	/*printf("================= START ===============\n");
 	if((*nodes_in_sight) != NULL){

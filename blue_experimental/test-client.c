@@ -23,7 +23,6 @@ Point Blue_behavior(Dog *blue, NodeList **nodes_in_sight){
 			objective = encode_msg(blue);
 			printf("LE POINT : \n");
 			printpoint(objective);
-			decode_msg(blue->node.position);
 		}
 		else{
 			printf("AYE FINI\n");

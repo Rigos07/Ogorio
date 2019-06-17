@@ -21,6 +21,7 @@ Point Blue_behavior(Dog *blue, NodeList **nodes_in_sight){
 	Node sheep;
 	NodeList *pointer = *nodes_in_sight;
 	sheep_count(blue, nodes_in_sight, sheepfold_center, sheepfold_radius);
+	printf("===================== START ==========================\n");
 	//  ===================  MET TON CODE ICI YANNU =======================
 	if( is_near_point(blue->node.position, create_point(4500,3000), 40) ){
 		if((*nodes_in_sight) != NULL){
@@ -66,6 +67,7 @@ Point Blue_behavior(Dog *blue, NodeList **nodes_in_sight){
 		objective.x = 4500;
 		objective.y = 3000;
 	}
+	printf("===================== END ==========================\n");
 	/*printf("===================== START ====================\n");
 	sheep_count(blue, nodes_in_sight, sheepfold_center, sheepfold_radius);
 	if(is_near_path(&path, blue->node.position) && (blue->sheeps != NULL) ){

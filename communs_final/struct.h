@@ -221,7 +221,7 @@ Point encode_msg(Dog *dog);
 
 void decode_msg(Dog *dog, Point info);
 
-Point bring_back_sheep(Node target,int radius, Point destination)
+Point bring_back_sheep(Node target,int radius, Point destination);
 
 void printnode(Node node);
 void printpoint(Point point);

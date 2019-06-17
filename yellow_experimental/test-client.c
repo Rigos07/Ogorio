@@ -107,6 +107,10 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 							*(yellow->target) = create_node(yellow->message.id, yellow->message.position, "UN TRUC");
 							printnode(*(yellow->target));
 							yellow->message.started = 1;
+							objective = yellow->target->position;
+						}
+						else{
+							objective = yellow->node.position;
 						}
 					}
 					else{

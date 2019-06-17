@@ -114,7 +114,7 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 						}
 					}
 					else{
-						if(is_near_point(yellow->node.position, blue_pos, 2)){
+						if(is_near_point(yellow->node.position, blue_pos, 0)){
 							yellow->message.started = 1;
 							printf("START COMMUNICATION\n");
 						}

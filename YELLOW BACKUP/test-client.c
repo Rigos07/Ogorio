@@ -18,6 +18,7 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 	Point objective;
 	NodeList *pointer = *nodes_in_sight;
 	float distance_to_destination;
+	printf("================= START ===============\n");
 	if((*nodes_in_sight) != NULL){
 		printf("CURRENT POSITION : %d , %d\n",yellow->node.position.x,yellow->node.position.y);
 		if(yellow->target != NULL){
@@ -27,7 +28,9 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 				yellow->target = &(pointer->node);
 				if(is_closest_to_sheep(yellow->target->position, yellow->node, pointer) == 0){
 					//ABORTING
-					printf("OK I LET YOU THIS ONE\n");
+					printf("\nMEINE TARGET\n");
+					printnode(*(yellow->target));
+					printf("ABORTING : OTHER KOLLEGE IS CLOSEST TO SHEEP\n");
 					free(yellow->target);
 					yellow->target = NULL;
 					objective = follow_path(&path, *yellow , 9999999);	
@@ -37,14 +40,14 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 					distance_to_destination = distance(yellow->target->position,sheepfold_center);
 					if(distance_to_destination >= sheepfold_radius - MARGIN){ //HAVE A TARGET AND TARGET IS IN SIGHT AND OUTSIDE SHEEPFOLD
 						objective = bring_back_sheep(*(yellow->target), YELLOW_RADIUS, sheepfold_center);
-						printf("\nMEINE TARGET\n");
+						printf("\nI'M BRINGING MY TARGET BACK HOME : \n");
 						printnode(pointer->node);
 						printf("GOING TO : %d , %d\n", objective.x, objective.y );
 						printf("DIST = %f\n", distance_to_destination);
 						printf("KEINE GNADE, MEINE KINDER !\n" );
 					}
 					else{ //HAVE A TARGET AND TARGET IS IN SIGHT AND INSIDE SHEEPFOLD
-						printf("TARGET BRINGED BACK TO SHEEPFOLD\n* MISSION COMPLETE *\n");
+						printf("TARGET BRINGED BACK TO SHEEPFOLD, AUF WIDERSEHEN MEINE SCHAF\n* MISSION COMPLETE *\n");
 						objective = follow_path(&path, *yellow , 9999999);
 						free(yellow->target);
 						yellow->target = NULL;
@@ -53,7 +56,7 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 			}
 			else{ //HAVE A TARGET AND TARGET IS NOT IN SIGHT
 				objective = yellow->target->position;
-				printf("GOING TO LAST TARGET POSITION BECAUSE I LOST MY TARGET OF SIGHT I AM VERY SAD\n");
+				printf("TARGET LOST, GOING TO LAST POSITION REGISTERED\n");
 			}
 		}
 		else{
@@ -71,20 +74,21 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 
 				pointer = *nodes_in_sight;
 				if(is_closest_to_sheep(yellow->target->position, yellow->node, pointer) == 0){
-					printf("OK I LET YOU THIS ONE\n");
 					free(yellow->target);
 					yellow->target = NULL;
 				}
 
 				if(yellow->target != NULL){
-					printf("NEW TARGET\n");
+					printf("MEINE NEUES ZIEL : \n");
 					objective = bring_back_sheep(*(yellow->target), YELLOW_RADIUS, sheepfold_center);
 				}
 				else{
+					printf("FOLLOWING DEFAULT PATH, NO TARGET FOUND : \n");
 					objective = follow_path(&path, *yellow , 9999999);					
 				}
 			}
 			else{ //HAVE NO TARGET AND NO POSSIBLE TARGET FOUND
+				printf("FOLLOWING DEFAULT PATH : \n");
 				objective = follow_path(&path, *yellow , 9999999);
 			}
 		}
@@ -93,7 +97,7 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 		objective = follow_path(&path, *yellow , 9999999);
 		printf("NODE LIST IS EMPTY THIS SHOULD NOT HAPPEN\n");
 	}
-
+	printf("================ END ================\n");
 	return objective;
 }
 

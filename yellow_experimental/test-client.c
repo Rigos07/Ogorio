@@ -20,7 +20,7 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 	Point blue_pos = create_point(0,0);
 	float distance_to_destination;
 	printf("=======================================\n");
-	printf("target : %x \n", yellow->target);
+	//printf("target : %x \n", yellow->target);
 	if(is_near_point(yellow->node.position, create_point(4500,3000), MARGIN)){
 		if((*nodes_in_sight) != NULL){
 			pointer = nl_portion_by_nick(nodes_in_sight, "blue");

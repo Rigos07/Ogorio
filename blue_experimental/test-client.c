@@ -18,7 +18,9 @@
 Point Blue_behavior(Dog *blue, NodeList **nodes_in_sight){
 	Point objective = {0,0};
 	Point yellow_pos = create_point(0,0);
+	Node sheep;
 	NodeList *pointer = *nodes_in_sight;
+	sheep_count(blue, nodes_in_sight, sheepfold_center, sheepfold_radius);
 	//  ===================  MET TON CODE ICI YANNU =======================
 	if( is_near_point(blue->node.position, create_point(4500,3000), 40) ){
 		if((*nodes_in_sight) != NULL){
@@ -29,11 +31,12 @@ Point Blue_behavior(Dog *blue, NodeList **nodes_in_sight){
 				pointer = pointer->next;
 			}
 			if(blue->message.started){
-				if(!blue->message.done){;
+				if(!blue->message.done){
+					//sheep = closest_sheep(*blue, 999999);
+					//blue->message = create_message(sheep.id, sheep.position);
 					printf("J'ENVOIE : id : %d pos : %d , %d\n", blue->message.id,blue->message.position.x,blue->message.position.y);
 					objective = encode_msg(&(blue->message), yellow_pos);
-					printf("LE POINT : \n");
-					printpoint(objective);
+					printf("LE MESSAGE : \n",blue->message.done);
 				}
 				else{
 					printf("AYE FINI\n");

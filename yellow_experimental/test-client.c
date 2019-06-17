@@ -34,6 +34,7 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 					printf("J'AI COMPRIS : BREBIS N° %d  EN : %d , %d\n",yellow->message.id, yellow->message.position.x, yellow->message.position.y);
 					yellow->message.started = 0;
 					yellow->message.done = 0;
+					*(yellow->target) = create_node(yellow->message.id, yellow->message.position, "UN TRUC");
 					objective = yellow->message.position;
 				}
 				else{
@@ -41,11 +42,17 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 				}
 			}
 			else{
-				if(yellow->node.position.x == blue_pos.x && yellow->node.position.y == blue_pos.y ){
-					create_message(0, create_point(0,0));
-					yellow->message.started = 1;
+				if(yellow->target != NULL){
+					objective = yellow->target->position;
 				}
-				objective = create_point(4500,3000);
+				else{
+					if(yellow->node.position.x == blue_pos.x && yellow->node.position.y == blue_pos.y ){
+						yellow->message = create_message(0, create_point(0,0));
+						yellow->message.started = 1;
+					}
+					objective = create_point(4500,3000);
+				}
+				
 			}
 			
 		}

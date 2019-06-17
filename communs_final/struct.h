@@ -60,6 +60,8 @@ typedef struct Dog {
 */
 Point create_point(int x, int y);
 
+Point opposite(Point p);
+
 /*
 * Create a new path
 * Return pointer to new path if successfully created, NULL otherwise
@@ -218,7 +220,7 @@ Point encode_coordinate(int a);
 
 int decode_coordinate(Point p);
 
-Point encode_msg(Message *msg);
+Point encode_msg(Dog *dog);
 
 int decode_msg(Dog *dog, Point info);
 

@@ -568,7 +568,7 @@ int get_octal_digit(int x, int index) {
     return x / pow(8, index);
 }
 
-Point encode_coorint a) {
+Point encode_coordinate(int a) {
     int x = 0, y = 0;
 
     switch (a) {

@@ -14,46 +14,11 @@
 
 // compile with gcc -Wall -g -o sock ./test-client.c -lwebsockets -lm
 
-Point bring_back_sheep(Node target,int radius, Point destination){
-	int dx, dy;
-	int finalx,finaly;
-	float delta_x, delta_y, distance_to_destination;
-	Point objective;
-
-	dx = target.position.x - destination.x;
-	dy = target.position.y - destination.y;
-	distance_to_destination = distance(target.position, destination);
-
-	if(distance_to_destination == 0){
-		objective.x = target.position.x;
-		objective.y = target.position.y;
-		return objective;
-	}
-
-	delta_x = ( ((radius*SHEEP_PUSHING_PERCENT)*dx) / distance_to_destination );
-	delta_y = ( ((radius*SHEEP_PUSHING_PERCENT)*dy) / distance_to_destination );
-
-
-	finalx = floor(target.position.x + delta_x);
-	finaly = floor(target.position.y + delta_y);
-
-	if(finalx < 0){
-		finalx = 0;
-	}
-	if (finaly < 0) {
-		finaly = 0;
-	}
-	objective.x = finalx;
-	objective.y = finaly;
-	return objective;
-}
-
 Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 	Point objective;
 	NodeList *pointer = *nodes_in_sight;
 	float distance_to_destination;
-	//int target_found = 0;
-	//printf("CURRENT POSITION : %d , %d\n",yellow->node.position.x,yellow->node.position.y);
+	printf("CURRENT POSITION : %d , %d\n",yellow->node.position.x,yellow->node.position.y);
 	if(yellow->target != NULL){
 		//printf("I HAVE A TARGET\n");
 		if((*nodes_in_sight) != NULL){
@@ -117,7 +82,7 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 
 				if(yellow->target != NULL){
 					printf("NEW TARGET\n");
-					objective = bring_back_sheep(*(yellow->target), 100, sheepfold_center);
+					objective = bring_back_sheep(*(yellow->target), YELLOW_RADIUS, sheepfold_center);
 				}
 				else{
 					objective = follow_path(&path, *yellow , 9999999);					

@@ -720,6 +720,44 @@ void decode_msg(Dog *dog, Point info) {
     }
 }
 
+
+// ================= BRINGING FONCTIONS ===================
+
+Point bring_back_sheep(Node target,int radius, Point destination){
+    int dx, dy;
+    int finalx,finaly;
+    float delta_x, delta_y, distance_to_destination;
+    Point objective;
+
+    dx = target.position.x - destination.x;
+    dy = target.position.y - destination.y;
+    distance_to_destination = distance(target.position, destination);
+
+    if(distance_to_destination == 0){
+        objective.x = target.position.x;
+        objective.y = target.position.y;
+        return objective;
+    }
+
+    delta_x = ( ((radius*SHEEP_PUSHING_PERCENT)*dx) / distance_to_destination );
+    delta_y = ( ((radius*SHEEP_PUSHING_PERCENT)*dy) / distance_to_destination );
+
+
+    finalx = floor(target.position.x + delta_x);
+    finaly = floor(target.position.y + delta_y);
+
+    if(finalx < 0){
+        finalx = 0;
+    }
+    if (finaly < 0) {
+        finaly = 0;
+    }
+    objective.x = finalx;
+    objective.y = finaly;
+    return objective;
+}
+
+
 void printpoint(Point point){
     printf("x : %d\n", point.x);
     printf("y : %d\n", point.y);

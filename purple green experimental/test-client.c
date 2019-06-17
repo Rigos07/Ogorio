@@ -13,40 +13,6 @@
 
 // compile with gcc -Wall -g -o sock ./test-client.c -lwebsockets -lm
 
-Point bring_back_sheep(Node target,int radius, Point destination){
-	int dx, dy;
-	int finalx,finaly;
-	float delta_x, delta_y, distance_to_destination;
-	Point objective;
-
-	dx = target.position.x - destination.x;
-	dy = target.position.y - destination.y;
-	distance_to_destination = distance(target.position, destination);
-
-	if(distance_to_destination == 0){
-		objective.x = target.position.x;
-		objective.y = target.position.y;
-		return objective;
-	}
-
-	delta_x = ( ((radius - 90)*dx) / distance_to_destination );
-	delta_y = ( ((radius - 90)*dy) / distance_to_destination );
-
-
-	finalx = floor(target.position.x + delta_x);
-	finaly = floor(target.position.y + delta_y);
-
-	if(finalx < 0){
-		finalx = 0;
-	}
-	if (finaly < 0) {
-		finaly = 0;
-	}
-	objective.x = finalx;
-	objective.y = finaly;
-	return objective;
-}
-
 Point green_behavior(Dog *green, NodeList **nodes_in_sight){
 	Point objective;
 	NodeList *pointer = *nodes_in_sight;
@@ -63,7 +29,7 @@ Point green_behavior(Dog *green, NodeList **nodes_in_sight){
 				if(distance_to_destination >= sheepfold_radius ){ //HAVE A TARGET AND TARGET IS IN SIGHT AND OUTSIDE SHEEPFOLD
 					printf("\nVOICI MA CIBLE : \n");
 					printnode(pointer->node);
-					objective = bring_back_sheep(*(green->target), 100, sheepfold_center);
+					objective = bring_back_sheep(*(green->target), GREEN_RADIUS, sheepfold_center);
 					printf("ALLONS A : %d , %d\n", objective.x, objective.y );
 					printf("DIST = %f\n", distance_to_destination);
 					printf("LA BERGERIE C'EST EN %d , %d !!!!\n",sheepfold_center.x,sheepfold_center.y );
@@ -105,7 +71,7 @@ Point green_behavior(Dog *green, NodeList **nodes_in_sight){
 				green->target = &(pointer->node);
 				printf("\nNEW TARGET\n");
 				printnode(pointer->node);
-				objective = bring_back_sheep(*(green->target), 100, sheepfold_center);
+				objective = bring_back_sheep(*(green->target), GREEN_RADIUS, sheepfold_center);
 				printf("SHEEPFOLD IS IN %d , %d !!!!\n",sheepfold_center.x,sheepfold_center.y );
 			}
 			else{ //HAVE NO TARGET AND NO POSSIBLE TARGET FOUND

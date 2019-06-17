@@ -63,6 +63,9 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 				pointer = pointer->next;
 			}
 			decode_msg(yellow,blue_pos);
+			if(yellow->message.done){
+				printf("J'AI COMPRIS : BREBIS N° %d  EN : %d , %d\n",yellow->message.id, yellow->message.position.x, yellow->message.position.y);
+			}
 		}
 		else{
 			printf("EMPTY SIGHT\n");

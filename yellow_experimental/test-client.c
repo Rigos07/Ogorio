@@ -96,6 +96,8 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 				pointer = nl_portion_by_nick(nodes_in_sight, "blue");
 				if(pointer != NULL){
 					blue_pos = pointer->node.position;
+					printf("YELLOW POS : %d %d\n", blue_pos.x, blue_pos.y);
+					printf("BLUE POS : %d %d\n", yellow->node.position.x, yellow->node.position.y);
 					if(yellow->message.started){
 						decode_msg(yellow,blue_pos);
 						printf("OUAIS OK JE VOIS\n");
@@ -112,7 +114,7 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 						}
 					}
 					else{
-						if(is_near_point(yellow->node.position, blue_pos, 0)){
+						if(is_near_point(yellow->node.position, blue_pos, 1)){
 							yellow->message.started = 1;
 							printf("START COMMUNICATION\n");
 						}

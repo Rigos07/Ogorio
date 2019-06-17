@@ -27,6 +27,7 @@ Point Blue_behavior(Dog *blue, NodeList **nodes_in_sight){
 		if(pointer != NULL){
 			yellow_pos = pointer->node.position;
 			printf("YELLOW POS : %d %d\n", yellow_pos.x, yellow_pos.y);
+			printf("BLUE POS : %d %d\n", blue->node.position.x, blue->node.position.y);
 			if(blue->message.started){
 				if(!(blue->message.done)){
 
@@ -44,7 +45,7 @@ Point Blue_behavior(Dog *blue, NodeList **nodes_in_sight){
 				}
 			}
 			else{
-				if(is_near_point(blue->node.position, yellow_pos, 0)){
+				if(is_near_point(blue->node.position, yellow_pos, 1)){
 					blue->message.started = 1;
 					printf("DEBUT DE LA COM\n");
 				} 

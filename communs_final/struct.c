@@ -223,7 +223,7 @@ int update_node(NodeList **head, Node node) {
 // ================== MESSAGE PRIMITIVES ==================
 
 Message create_message(int id, Point point) {
-    Message new_message = {id, point, 0, 0, 0, 0, 0};
+    Message new_message = {id, point, 0, 0, 0, 0, 0, 0};
     return new_message;
 }
 

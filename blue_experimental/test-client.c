@@ -21,6 +21,7 @@ Point Blue_behavior(Dog *blue, NodeList **nodes_in_sight){
 	NodeList *pointer = *nodes_in_sight;
 	sheep_count(blue, nodes_in_sight, sheepfold_center, sheepfold_radius);
 	if(is_near_path(&path, blue->node.position) && (blue->sheeps != NULL) ){
+		printlist(&blue->sheeps);
 		pointer = nl_portion_by_nick(nodes_in_sight, "yellow");
 		if(pointer != NULL){
 			if(blue->message.started){

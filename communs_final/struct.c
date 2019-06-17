@@ -573,38 +573,38 @@ Point encode_coordinate(Point p, int a) {
 
     switch (a) {
         case 0:
-            x = -1000;
-            y = -1000;
+            x = -40;
+            y = -40;
             break;
 
         case 1:
             x = 0;
-            y = -1000;
+            y = -40;
             break;
 
         case 2:
-            x = 1000;
-            y = -1000;
+            x = 40;
+            y = -40;
             break;
 
         case 3:
-            x = 1000;
+            x = 40;
             y = 0;
             break;
 
         case 4:
-            x = 1000;
-            y = 1000;
+            x = 40;
+            y = 40;
             break;
 
         case 5:
             x = 0;
-            y = 1000;
+            y = 40;
             break;
 
         case 6:
-            x = -1000;
-            y = 1000;
+            x = -40;
+            y = 40;
             break;
 
         case 7:

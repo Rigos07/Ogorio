@@ -34,6 +34,7 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 					printf("J'AI COMPRIS : BREBIS N° %d  EN : %d , %d\n",yellow->message.id, yellow->message.position.x, yellow->message.position.y);
 					yellow->message.started = 0;
 					yellow->message.done = 0;
+					yellow->target = malloc(sizeof(Node));
 					*(yellow->target) = create_node(yellow->message.id, yellow->message.position, "UN TRUC");
 					objective = yellow->message.position;
 				}

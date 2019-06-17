@@ -100,10 +100,13 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 					}
 					if(yellow->message.started){
 						decode_msg(yellow,blue_pos);
+						printf("OUAIS OK JE VOIS\n");
 						if(yellow->message.done){
 							printf("J'AI COMPRIS : BREBIS N° %d  EN : %d , %d\n",yellow->message.id, yellow->message.position.x, yellow->message.position.y);
 							yellow->target = malloc(sizeof(Node));
 							*(yellow->target) = create_node(yellow->message.id, yellow->message.position, "UN TRUC");
+							printnode(*(yellow->target));
+							yellow->message.started = 1;
 						}
 					}
 					else{

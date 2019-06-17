@@ -41,9 +41,11 @@ Point Blue_behavior(Dog *blue, NodeList **nodes_in_sight){
 				}
 			}
 			else{
-				if(is_near_point(blue->node.position, yellow_pos, 0)){
+				if(is_near_point(blue->node.position, yellow_pos, 1)){
 					blue->message.started = 1;
+					printf("DEBUT DE LA COM\n");
 				}
+				printf("ATTENTE DE SYNCHRONISATION\n");
 				objective = blue->node.position;
 			}
 		}

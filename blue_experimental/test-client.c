@@ -36,10 +36,9 @@ Point Blue_behavior(Dog *blue, NodeList **nodes_in_sight){
 					//printf("J'ENVOIE : id : %d pos : %d , %d\n", blue->message.id,blue->message.position.x,blue->message.position.y);
 					printf("OK ALORS : size i : %d id i : %d x i : %d y i : %d\n", blue->message.size_i,blue->message.id_i,blue->message.x_i,blue->message.y_i);
 					offset = encode_msg(&(blue->message), create_point(0,0));
-					printf("OFFSET : %d, %d\n",offset.x, offset.y);
+					printf("OFFSET : %d , %d //// OBJECTIF : %d , %d\n",offset.x, offset.y, objective.x, objective.y);
 					objective.x = blue->node.position.x + offset.x;
 					objective.y = blue->node.position.y + offset.y;
-					printf("OBJECTIF :%d , %d\n", objective.x, objective.y);
 				}
 				else{
 					printf("AYE FINI\n");

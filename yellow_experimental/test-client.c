@@ -63,11 +63,11 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 		else{
 			printf("EMPTY SIGHT\n");
 		}
-		objective = create_point(4500,3000);
+		//objective = create_point(4500,3000); // OK LUI IL FAIT CHIER A GERER DEMAIN
 	}
 	else{
 		if(yellow->target != NULL){
-			printf("YES JE RENTRE LA\n");
+			printf("YES JE RENTRE LA, JE SUIS ASSES LOIN DU POINT\n");
 			objective = yellow->target->position;
 		}
 		else{

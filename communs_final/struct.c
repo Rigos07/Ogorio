@@ -120,6 +120,27 @@ NodeList *get_nodelist_portion(NodeList **head, int id) {
     return this_element;
 }
 
+NodeList* nl_portion_by_nick(NodeList **head, char* nick) {
+    if (*head == NULL) {
+        fprintf(stderr, "ERROR : Trying to get node in empty nodelist\n");
+        return NULL;
+    }
+
+    NodeList *this_element = *head;
+    Node this_node = this_element->node;
+
+    while (this_element->next != NULL && strcmp(nick, this_node.nickname)) {
+        this_element = this_element->next;
+        this_node = this_element->node;
+    }
+
+    if (strcmp(nick, this_node.nickname)) {
+        return NULL;
+    }
+
+    return this_element;
+}
+
 int add_node(NodeList **head, Node new_node) {
     NodeList *new = malloc(sizeof(NodeList)), *element = *head;
     int i, i_max = get_nodelist_size(head) - 1;

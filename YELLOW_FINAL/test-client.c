@@ -63,7 +63,7 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 				yellow->target = &(pointer->node);
 				if(is_closest_to_sheep_BIS(yellow->target->position, yellow->node, nodes_in_sight) != NULL){
 					other_yellow = is_closest_to_sheep_BIS(yellow->target->position, yellow->node, nodes_in_sight);
-					if(other_yellow->node.id > yellow->node.id){
+					if(other_yellow->node.id > yellow->node.id && other_yellow.pos.x == yellow->node.position.x && other_yellow.pos.y == yellow->node.position.y){
 						//ABORTING
 						printf("\nMEINE TARGET\n");
 						printnode(*(yellow->target));

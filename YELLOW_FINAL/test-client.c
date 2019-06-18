@@ -39,7 +39,7 @@ NodeList *is_closest_to_sheep_BIS(Point target, Node self, NodeList **head) {
     if(closest == 0){
         printf("bite\n");
         closest_yellow = get_nodelist_portion(&head, closest_id);
-        if(closest_yellow==NULL)printf("cheh\n\n\n");
+        if(head==NULL)printf("cheh\n\n\n");
     }
     else{
         closest_yellow = NULL;

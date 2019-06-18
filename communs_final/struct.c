@@ -662,14 +662,14 @@ Point encode_coordinate(int a) {
 int decode_coordinate(Point p) {
     int a, length = 40, radius = length / sqrt(2);
 
-    if (is_near_point(p, create_point(-radius, -radius), MARGIN)) a = 0;
-    else if (is_near_point(p, create_point(0, -length), MARGIN)) a = 1;
-    else if (is_near_point(p, create_point(radius, -radius), MARGIN)) a = 2;
-    else if (is_near_point(p, create_point(length, 0), MARGIN)) a = 3;
-    else if (is_near_point(p, create_point(radius, radius), MARGIN)) a = 4;
-    else if (is_near_point(p, create_point(0, length), MARGIN)) a = 5;
-    else if (is_near_point(p, create_point(-radius, radius), MARGIN)) a = 6;
-    else if (is_near_point(p, create_point(-length, 0), MARGIN)) a = 7;
+    if (is_near_point(p, create_point(-radius, -radius), 2 * MARGIN)) a = 0;
+    else if (is_near_point(p, create_point(0, -length), 2 * MARGIN)) a = 1;
+    else if (is_near_point(p, create_point(radius, -radius), 2 * MARGIN)) a = 2;
+    else if (is_near_point(p, create_point(length, 0), 2 * MARGIN)) a = 3;
+    else if (is_near_point(p, create_point(radius, radius), 2 * MARGIN)) a = 4;
+    else if (is_near_point(p, create_point(0, length), 2 * MARGIN)) a = 5;
+    else if (is_near_point(p, create_point(-radius, radius), 2 * MARGIN)) a = 6;
+    else if (is_near_point(p, create_point(-length, 0), 2 * MARGIN)) a = 7;
 
     return a;
 }

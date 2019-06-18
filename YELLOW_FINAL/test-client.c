@@ -14,8 +14,9 @@
 
 // compile with gcc -Wall -g -o sock ./test-client.c -lwebsockets -lm
 
-NodeList *is_closest_to_sheep_BIS(Point target, Node self, NodeList *others) {
+NodeList *is_closest_to_sheep_BIS(Point target, Node self, NodeList **head) {
     Node other;
+    NodeList *others = *head;
     int dist_self = distance(self.position, target),
         dist_other, closest = 1, closest_id;
        NodeList *closest_yellow;
@@ -37,7 +38,7 @@ NodeList *is_closest_to_sheep_BIS(Point target, Node self, NodeList *others) {
     }
     if(closest == 0){
     	printf("bite\n");
-    	closest_yellow = get_nodelist_portion(&others, closest_id);
+    	closest_yellow = get_nodelist_portion(&head, closest_id);
     }
     else{
     	closest_yellow = NULL;

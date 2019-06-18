@@ -14,6 +14,44 @@
 
 // compile with gcc -Wall -g -o sock ./test-client.c -lwebsockets -lm
 
+void purge_sheeps(Dog* dog, NodeList** head, int map_width, int map_height) {
+    NodeList* pointer = dog->sheeps;
+    Node sheep;
+    Point dog_pos = dog->node.position;
+    int min_x = 0, max_x = map_width, min_y = 0, max_y = map_height;
+    if(dog_pos.x - dog->x_sight > 0){
+    	min_x = dog_pos.x - dog->x_sight;
+    }
+    if(dog_pos.y - dog->y_sight > 0){
+    	min_y = dog_pos.y - dog->y_sight;
+    }
+
+    if(dog_pos.x + dog->x_sight < map_width){
+    	max_x = dog_pos.x + dog->x_sight;
+    }
+    if(dog_pos.y + dog->y_sight < map_height){
+    	max_y = dog_pos.y + dog->y_sight;
+    }
+    
+
+    while (pointer != NULL) {
+        sheep = pointer->node;
+        if(get_nodelist_portion(head, sheep.id) != NULL){
+        	if(is_pushed_by_yellow(head, sheep)){
+        		delete_node(&(dog->sheeps), sheep.id);
+        	}
+        }
+        else{
+        	if(is_between(sheep.position.x, min_x, max_x) && is_between(sheep.position.y, min_y, max_y)){
+        		delete_node(&(dog->sheeps), sheep.id);
+        	}
+        }
+        
+        pointer = pointer->next;
+    }
+}
+
+
 Point Blue_behavior(Dog *blue, NodeList **nodes_in_sight){
 	Point objective = {0,0};
 	Point yellow_pos = create_point(0,0);
@@ -34,6 +72,7 @@ Point Blue_behavior(Dog *blue, NodeList **nodes_in_sight){
 	}
 	else{
 		sheep_count(blue, nodes_in_sight, sheepfold_center, sheepfold_radius);
+		purge_sheeps(blue, nodes_in_sight, 9000, 6000);
 		//printlist(&(blue->sheeps));
 		if(is_near_path(&path, blue->node.position, MARGIN)){
 			if(blue->sheeps != NULL){

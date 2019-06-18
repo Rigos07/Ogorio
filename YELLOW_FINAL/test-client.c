@@ -15,8 +15,8 @@
 // compile with gcc -Wall -g -o sock ./test-client.c -lwebsockets -lm
 
 Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
-	Point objective, blue_pos, other_yellow_pos = create_point(0,0);
-	NodeList *pointer = *nodes_in_sight, *other_yellow;
+	Point objective, blue_pos;
+	NodeList *pointer = *nodes_in_sight;
 	float distance_to_destination;
 	printf("================= START ===============\n");
 	if((*nodes_in_sight) != NULL){
@@ -99,27 +99,14 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 			}
 			else{
 				pointer = closest_nl_portion_by_nick(nodes_in_sight,*yellow,"blue");
-				other_yellow = closest_nl_portion_by_nick(nodes_in_sight,*yellow,"yellow");
 				if(pointer != NULL){
 					blue_pos = pointer->node.position;
-					printf("BLUE POS : %d %d \n", blue_pos.x, blue_pos.y);
-					if(other_yellow != NULL){
-						other_yellow_pos = other_yellow->node.position;
+					if(is_near_point(yellow->node.position, blue_pos, MARGIN)){
+						printf("DEBUT DE COOOM ICIIIIIIIIIIII\n");
+						yellow->message = create_message(0, create_point(0,0));
+						yellow->message.started = 1;
 					}
-
-					if(is_near_point(other_yellow_pos, blue_pos, 45)){
-						printf("OK JVEUX PAS VOUS DERANGER\n");
-						objective = follow_path(&path, *yellow , 9999999);
-					}
-					else{
-						if(is_near_point(yellow->node.position, blue_pos, MARGIN)){
-							printf("DEBUT DE COOOM ICIIIIIIIIIIII\n");
-							yellow->message = create_message(0, create_point(0,0));
-							yellow->message.started = 1;
-						}
-						objective = yellow->node.position;
-					}
-					
+					objective = yellow->node.position;
 				}
 				else{
 					if(yellow->sheeps != NULL){

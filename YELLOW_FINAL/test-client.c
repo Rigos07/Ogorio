@@ -54,8 +54,8 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 			pointer = get_nodelist_portion(nodes_in_sight,yellow->target->id);
 			if(pointer != NULL){
 				yellow->target = &(pointer->node);
-				if(is_closest_to_sheep_BIS(yellow->target->position, yellow->node, pointer) != NULL){
-					other_yellow = is_closest_to_sheep_BIS(yellow->target->position, yellow->node, pointer);
+				if(is_closest_to_sheep_BIS(yellow->target->position, yellow->node, *nodes_in_sight) != NULL){
+					other_yellow = is_closest_to_sheep_BIS(yellow->target->position, yellow->node, *nodes_in_sight);
 					if(other_yellow->node.id > yellow->node.id){
 						//ABORTING
 						printf("\nMEINE TARGET\n");

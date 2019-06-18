@@ -161,7 +161,7 @@ NodeList* closest_nl_portion_by_nick(NodeList **head, Dog self,char* nick) {
           distance_to_self = distance(self.node.position, this_element->node.position);
           if(distance_to_self < min_dist){
             min_id = this_element->node.id;
-            min_dist = distance_to_self
+            min_dist = distance_to_self;
           }
         }
         this_element = this_element->next;

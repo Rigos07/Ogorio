@@ -102,6 +102,7 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 				other_yellow = closest_nl_portion_by_nick(nodes_in_sight,*yellow,"yellow");
 				if(pointer != NULL){
 					blue_pos = pointer->node.position;
+					printf("BLUE POS : %d %d \n", blue_pos.x, blue_pos.y);
 					if(other_yellow != NULL){
 						other_yellow_pos = other_yellow->node.position;
 					}
@@ -116,7 +117,7 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 							yellow->message = create_message(0, create_point(0,0));
 							yellow->message.started = 1;
 						}
-					objective = yellow->node.position;
+						objective = yellow->node.position;
 					}
 					
 				}

@@ -91,9 +91,14 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 				else{
 					objective = yellow->node.position;
 				}
+				if(yellow->message.y_i < 0){
+					printf("TIME OUT\n");
+					yellow->message = create_message(0, create_point(0,0));
+					yellow->message.started = 0;
+				}
 			}
 			else{
-				pointer = nl_portion_by_nick(nodes_in_sight,"blue");
+				pointer = closest_nl_portion_by_nick(nodes_in_sight,"blue");
 				if(pointer != NULL){
 					blue_pos = pointer->node.position;
 					if(is_near_point(yellow->node.position, blue_pos, MARGIN)){

@@ -4,7 +4,20 @@ echo "Port :"
 read port
 echo "Nbr vert :"
 read vert
+echo "Nbr bleu :"
+read bleu
+echo "Nbr jaune :"
+read jaune
+
 cd ./GREEN_FINAL/ ;make ;make clean ;cd ..
 for ((i=0; $vert - $i; i++))
   do gnome-terminal -e "./GREEN_FINAL/green -o agar.io -p $port $ip"
+done
+cd ./BLUE_FINAL/ ;make ;make clean ;cd ..
+for ((i=0; $bleu - $i; i++))
+  do gnome-terminal -e "./BLUE_FINAL/blue -o agar.io -p $port $ip"
+done
+cd ./YELLOW_FINAL/ ;make ;make clean ;cd ..
+for ((i=0; $jaune - $i; i++))
+  do gnome-terminal -e "./YELLOW_FINAL/yellow -o agar.io -p $port $ip"
 done

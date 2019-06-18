@@ -73,6 +73,9 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 						objective = follow_path(&path, *yellow , 9999999);
 					}
 					else{
+						printf("ANTI STACKING MEASURE\n");
+						free(yellow->target);
+						yellow->target = NULL;
 						objective = create_point(0,0);
 					}
 					

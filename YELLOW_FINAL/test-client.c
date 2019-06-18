@@ -107,7 +107,7 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 						other_yellow_pos = other_yellow->node.position;
 					}
 
-					if(is_near_point(other_yellow_pos, blue_pos, MARGIN)){
+					if(is_near_point(other_yellow_pos, blue_pos, 45)){
 						printf("OK JVEUX PAS VOUS DERANGER\n");
 						objective = follow_path(&path, *yellow , 9999999);
 					}

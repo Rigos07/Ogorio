@@ -126,7 +126,7 @@ NodeList *get_nodelist_portion(NodeList **head, int id) {
 
 NodeList* nl_portion_by_nick(NodeList **head, char* nick) {
     if (*head == NULL) {
-        fprintf(stderr, "ERROR : Trying to get node in empty nodelist\n");
+        fprintf(stderr, "ERROR : Trying to get nodelist portion in empty nodelist\n");
         return NULL;
     }
 
@@ -141,6 +141,32 @@ NodeList* nl_portion_by_nick(NodeList **head, char* nick) {
     if (strcmp(nick, this_node.nickname)) {
         return NULL;
     }
+
+    return this_element;
+}
+
+NodeList* closest_nl_portion_by_nick(NodeList **head, Dog self,char* nick) {
+    float min_dist = 99999999999999, distance_to_self;
+    int min_id = 0;
+
+    if (*head == NULL) {
+        fprintf(stderr, "ERROR : Trying to get nodelist portion in empty nodelist\n");
+        return NULL;
+    }
+
+    NodeList *this_element = *head;
+
+    while (this_element != NULL) {
+        if(!strcmp(nick, this_element->node.nickname)){
+          distance_to_self = distance(self.node.position, this_element->node.position);
+          if(distance_to_self < min_dist){
+            min_id = this_element->node.id;
+          }
+        }
+        this_element = this_element->next;
+    }
+
+    this_element = get_nodelist_portion(head, min_id);
 
     return this_element;
 }

@@ -97,7 +97,7 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 				if(pointer != NULL){
 					blue_pos = pointer->node.position;
 					if(is_near_point(yellow->node.position, blue_pos, MARGIN)){
-						printf("DEBUT DE COOOM\n");
+						printf("DEBUT DE COOOM ICIIIIIIIIIIII\n");
 						yellow->message = create_message(0, create_point(0,0));
 						yellow->message.started = 1;
 					}

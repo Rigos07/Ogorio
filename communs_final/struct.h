@@ -150,6 +150,8 @@ NodeList *get_nodelist_portion(NodeList **head, int id);
 
 NodeList* nl_portion_by_nick(NodeList **head, char* nick);
 
+NodeList* closest_nl_portion_by_nick(NodeList **head, Dog self,char* nick);
+
 // ================== MESSAGE PRIMITIVES ==================
 
 Message create_message(int id, Point point);

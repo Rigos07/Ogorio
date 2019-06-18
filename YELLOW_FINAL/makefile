@@ -1,5 +1,5 @@
 sock : test-client.o struct.o
-	gcc -o blue test-client.o struct.o -g -lwebsockets -lm
+	gcc -o yellow test-client.o struct.o -g -lwebsockets -lm
 
 test-client.o : test-client.c client.h
 	gcc -o test-client.o -c test-client.c -Wall -g -lm

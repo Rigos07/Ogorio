@@ -207,6 +207,8 @@ Path *closest_point(Path **head, Dog dog, float max_dist);
 
 Point follow_path(Path **head, Dog dog, float max_dist);
 
+int is_pushed_by_yellow(NodeList** head, Node n);
+
 void sheep_count(Dog* dog, NodeList** head, Point sheepfold_center, int sheepfold_radius);
 
 // Dog.sheeps doit être non vide

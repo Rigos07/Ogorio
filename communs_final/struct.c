@@ -157,10 +157,11 @@ NodeList* closest_nl_portion_by_nick(NodeList **head, Dog self,char* nick) {
     NodeList *this_element = *head;
 
     while (this_element != NULL) {
-        if(!strcmp(nick, this_element->node.nickname)){
+        if(!strcmp(nick, this_element->node.nickname) && this_element->node.id != self.node.id){
           distance_to_self = distance(self.node.position, this_element->node.position);
           if(distance_to_self < min_dist){
             min_id = this_element->node.id;
+            min_dist = distance_to_self;
           }
         }
         this_element = this_element->next;
@@ -271,7 +272,7 @@ float distance(Point p1, Point p2) {
 }
 
 int is_between(int a, int b, int c) {
-    return a >= b && a < c;
+    return a >= b && a <= c;
 }
 
 Path *generate_path(Dog dog, int max_width, int max_height) {
@@ -411,7 +412,7 @@ int is_near_point(Point point1, Point point2, int margin) {
     return is_near_segment(point1, point2, point2, margin);
 }
 
-Path *is_near_path(Path **head, Point point) {
+Path *is_near_path(Path **head, Point point, int margin) {
     int i = 0, i_max = get_path_size(head) + 1;
     Path *segment1 = get_segment(head, 0), *result = NULL, *segment2;
 
@@ -421,7 +422,7 @@ Path *is_near_path(Path **head, Point point) {
 
     segment2 = segment1->next;
     while (i < i_max && result == NULL) {
-        if (is_near_segment(point, segment1->position, segment2->position, MARGIN)) {
+        if (is_near_segment(point, segment1->position, segment2->position, margin)) {
             result = segment1;
         }
 
@@ -455,10 +456,10 @@ Path *closest_point(Path **head, Dog dog, float max_dist) {
         right = create_point(x, y + i);
         stop = 1;
 
-        inters_up = is_near_path(head, up);
-        inters_down = is_near_path(head, down);
-        inters_left = is_near_path(head, left);
-        inters_right = is_near_path(head, right);
+        inters_up = is_near_path(head, up, 0);
+        inters_down = is_near_path(head, down, 0);
+        inters_left = is_near_path(head, left, 0);
+        inters_right = is_near_path(head, right, 0);
 
         if (inters_up != NULL) {
             dest = up;
@@ -492,10 +493,11 @@ Path *closest_point(Path **head, Dog dog, float max_dist) {
 
 Point follow_path(Path **head, Dog dog, float max_dist) {
     Point position = dog.node.position;
-    Path *prev_inters = is_near_path(head, position), *dest = prev_inters;
+    Path *prev_inters = is_near_path(head, position, MARGIN), *dest = prev_inters;
 
     if (prev_inters == NULL) {
         dest = closest_point(head, dog, max_dist);
+        printpoint(dest->position);
 
     } else {
         if (!strcmp(dog.node.nickname, "yellow")) {
@@ -533,18 +535,18 @@ void sheep_count(Dog* dog, NodeList** head, Point sheepfold_center, int sheepfol
         n = pointer->node;
         distance_to_sheepfold = distance(n.position, sheepfold_center);
 
-        if (!strncmp("bot", n.nickname, 3) && distance_to_sheepfold >= sheepfold_radius - MARGIN && is_pushed_by_yellow(head, n)) {
+        if (!strncmp("bot", n.nickname, 3) && distance_to_sheepfold >= sheepfold_radius - MARGIN && is_pushed_by_yellow(head, n) ) {
             if (get_nodelist_portion(&dog->sheeps, n.id) == NULL) {
                 add_node(&dog->sheeps, n);
+
             } else {
                 update_node(&dog->sheeps, n);
             }
         }
+
         pointer = pointer->next;
     }
 }
-
-
 
 Node closest_sheep(Dog dog, float max_dist) {
     Point point = dog.node.position;

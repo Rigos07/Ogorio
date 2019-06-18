@@ -1,0 +1,10 @@
+echo "Ip :"
+read ip
+echo "Port :"
+read port
+echo "Nbr vert :"
+read vert
+cd ./GREEN_FINAL/ ;make ;make clean ;cd ..
+for ((i=0; $vert - $i; i++))
+  do gnome-terminal -e "./GREEN_FINAL/green -o agar.io -p $port $ip"
+done

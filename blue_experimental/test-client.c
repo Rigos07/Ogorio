@@ -22,7 +22,7 @@ Point Blue_behavior(Dog *blue, NodeList **nodes_in_sight){
 	NodeList *pointer = *nodes_in_sight;
 	sheep_count(blue, nodes_in_sight, sheepfold_center, sheepfold_radius);
 	printf("===========================================\n");
-	//  ===================  MET TON CODE ICI YANNU =======================
+	//  ===================  METS TON CODE ICI YANNU =======================
 	if( is_near_point(blue->node.position, create_point(4500,3000), 45) ){
 		if((*nodes_in_sight) != NULL){
 			while(pointer != NULL){
@@ -46,10 +46,11 @@ Point Blue_behavior(Dog *blue, NodeList **nodes_in_sight){
 				}
 			}
 			else{
-				if(blue->node.position.x == yellow_pos.x && blue->node.position.y == yellow_pos.y ){
+				if(is_near_point(blue->node.position, yellow_pos, MARGIN)){
 					sheep = closest_sheep(*blue, 999999);
 					//blue->message = create_message(239, create_point(239,239));
 					blue->message = create_message(sheep.id, sheep.position);
+					printf("LE MOUTON IL EST LA : %d , %d %d\n", sheep.id, sheep.position.x, sheep.position.y);
 					blue->message.started = 1;
 				}
 				objective = create_point(4500,3000);
@@ -78,7 +79,7 @@ Point Blue_behavior(Dog *blue, NodeList **nodes_in_sight){
 
 					sheep = closest_sheep(*blue, 9999999);
 					blue->message = create_message(sheep.id , sheep.position);
-					
+
 					printf("JE TRANSMETS  : \n");
 					printnode(sheep);
 					objective = encode_msg(&(blue->message), yellow_pos);
@@ -93,7 +94,7 @@ Point Blue_behavior(Dog *blue, NodeList **nodes_in_sight){
 				if(blue->node.position.x == yellow_pos.x && blue->node.position.y == yellow_pos.y){
 					blue->message.started = 1;
 					printf("DEBUT DE LA COM\n");
-				} 
+				}
 				printf("ATTENTE DE SYNCHRONISATION\n");
 				objective = blue->node.position;
 			}

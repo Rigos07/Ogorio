@@ -62,7 +62,7 @@ int add_point(Path **head, Point new_point) {
 
     if (*head == NULL) {
         *head = new;
-    
+
     } else {
         for (i = 0; i < i_max; i++) {
             element = element->next;
@@ -332,7 +332,7 @@ Path *generate_secondary_path(int max_width, int max_height, int x_sight, int y_
             add_point(&head, create_point(zone_max_x - x_sight * (4 * i_max + 3), zone_min_y + y_sight * 3));
             add_point(&head, create_point(zone_max_x - x_sight * (4 * i_max + 5), zone_min_y + y_sight * 3));
             add_point(&head, create_point(zone_max_x - x_sight * (4 * i_max + 5), zone_max_y - y_sight));
-        
+
         } else if ((zone_max_x - zone_min_x) % (4 * x_sight) > 0) {
             add_point(&head, create_point(zone_max_x - x_sight * (4 * i_max + 3), zone_max_y - y_sight));
             add_point(&head, create_point(zone_max_x - x_sight * (4 * i_max + 3), zone_min_y + y_sight * 3));
@@ -467,7 +467,7 @@ Path *closest_point(Path **head, Dog dog, float max_dist) {
 Point follow_path(Path **head, Dog dog, float max_dist) {
     Point position = dog.node.position;
     Path *prev_inters = is_near_path(head, position), *dest = prev_inters;
-    
+
     if (prev_inters == NULL) {
         dest = closest_point(head, dog, max_dist);
 
@@ -713,7 +713,7 @@ int decode_msg(Dog *dog, Point info) {
         }
 
         dog->message.size_i++;
-    
+
     } else {
         if (id_i > 0) {
             dog->message.id += result * pow(8, id_i - 1);

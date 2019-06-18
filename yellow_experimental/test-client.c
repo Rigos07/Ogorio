@@ -49,16 +49,16 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 					printpoint(yellow->target->position);
 				}
 				else{
-					if(yellow->node.position.x == blue_pos.x && yellow->node.position.y == blue_pos.y ){
+					if(is_near_point(yellow->node.position, blue_pos, MARGIN)){
 						printf("DEBUT DE COOOM\n");
 						yellow->message = create_message(0, create_point(0,0));
 						yellow->message.started = 1;
 					}
 					objective = create_point(4500,3000);
 				}
-				
+
 			}
-			
+
 		}
 		else{
 			printf("EMPTY SIGHT\n");
@@ -89,7 +89,7 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 					printf("ABORTING : OTHER KOLLEGE IS CLOSEST TO SHEEP\n");
 					free(yellow->target);
 					yellow->target = NULL;
-					objective = follow_path(&path, *yellow , 9999999);	
+					objective = follow_path(&path, *yellow , 9999999);
 				}
 				else{
 					//SHEEP CHASING
@@ -143,7 +143,7 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 				}
 				else{
 					printf("FOLLOWING DEFAULT PATH, NO TARGET FOUND\n");
-					objective = follow_path(&path, *yellow , 9999999);					
+					objective = follow_path(&path, *yellow , 9999999);
 				}
 			}
 			else{ //HAVE NO TARGET AND NO POSSIBLE TARGET FOUND

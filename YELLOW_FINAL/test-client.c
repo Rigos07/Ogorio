@@ -64,7 +64,7 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
                 if(is_closest_to_sheep_BIS(yellow->target->position, yellow->node, nodes_in_sight) != NULL){
                     other_yellow = is_closest_to_sheep_BIS(yellow->target->position, yellow->node, nodes_in_sight);
                     printnode(other_yellow->node);
-                    if(other_yellow->node.pos.x == yellow->node.position.x && other_yellow->node.pos.y == yellow->node.position.y){
+                    if(other_yellow->node.position.x == yellow->node.position.x && other_yellow->node.position.y == yellow->node.position.y){
                         if(other_yellow->node.id > yellow->node.id){
                             printf("ANTI STACKING MEASURE, I LET YOU THIS\n");
                             free(yellow->target);

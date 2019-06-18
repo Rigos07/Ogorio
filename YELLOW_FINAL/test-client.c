@@ -98,48 +98,55 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 				}
 			}
 			else{
-				pointer = closest_nl_portion_by_nick(nodes_in_sight,*yellow,"blue");
-				if(pointer != NULL){
-					blue_pos = pointer->node.position;
-					if(is_near_point(yellow->node.position, blue_pos, MARGIN)){
-						printf("DEBUT DE COOOM ICIIIIIIIIIIII\n");
-						yellow->message = create_message(0, create_point(0,0));
-						yellow->message.started = 1;
+				if(is_near_path(&path, yellow->node.position, MARGIN)){
+					pointer = closest_nl_portion_by_nick(nodes_in_sight,*yellow,"blue");
+					if(pointer != NULL){
+						blue_pos = pointer->node.position;
+						if(is_near_point(yellow->node.position, blue_pos, MARGIN)){
+							printf("DEBUT DE COOOM ICIIIIIIIIIIII\n");
+							yellow->message = create_message(0, create_point(0,0));
+							yellow->message.started = 1;
+						}
+						objective = yellow->node.position;
 					}
-					objective = yellow->node.position;
-				}
-				else{
-					if(yellow->sheeps != NULL){
-						empty_nodelist(&yellow->sheeps);
-						yellow->sheeps = NULL;
-					}
-
-					sheep_count(yellow, nodes_in_sight, sheepfold_center, sheepfold_radius);
-
-					if(yellow->sheeps != NULL){
-						yellow->target = malloc(sizeof(Node));
-						*(yellow->target) = closest_sheep(*yellow, 9999999);
-
-						pointer = *nodes_in_sight;
-						if(is_closest_to_sheep(yellow->target->position, yellow->node, pointer) == 0){
-							free(yellow->target);
-							yellow->target = NULL;
+					else{
+						if(yellow->sheeps != NULL){
+							empty_nodelist(&yellow->sheeps);
+							yellow->sheeps = NULL;
 						}
 
-						if(yellow->target != NULL){
-							printf("MEINE NEUES ZIEL : \n");
-							objective = bring_back_sheep(*(yellow->target), YELLOW_RADIUS, sheepfold_center);
+						sheep_count(yellow, nodes_in_sight, sheepfold_center, sheepfold_radius);
+
+						if(yellow->sheeps != NULL){
+							yellow->target = malloc(sizeof(Node));
+							*(yellow->target) = closest_sheep(*yellow, 9999999);
+
+							pointer = *nodes_in_sight;
+							if(is_closest_to_sheep(yellow->target->position, yellow->node, pointer) == 0){
+								free(yellow->target);
+								yellow->target = NULL;
+							}
+
+							if(yellow->target != NULL){
+								printf("MEINE NEUES ZIEL : \n");
+								objective = bring_back_sheep(*(yellow->target), YELLOW_RADIUS, sheepfold_center);
+							}
+							else{
+								printf("FOLLOWING DEFAULT PATH, NO TARGET FOUND\n");
+								objective = follow_path(&path, *yellow , 9999999);
+							}
 						}
-						else{
-							printf("FOLLOWING DEFAULT PATH, NO TARGET FOUND\n");
+						else{ //HAVE NO TARGET AND NO POSSIBLE TARGET FOUND
+							printf("FOLLOWING DEFAULT PATH\n");
 							objective = follow_path(&path, *yellow , 9999999);
 						}
 					}
-					else{ //HAVE NO TARGET AND NO POSSIBLE TARGET FOUND
-						printf("FOLLOWING DEFAULT PATH\n");
-						objective = follow_path(&path, *yellow , 9999999);
-					}
 				}
+				else{
+					printf("TOO FAR FROM PATH\n");
+					objective = follow_path(&path, *yellow , 9999999);
+				}
+				
 			}
 		}
 	}

@@ -16,7 +16,7 @@
 
 Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 	Point objective, blue_pos, other_yellow_pos = create_point(0,0);
-	NodeList *pointer = *nodes_in_sight, other_yellow;
+	NodeList *pointer = *nodes_in_sight, *other_yellow;
 	float distance_to_destination;
 	printf("================= START ===============\n");
 	if((*nodes_in_sight) != NULL){

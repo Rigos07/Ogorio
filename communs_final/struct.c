@@ -518,7 +518,7 @@ int is_pushed_by_yellow(NodeList** head, Node n){
   NodeList* pointer = *head;
   int is_pushed = 0;
   while (pointer != NULL && is_pushed == 0){
-    if(strncmp("yellow",  pointer->node.nickname, 6) && distance(n.position, pointer->node.position)<=100){
+    if(!strncmp("yellow",  pointer->node.nickname, 6) && distance(n.position, pointer->node.position)<=100){
       is_pushed = 1;
     }
     pointer = pointer->next;
@@ -535,7 +535,7 @@ void sheep_count(Dog* dog, NodeList** head, Point sheepfold_center, int sheepfol
         n = pointer->node;
         distance_to_sheepfold = distance(n.position, sheepfold_center);
 
-        if (!strncmp("bot", n.nickname, 3) && distance_to_sheepfold >= sheepfold_radius - MARGIN && is_pushed_by_yellow(head, n) ) {
+        if (!strncmp("bot", n.nickname, 3) && distance_to_sheepfold >= sheepfold_radius - MARGIN && !is_pushed_by_yellow(head, n) ) {
             if (get_nodelist_portion(&dog->sheeps, n.id) == NULL) {
                 add_node(&dog->sheeps, n);
 

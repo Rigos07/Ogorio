@@ -1,4 +1,0 @@
-while true
-do
-	./sock -o agar.io -p 2002 192.168.130.114 
-done

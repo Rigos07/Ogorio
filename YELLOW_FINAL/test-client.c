@@ -14,9 +14,37 @@
 
 // compile with gcc -Wall -g -o sock ./test-client.c -lwebsockets -lm
 
+NodeList *is_closest_to_sheep_BIS(Point target, Node self, NodeList *others) {
+    Node other;
+    int dist_self = distance(self.position, target),
+        dist_other, closest, closest_id;
+       NodeList *closest_yellow;
+
+    while (others != NULL && closest == 1) {
+        other = others->node;
+
+        if ((!strcmp("yellow", other.nickname) || !strcmp("green", other.nickname)) && self.id != other.id) {
+            dist_other = distance(other.position, target);
+
+            if (dist_self >= dist_other) {
+                closest = 0;
+                closest_id = other.id;
+            }
+        }
+
+        others = others->next;
+    }
+    if(closest == 0){
+    	closest_yellow = get_nodelist_portion(&others, closest_id);
+    }
+
+    return closest_yellow;
+}
+
+
 Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 	Point objective, blue_pos;
-	NodeList *pointer = *nodes_in_sight;
+	NodeList *pointer = *nodes_in_sight, *other_yellow;
 	float distance_to_destination;
 	printf("================= START ===============\n");
 	if((*nodes_in_sight) != NULL){
@@ -26,14 +54,21 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 			pointer = get_nodelist_portion(nodes_in_sight,yellow->target->id);
 			if(pointer != NULL){
 				yellow->target = &(pointer->node);
-				if(is_closest_to_sheep(yellow->target->position, yellow->node, pointer) == 0){
-					//ABORTING
-					printf("\nMEINE TARGET\n");
-					printnode(*(yellow->target));
-					printf("ABORTING : OTHER KOLLEGE IS CLOSEST TO SHEEP\n");
-					free(yellow->target);
-					yellow->target = NULL;
-					objective = follow_path(&path, *yellow , 9999999);
+				if(is_closest_to_sheep_BIS(yellow->target->position, yellow->node, pointer) != NULL){
+					other_yellow = is_closest_to_sheep_BIS(yellow->target->position, yellow->node, pointer);
+					if(other_yellow->node.id > yellow->node.id){
+						//ABORTING
+						printf("\nMEINE TARGET\n");
+						printnode(*(yellow->target));
+						printf("ABORTING : OTHER KOLLEGE IS CLOSEST TO SHEEP\n");
+						free(yellow->target);
+						yellow->target = NULL;
+						objective = follow_path(&path, *yellow , 9999999);
+					}
+					else{
+						objective = yellow->node.position;
+					}
+					
 				}
 				else{
 					//SHEEP CHASING

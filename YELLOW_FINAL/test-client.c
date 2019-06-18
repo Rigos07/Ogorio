@@ -52,6 +52,7 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 	if((*nodes_in_sight) != NULL){
 		printf("CURRENT POSITION : %d , %d\n",yellow->node.position.x,yellow->node.position.y);
 		if(yellow->target != NULL){
+			printf("got a target\n");
 			//TARGET UPDATING
 			pointer = get_nodelist_portion(nodes_in_sight,yellow->target->id);
 			if(pointer != NULL){

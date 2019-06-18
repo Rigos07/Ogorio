@@ -39,6 +39,7 @@ Point Blue_behavior(Dog *blue, NodeList **nodes_in_sight){
 		if(is_near_path(&path, blue->node.position)){
 			if(blue->sheeps != NULL){
 				pointer = closest_nl_portion_by_nick(nodes_in_sight, *blue, "yellow");
+				printf("Id ciblé : %d\n", pointer->node.id);
 				if(pointer != NULL){
 					yellow_pos = pointer->node.position;
 					if(is_near_point(blue->node.position, yellow_pos, 50)){

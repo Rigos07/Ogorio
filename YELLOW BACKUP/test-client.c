@@ -18,9 +18,9 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 	Point objective;
 	NodeList *pointer = *nodes_in_sight;
 	float distance_to_destination;
-	printf("================= START ===============\n");
+	printf("================= START ================\n");
 	if((*nodes_in_sight) != NULL){
-		printf("CURRENT POSITION : %d , %d\n",yellow->node.position.x,yellow->node.position.y);
+		printf("I AM : %d | CURRENT POSITION : %d , %d\n",yellow->node.id, yellow->node.position.x,yellow->node.position.y);
 		if(yellow->target != NULL){
 			//TARGET UPDATING
 			pointer = get_nodelist_portion(nodes_in_sight,yellow->target->id);

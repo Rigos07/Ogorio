@@ -98,7 +98,7 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 				}
 			}
 			else{
-				if(is_near_path(&path, yellow->node.position, MARGIN)){
+				if(is_near_path(&path, yellow->node.position, MARGIN) != NULL){
 					pointer = closest_nl_portion_by_nick(nodes_in_sight,*yellow,"blue");
 					if(pointer != NULL){
 						blue_pos = pointer->node.position;

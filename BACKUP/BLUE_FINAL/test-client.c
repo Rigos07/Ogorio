@@ -36,7 +36,7 @@ Point Blue_behavior(Dog *blue, NodeList **nodes_in_sight){
 	else{
 		sheep_count(blue, nodes_in_sight, sheepfold_center, sheepfold_radius);
 		//printlist(&(blue->sheeps));
-		if(is_near_path(&path, blue->node.position)){
+		if(is_near_path(&path, blue->node.position, MARGIN)){
 			if(blue->sheeps != NULL){
 				pointer = closest_nl_portion_by_nick(nodes_in_sight, *blue, "yellow");
 				if(pointer != NULL){
@@ -264,7 +264,9 @@ int receive_packet(struct lws *wsi, unsigned char * buf){
 			}else{
 				p = Blue_behavior(&blue_dog, &nodeInVision);
 
-				sendToPoint(wsi,p);
+				if(!is_near_point(blue_dog.node.position,ORIGIN,0)){
+					sendToPoint(wsi,p);
+				}
 			}
 			break;
 	}

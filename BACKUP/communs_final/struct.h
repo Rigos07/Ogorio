@@ -201,11 +201,13 @@ int is_near_segment(Point point, Point seg_point1, Point seg_point2, int margin)
 
 int is_near_point(Point point1, Point point2, int margin);
 
-Path *is_near_path(Path **head, Point p);
+Path *is_near_path(Path **head, Point p, int margin);
 
 Path *closest_point(Path **head, Dog dog, float max_dist);
 
 Point follow_path(Path **head, Dog dog, float max_dist);
+
+int is_pushed_by_yellow(NodeList** head, Node n);
 
 void sheep_count(Dog* dog, NodeList** head, Point sheepfold_center, int sheepfold_radius);
 

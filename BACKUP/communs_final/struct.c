@@ -272,7 +272,7 @@ float distance(Point p1, Point p2) {
 }
 
 int is_between(int a, int b, int c) {
-    return a >= b && a < c;
+    return a >= b && a <= c;
 }
 
 Path *generate_path(Dog dog, int max_width, int max_height) {
@@ -412,7 +412,7 @@ int is_near_point(Point point1, Point point2, int margin) {
     return is_near_segment(point1, point2, point2, margin);
 }
 
-Path *is_near_path(Path **head, Point point) {
+Path *is_near_path(Path **head, Point point, int margin) {
     int i = 0, i_max = get_path_size(head) + 1;
     Path *segment1 = get_segment(head, 0), *result = NULL, *segment2;
 
@@ -422,7 +422,7 @@ Path *is_near_path(Path **head, Point point) {
 
     segment2 = segment1->next;
     while (i < i_max && result == NULL) {
-        if (is_near_segment(point, segment1->position, segment2->position, MARGIN)) {
+        if (is_near_segment(point, segment1->position, segment2->position, margin)) {
             result = segment1;
         }
 
@@ -456,10 +456,10 @@ Path *closest_point(Path **head, Dog dog, float max_dist) {
         right = create_point(x, y + i);
         stop = 1;
 
-        inters_up = is_near_path(head, up);
-        inters_down = is_near_path(head, down);
-        inters_left = is_near_path(head, left);
-        inters_right = is_near_path(head, right);
+        inters_up = is_near_path(head, up, 0);
+        inters_down = is_near_path(head, down, 0);
+        inters_left = is_near_path(head, left, 0);
+        inters_right = is_near_path(head, right, 0);
 
         if (inters_up != NULL) {
             dest = up;
@@ -493,10 +493,11 @@ Path *closest_point(Path **head, Dog dog, float max_dist) {
 
 Point follow_path(Path **head, Dog dog, float max_dist) {
     Point position = dog.node.position;
-    Path *prev_inters = is_near_path(head, position), *dest = prev_inters;
+    Path *prev_inters = is_near_path(head, position, MARGIN), *dest = prev_inters;
 
     if (prev_inters == NULL) {
         dest = closest_point(head, dog, max_dist);
+        printpoint(dest->position);
 
     } else {
         if (!strcmp(dog.node.nickname, "yellow")) {
@@ -513,6 +514,18 @@ Point follow_path(Path **head, Dog dog, float max_dist) {
     return dest->position;
 }
 
+int is_pushed_by_yellow(NodeList** head, Node n){
+  NodeList* pointer = *head;
+  int is_pushed = 0;
+  while (pointer != NULL && is_pushed == 0){
+    if(!strncmp("yellow",  pointer->node.nickname, 6) && distance(n.position, pointer->node.position)<=100){
+      is_pushed = 1;
+    }
+    pointer = pointer->next;
+  }
+  return is_pushed;
+}
+
 void sheep_count(Dog* dog, NodeList** head, Point sheepfold_center, int sheepfold_radius) {
     float distance_to_sheepfold;
     NodeList* pointer = *head;
@@ -522,7 +535,7 @@ void sheep_count(Dog* dog, NodeList** head, Point sheepfold_center, int sheepfol
         n = pointer->node;
         distance_to_sheepfold = distance(n.position, sheepfold_center);
 
-        if (!strncmp("bot", n.nickname, 3) && distance_to_sheepfold >= sheepfold_radius - MARGIN) {
+        if (!strncmp("bot", n.nickname, 3) && distance_to_sheepfold >= sheepfold_radius - MARGIN && !is_pushed_by_yellow(head, n) ) {
             if (get_nodelist_portion(&dog->sheeps, n.id) == NULL) {
                 add_node(&dog->sheeps, n);
 
@@ -649,14 +662,14 @@ Point encode_coordinate(int a) {
 int decode_coordinate(Point p) {
     int a, length = 40, radius = length / sqrt(2);
 
-    if (is_near_point(p, create_point(-radius, -radius), MARGIN)) a = 0;
-    else if (is_near_point(p, create_point(0, -length), MARGIN)) a = 1;
-    else if (is_near_point(p, create_point(radius, -radius), MARGIN)) a = 2;
-    else if (is_near_point(p, create_point(length, 0), MARGIN)) a = 3;
-    else if (is_near_point(p, create_point(radius, radius), MARGIN)) a = 4;
-    else if (is_near_point(p, create_point(0, length), MARGIN)) a = 5;
-    else if (is_near_point(p, create_point(-radius, radius), MARGIN)) a = 6;
-    else if (is_near_point(p, create_point(-length, 0), MARGIN)) a = 7;
+    if (is_near_point(p, create_point(-radius, -radius), 2 * MARGIN)) a = 0;
+    else if (is_near_point(p, create_point(0, -length), 2 * MARGIN)) a = 1;
+    else if (is_near_point(p, create_point(radius, -radius), 2 * MARGIN)) a = 2;
+    else if (is_near_point(p, create_point(length, 0), 2 * MARGIN)) a = 3;
+    else if (is_near_point(p, create_point(radius, radius), 2 * MARGIN)) a = 4;
+    else if (is_near_point(p, create_point(0, length), 2 * MARGIN)) a = 5;
+    else if (is_near_point(p, create_point(-radius, radius), 2 * MARGIN)) a = 6;
+    else if (is_near_point(p, create_point(-length, 0), 2 * MARGIN)) a = 7;
 
     return a;
 }

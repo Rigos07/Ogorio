@@ -1,44 +1,31 @@
-echo "Ip :"
-read ip
-echo "Port :"
-read port
-echo "Team (g/d) :"
-read team
-echo "Nbr vert :"
-read vert
-echo "Nbr bleu :"
-read bleu
-echo "Nbr jaune :"
-read jaune
-
-if [$team = g]
+if [$3 = "gauche"]
 then
   cd ./GAUCHE/GREEN_FINAL_GAUCHE/ ;make ;make clean ;cd ..
-  for ((i=0; $vert - $i; i++))
-    do gnome-terminal -e "./GAUCHE/GREEN_FINAL_GAUCHE/green_gauche -o agar.io -p $port $ip"
+  for ((i=0; $4 - $i; i++))
+    do gnome-terminal -e "./GAUCHE/GREEN_FINAL_GAUCHE/green_gauche -o agar.io -p $2 $1"
   done
   cd ./GAUCHE/BLUE_FINAL_GAUCHE/ ;make ;make clean ;cd ..
-  for ((i=0; $bleu - $i; i++))
-    do gnome-terminal -e "./GAUCHE/BLUE_FINAL_GAUCHE/blue_gauche -o agar.io -p $port $ip"
+  for ((i=0; $5 - $i; i++))
+    do gnome-terminal -e "./GAUCHE/BLUE_FINAL_GAUCHE/blue_gauche -o agar.io -p $2 $1"
   done
   cd ./GAUCHE/YELLOW_FINAL_GAUCHE/ ;make ;make clean ;cd ..
-  for ((i=0; $jaune - $i; i++))
-    do gnome-terminal -e "./GAUCHE/YELLOW_FINAL_GAUCHE/yellow_gauche -o agar.io -p $port $ip"
+  for ((i=0; $6 - $i; i++))
+    do gnome-terminal -e "./GAUCHE/YELLOW_FINAL_GAUCHE/yellow_gauche -o agar.io -p $2 $1"
   done
 fi
 
-if [$team = d]
+if [$3 = "droite"]
 then
   cd ./DROITE/GREEN_FINAL/ ;make ;make clean ;cd ..
-  for ((i=0; $vert - $i; i++))
-    do gnome-terminal -e "./DROITE/GREEN_FINAL_DROITE/green_droite -o agar.io -p $port $ip"
+  for ((i=0; $4 - $i; i++))
+    do gnome-terminal -e "./DROITE/GREEN_FINAL_DROITE/green_droite -o agar.io -p $2 $1"
   done
   cd ./DROITE/BLUE_FINAL_DROITE/ ;make ;make clean ;cd ..
-  for ((i=0; $bleu - $i; i++))
-    do gnome-terminal -e "./DROITE/BLUE_FINAL_DROITE/blue_droite -o agar.io -p $port $ip"
+  for ((i=0; $5 - $i; i++))
+    do gnome-terminal -e "./DROITE/BLUE_FINAL_DROITE/blue_droite -o agar.io -p $2 $1"
   done
   cd ./DROITE/YELLOW_FINAL_DROITE/ ;make ;make clean ;cd ..
-  for ((i=0; $jaune - $i; i++))
-    do gnome-terminal -e "./DROITE/YELLOW_FINAL_DROITE/yellow_droite -o agar.io -p $port $ip"
+  for ((i=0; $6 - $i; i++))
+    do gnome-terminal -e "./DROITE/YELLOW_FINAL_DROITE/yellow_droite -o agar.io -p $2 $1"
   done
 fi

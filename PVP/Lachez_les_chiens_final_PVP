@@ -1,0 +1,44 @@
+echo "Ip :"
+read ip
+echo "Port :"
+read port
+echo "Team (g/d) :"
+read team
+echo "Nbr vert :"
+read vert
+echo "Nbr bleu :"
+read bleu
+echo "Nbr jaune :"
+read jaune
+
+if [$team = g]
+then
+  cd ./GAUCHE/GREEN_FINAL_GAUCHE/ ;make ;make clean ;cd ..
+  for ((i=0; $vert - $i; i++))
+    do gnome-terminal -e "./GAUCHE/GREEN_FINAL_GAUCHE/green_gauche -o agar.io -p $port $ip"
+  done
+  cd ./GAUCHE/BLUE_FINAL_GAUCHE/ ;make ;make clean ;cd ..
+  for ((i=0; $bleu - $i; i++))
+    do gnome-terminal -e "./GAUCHE/BLUE_FINAL_GAUCHE/blue_gauche -o agar.io -p $port $ip"
+  done
+  cd ./GAUCHE/YELLOW_FINAL_GAUCHE/ ;make ;make clean ;cd ..
+  for ((i=0; $jaune - $i; i++))
+    do gnome-terminal -e "./GAUCHE/YELLOW_FINAL_GAUCHE/yellow_gauche -o agar.io -p $port $ip"
+  done
+fi
+
+if [$team = d]
+then
+  cd ./DROITE/GREEN_FINAL/ ;make ;make clean ;cd ..
+  for ((i=0; $vert - $i; i++))
+    do gnome-terminal -e "./DROITE/GREEN_FINAL_DROITE/green_droite -o agar.io -p $port $ip"
+  done
+  cd ./DROITE/BLUE_FINAL_DROITE/ ;make ;make clean ;cd ..
+  for ((i=0; $bleu - $i; i++))
+    do gnome-terminal -e "./DROITE/BLUE_FINAL_DROITE/blue_droite -o agar.io -p $port $ip"
+  done
+  cd ./DROITE/YELLOW_FINAL_DROITE/ ;make ;make clean ;cd ..
+  for ((i=0; $jaune - $i; i++))
+    do gnome-terminal -e "./DROITE/YELLOW_FINAL_DROITE/yellow_droite -o agar.io -p $port $ip"
+  done
+fi

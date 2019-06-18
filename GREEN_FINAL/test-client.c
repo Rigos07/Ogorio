@@ -272,7 +272,7 @@ int receive_packet(struct lws *wsi, unsigned char * buf){
 			}else{
 				p = green_behavior(&green_dog, &nodeInVision);
 
-				if(!is_near_point(yellow_dog.node.position,ORIGIN,0)){
+				if(!is_near_point(green_dog.node.position,ORIGIN,0)){
 					sendToPoint(wsi,p);
 				}
 			}

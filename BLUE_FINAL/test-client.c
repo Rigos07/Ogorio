@@ -24,10 +24,9 @@ Point Blue_behavior(Dog *blue, NodeList **nodes_in_sight){
 		if(!blue->message.done){
 			//printf("OK ALORS : size i : %d id i : %d x i : %d y i : %d\n", blue->message.size_i,blue->message.id_i,blue->message.x_i,blue->message.y_i);
 			objective = encode_msg(blue);
-			printf("I'M BLUE BIP BOP BUP BOUP\n");
 		}
 		else{
-			printf("TOUT EST DIT\n");
+			printf("AND THAT'S IT.\n");
 			blue->message.started = 0;
 			blue->message.done = 0;
 			objective = follow_path(&path, *blue, 9999999);
@@ -45,7 +44,7 @@ Point Blue_behavior(Dog *blue, NodeList **nodes_in_sight){
 					if(is_near_point(blue->node.position, yellow_pos, 50)){
 						if(is_near_point(blue->node.position, yellow_pos, MARGIN)){
 							sheep = closest_sheep(*blue, 9999999);
-							printf("JE TRANSMET %d en %d , %d\n", sheep.id, sheep.position.x, sheep.position.y);
+							printf("TRANSMITTING SHEEP :  %d AT %d , %d\nBIP BOP BUP BOUP\n", sheep.id, sheep.position.x, sheep.position.y);
 							delete_node(&(blue->sheeps), sheep.id);
 							blue->message = create_message(sheep.id, sheep.position);
 							blue->message.started = 1;
@@ -53,7 +52,7 @@ Point Blue_behavior(Dog *blue, NodeList **nodes_in_sight){
 						objective = yellow_pos;
 					}
 					else{
-						printf("BLUE : %d , %d  / YELLOW : %d , %d\n",blue->node.position.x, blue->node.position.y, yellow_pos.x, yellow_pos.y);
+						printf("FOLLOWING PATH TO COMMUNICATE");
 						objective = follow_path(&path, *blue, 9999999);
 					}
 				}
@@ -63,6 +62,7 @@ Point Blue_behavior(Dog *blue, NodeList **nodes_in_sight){
 				}
 			}
 			else{
+				printf("NO SHEEPS TO COMMUNICATE\n");
 				objective = follow_path(&path, *blue, 9999999);
 			}
 		}

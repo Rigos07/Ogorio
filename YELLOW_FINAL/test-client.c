@@ -27,6 +27,7 @@ NodeList *is_closest_to_sheep_BIS(Point target, Node self, NodeList *others) {
             dist_other = distance(other.position, target);
 
             if (dist_self >= dist_other) {
+            	printf("ya plus priche\n");
                 closest = 0;
                 closest_id = other.id;
             }
@@ -35,6 +36,7 @@ NodeList *is_closest_to_sheep_BIS(Point target, Node self, NodeList *others) {
         others = others->next;
     }
     if(closest == 0){
+    	printf("bite\n");
     	closest_yellow = get_nodelist_portion(&others, closest_id);
     }
 
@@ -54,8 +56,10 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 			pointer = get_nodelist_portion(nodes_in_sight,yellow->target->id);
 			if(pointer != NULL){
 				yellow->target = &(pointer->node);
+				printf("ptdr c pa rentré\n");
 				if(is_closest_to_sheep_BIS(yellow->target->position, yellow->node, *nodes_in_sight) != NULL){
 					other_yellow = is_closest_to_sheep_BIS(yellow->target->position, yellow->node, *nodes_in_sight);
+					printf("c'est passé\n");
 					if(other_yellow->node.id > yellow->node.id){
 						//ABORTING
 						printf("\nMEINE TARGET\n");

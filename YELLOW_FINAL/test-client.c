@@ -99,7 +99,7 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 			}
 			else{
 				pointer = closest_nl_portion_by_nick(nodes_in_sight,*yellow,"blue");
-				other_yellow = closest_nl_portion_by_nick(nodes_in_sight,*yellow,"blue");
+				other_yellow = closest_nl_portion_by_nick(nodes_in_sight,*yellow,"yellow");
 				if(pointer != NULL){
 					blue_pos = pointer->node.position;
 					if(other_yellow != NULL){
@@ -107,6 +107,7 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 					}
 
 					if(is_near_point(other_yellow_pos, blue_pos, MARGIN)){
+						printf("OK JVEUX PAS VOUS DERANGER\n");
 						objective = follow_path(&path, *yellow , 9999999);
 					}
 					else{

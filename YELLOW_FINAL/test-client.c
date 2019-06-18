@@ -73,7 +73,7 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 		else{
 			//TARGET FINDING
 			if(yellow->message.started){
-				pointer = nl_portion_by_nick(nodes_in_sight,"blue");
+				pointer = closest_nl_portion_by_nick(nodes_in_sight,*yellow,"blue");
 				if(pointer != NULL){
 					blue_pos = pointer->node.position;
 				}
@@ -98,7 +98,7 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 				}
 			}
 			else{
-				pointer = closest_nl_portion_by_nick(nodes_in_sight,"blue");
+				pointer = closest_nl_portion_by_nick(nodes_in_sight,*yellow,"blue");
 				if(pointer != NULL){
 					blue_pos = pointer->node.position;
 					if(is_near_point(yellow->node.position, blue_pos, MARGIN)){

@@ -91,7 +91,7 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 				else{
 					objective = yellow->node.position;
 				}
-				if(yellow->message.y_i < 0){
+				if(yellow->message.y_i > 32000 || yellow->message.x_i > 32000){
 					printf("TIME OUT\n");
 					yellow->message = create_message(0, create_point(0,0));
 					yellow->message.started = 0;

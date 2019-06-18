@@ -63,7 +63,20 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 				yellow->target = &(pointer->node);
 				if(is_closest_to_sheep_BIS(yellow->target->position, yellow->node, nodes_in_sight) != NULL){
 					other_yellow = is_closest_to_sheep_BIS(yellow->target->position, yellow->node, nodes_in_sight);
-					if(other_yellow->node.id > yellow->node.id && other_yellow.pos.x == yellow->node.position.x && other_yellow.pos.y == yellow->node.position.y){
+					if(other_yellow.pos.x == yellow->node.position.x && other_yellow.pos.y == yellow->node.position.y){
+						if(other_yellow->node.id > yellow->node.id){
+							printf("ANTI STACKING MEASURE, I LET YOU THIS\n");
+							free(yellow->target);
+							yellow->target = NULL;
+							objective = follow_path(&path, *yellow , 9999999);
+						}
+						else{
+							printf("ANTI STACKING MEASURE\n");
+							objective = bring_back_sheep(*(yellow->target), YELLOW_RADIUS, sheepfold_center);
+							
+						}
+					}
+					else{
 						//ABORTING
 						printf("\nMEINE TARGET\n");
 						printnode(*(yellow->target));
@@ -71,12 +84,6 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
 						free(yellow->target);
 						yellow->target = NULL;
 						objective = follow_path(&path, *yellow , 9999999);
-					}
-					else{
-						printf("ANTI STACKING MEASURE\n");
-						free(yellow->target);
-						yellow->target = NULL;
-						objective = create_point(0,0);
 					}
 					
 				}

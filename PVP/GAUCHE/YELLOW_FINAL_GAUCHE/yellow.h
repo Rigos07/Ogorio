@@ -17,5 +17,6 @@ Dog yellow_dog;
 Path * path;
 
 
-Point sheepfold_center;
+Point ally_sheepfold_center;
+Point ennemy_sheepfold_center;
 int sheepfold_radius;

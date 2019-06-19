@@ -24,7 +24,7 @@ Point find_new_target(Dog *yellow, NodeList **nodes_in_sight){
       yellow->sheeps = NULL;
   }
 
-  sheep_count(yellow, nodes_in_sight, sheepfold_center, sheepfold_radius);
+  sheep_count(yellow, nodes_in_sight, ally_sheepfold_center, ennemy_sheepfold_center, sheepfold_radius);
 
   if(yellow->sheeps != NULL){
       yellow->target = malloc(sizeof(Node));
@@ -38,7 +38,7 @@ Point find_new_target(Dog *yellow, NodeList **nodes_in_sight){
 
       if(yellow->target != NULL){
           printf("MEINE NEUES ZIEL\n");
-          objective = bring_back_sheep(*(yellow->target), YELLOW_RADIUS, sheepfold_center);
+          objective = bring_back_sheep(*(yellow->target), YELLOW_RADIUS, ally_sheepfold_center);
       }
       else{
           printf("FOLLOWING DEFAULT PATH, NO TARGET FOUND\n");
@@ -88,7 +88,7 @@ NodeList *is_closest_to_sheep_BIS(Point target, Node self, NodeList **head) {
 Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
     Point objective, blue_pos;
     NodeList *pointer = *nodes_in_sight, *other_yellow;
-    float distance_to_destination;
+    float distance_to_ally_sheepfold, distance_to_ennemy_sheepfold;
     printf("================= START ===============\n");
     if((*nodes_in_sight) != NULL){
         printf("CURRENT POSITION : %d , %d\n",yellow->node.position.x,yellow->node.position.y);
@@ -109,7 +109,7 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
                         }
                         else{
                             printf("ANTI STACKING MEASURE\n");
-                            objective = bring_back_sheep(*(yellow->target), YELLOW_RADIUS, sheepfold_center);
+                            objective = bring_back_sheep(*(yellow->target), YELLOW_RADIUS, ally_sheepfold_center);
 
                         }
                     }
@@ -126,13 +126,14 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
                 }
                 else{
                     //SHEEP CHASING
-                    distance_to_destination = distance(yellow->target->position,sheepfold_center);
-                    if(distance_to_destination >= sheepfold_radius - MARGIN){ //HAVE A TARGET AND TARGET IS IN SIGHT AND OUTSIDE SHEEPFOLD
-                        objective = bring_back_sheep(*(yellow->target), YELLOW_RADIUS, sheepfold_center);
+                    distance_to_ally_sheepfold = distance(yellow->target->position,ally_sheepfold_center);
+                    distance_to_ennemy_sheepfold = distance(yellow->target->position,ennemy_sheepfold_center);
+                    if( (distance_to_ally_sheepfold >= sheepfold_radius - MARGIN) && (distance_to_ennemy_sheepfold >= sheepfold_radius - MARGIN)){ //HAVE A TARGET AND TARGET IS IN SIGHT AND OUTSIDE SHEEPFOLD
+                        objective = bring_back_sheep(*(yellow->target), YELLOW_RADIUS, ally_sheepfold_center);
                         printf("\nI'M BRINGING MY TARGET BACK HOME : \n");
                         printf("I'M TARGETING %s, LOCATED AT %d , %d\n", yellow->target->nickname, yellow->target->position.x, yellow->target->position.y);
                         printf("GOING TO : %d , %d\n", objective.x, objective.y );
-                        printf("DISTANCE TO SHEEPFOLD : %f\n", distance_to_destination);
+                        printf("DISTANCE TO SHEEPFOLD : %f\n", distance_to_ally_sheepfold);
                         printf("KEINE GNADE, MEINE KINDER !\n" );
                     }
                     else{ //HAVE A TARGET AND TARGET IS IN SIGHT AND INSIDE SHEEPFOLD
@@ -397,8 +398,10 @@ int receive_packet(struct lws *wsi, unsigned char * buf){
                     xMax = border[2];
                     yMax = border[3];
                     path = generate_main_path(xMax, yMax);
-                    sheepfold_center.x = xMin;
-                    sheepfold_center.y = yMax/2;
+                    ally_sheepfold_center.x = xMin;
+                    ally_sheepfold_center.y = yMax/2;
+                    ennemy_sheepfold_center.x = xMax;
+                    ennemy_sheepfold_center.y = yMax/2;
                     sheepfold_radius = xMax/10;
                 }
             }else{

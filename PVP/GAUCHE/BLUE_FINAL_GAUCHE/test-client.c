@@ -71,7 +71,7 @@ Point Blue_behavior(Dog *blue, NodeList **nodes_in_sight){
 		}
 	}
 	else{
-		sheep_count(blue, nodes_in_sight, sheepfold_center, sheepfold_radius);
+		sheep_count(blue, nodes_in_sight, ally_sheepfold_center, ennemy_sheepfold_center, sheepfold_radius);
 		purge_sheeps(blue, nodes_in_sight, 9000, 6000);
 		//printlist(&(blue->sheeps));
 		if(is_near_path(&path, blue->node.position, MARGIN)){
@@ -296,8 +296,10 @@ int receive_packet(struct lws *wsi, unsigned char * buf){
 					xMax = border[2];
 					yMax = border[3];
 					path = generate_main_path(xMax, yMax);
-					sheepfold_center.x = xMin;
-					sheepfold_center.y = yMax/2;
+          ally_sheepfold_center.x = xMin;
+          ally_sheepfold_center.y = yMax/2;
+          ennemy_sheepfold_center.x = xMax;
+          ennemy_sheepfold_center.y = yMax/2;
 					sheepfold_radius = xMax/10;
 				}
 			}else{

@@ -16,7 +16,7 @@
 Point green_behavior(Dog *green, NodeList **nodes_in_sight){
 	Point objective;
 	NodeList *pointer = *nodes_in_sight;
-	float distance_to_destination;
+	float distance_to_ally_sheepfold, distance_to_ennemy_sheepfold;
 	printf("================= START ===============\n");
 	if((*nodes_in_sight) != NULL){
 		printf("CURRENT POSITION : %d , %d\n",green->node.position.x,green->node.position.y);
@@ -36,13 +36,14 @@ Point green_behavior(Dog *green, NodeList **nodes_in_sight){
 				}
 				else{
 					//SHEEP CHASING
-					distance_to_destination = distance(green->target->position,sheepfold_center);
-					if(distance_to_destination >= sheepfold_radius - MARGIN){ //HAVE A TARGET AND TARGET IS IN SIGHT AND OUTSIDE SHEEPFOLD
-						objective = bring_back_sheep(*(green->target), GREEN_RADIUS, sheepfold_center);
+					distance_to_ally_sheepfold = distance(green->target->position,ally_sheepfold_center);
+					distance_to_ennemy_sheepfold = distance(green->target->position,ennemy_sheepfold_center);
+					if((distance_to_ally_sheepfold >= sheepfold_radius - MARGIN) && (distance_to_ennemy_sheepfold >= sheepfold_radius - MARGIN)){ //HAVE A TARGET AND TARGET IS IN SIGHT AND OUTSIDE SHEEPFOLD
+						objective = bring_back_sheep(*(green->target), GREEN_RADIUS, distance_to_ally_sheepfold);
 						printf("\nI'M BRINGING MY TARGET BACK HOME : \n");
 						printf("I'M TARGETING %s, LOCATED AT %d , %d\n", green->target->nickname, green->target->position.x, green->target->position.y);
 						printf("GOING TO : %d , %d\n", objective.x, objective.y );
-						printf("DISTANCE TO SHEEPFOLD : %f\n", distance_to_destination);
+						printf("DISTANCE TO SHEEPFOLD : %f\n", distance_to_ally_sheepfold);
 						printf("Je suis enfin un marcheur jeune et dynamique. Ma startup est en marche !!!!!\n" );
 					}
 					else{ //HAVE A TARGET AND TARGET IS IN SIGHT AND INSIDE SHEEPFOLD
@@ -68,7 +69,7 @@ Point green_behavior(Dog *green, NodeList **nodes_in_sight){
 				green->sheeps = NULL;
 			}
 
-			sheep_count(green, nodes_in_sight, sheepfold_center, sheepfold_radius);
+			sheep_count(green, nodes_in_sight, ally_sheepfold_center, sheepfold_radius);
 
 			if(green->sheeps != NULL){
 				green->target = malloc(sizeof(Node));
@@ -82,7 +83,7 @@ Point green_behavior(Dog *green, NodeList **nodes_in_sight){
 
 				if(green->target != NULL){
 					printf("MA NOUVELLE STARTUP : \n");
-					objective = bring_back_sheep(*(green->target), GREEN_RADIUS, sheepfold_center);
+					objective = bring_back_sheep(*(green->target), GREEN_RADIUS, ally_sheepfold_center);
 				}
 				else{
 					printf("Je retourne sur le chemin NORMAL, ce JOBDATING ne m'a pas permis de touver une STARTUP.\n");
@@ -265,8 +266,10 @@ int receive_packet(struct lws *wsi, unsigned char * buf){
 					green_node = create_node(myId, create_point(0, 0), "green1");
 					green_dog = create_dog(green_node, GREEN_SIGHTX, GREEN_SIGHTY);
 					path = generate_path(green_dog, xMax, yMax);
-					sheepfold_center.x = xMin;
-					sheepfold_center.y = yMax/2;
+					ally_sheepfold_center.x = xMin;
+					ally_sheepfold_center.y = yMax/2;
+					ennemy_sheepfold_center.x = xMax;
+					ennemy_sheepfold_center.y = yMax/2;
 					sheepfold_radius = xMax/10;
 				}
 			}else{

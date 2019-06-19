@@ -18,7 +18,7 @@ fi
 
 if [ $3 = "droite" ]
 then
-  cd ./DROITE/GREEN_FINAL/ ;make ;make clean ;cd ../..
+  cd ./DROITE/GREEN_FINAL_DROITE/ ;make ;make clean ;cd ../..
   for ((i=0; $4 - $i; i++))
     do gnome-terminal -e "./DROITE/GREEN_FINAL_DROITE/green_droite -o agar.io -p $2 $1"
   done

@@ -190,10 +190,9 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
             else{
                 if(is_near_path(&path, yellow->node.position, MARGIN) != NULL){
                     pointer = closest_nl_portion_by_nick(nodes_in_sight,*yellow,"blue2");
-                    other_yellow = closest_nl_portion_by_nick(nodes_in_sight,*yellow,"yellow2");
                     if(pointer != NULL){
                         blue_pos = pointer->node.position;
-                        if(is_near_point(yellow->node.position, blue_pos, MARGIN) && (other_yellow == NULL || !is_near_point(other_yellow->node.position, yellow->node.position, MARGIN) || other_yellow->node.id > yellow->node.id)){
+                        if(is_near_point(yellow->node.position, blue_pos, MARGIN)){
                             printf("DEBUT DE COOOM ICIIIIIIIIIIII\n");
                             yellow->message = create_message(0, create_point(0,0));
                             yellow->message.started = 1;

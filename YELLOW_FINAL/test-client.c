@@ -100,7 +100,7 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
                 if(is_closest_to_sheep_BIS(yellow->target->position, yellow->node, nodes_in_sight) != NULL){
                     other_yellow = is_closest_to_sheep_BIS(yellow->target->position, yellow->node, nodes_in_sight);
                     printnode(other_yellow->node);
-                    if(other_yellow->node.position.x == yellow->node.position.x && other_yellow->node.position.y == yellow->node.position.y){
+                    if(is_near_point(other_yellow->node.position, yellow->node.position, 0)){
                         if(other_yellow->node.id > yellow->node.id){
                             printf("ANTI STACKING MEASURE, I LET YOU THIS\n");
                             free(yellow->target);
@@ -189,9 +189,10 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
             else{
                 if(is_near_path(&path, yellow->node.position, MARGIN) != NULL){
                     pointer = closest_nl_portion_by_nick(nodes_in_sight,*yellow,"blue");
+                    other_yellow = closest_nl_portion_by_nick(nodes_in_sight,*yellow,"yellow");
                     if(pointer != NULL){
                         blue_pos = pointer->node.position;
-                        if(is_near_point(yellow->node.position, blue_pos, MARGIN)){
+                        if(is_near_point(yellow->node.position, blue_pos, MARGIN) && (other_yellow == NULL || !is_near_point(other_yellow->node.position, yellow->node.position, MARGIN) || other_yellow->node.id > yellow->node.id)){
                             printf("DEBUT DE COOOM ICIIIIIIIIIIII\n");
                             yellow->message = create_message(0, create_point(0,0));
                             yellow->message.started = 1;

@@ -76,7 +76,7 @@ Point Blue_behavior(Dog *blue, NodeList **nodes_in_sight){
 		//printlist(&(blue->sheeps));
 		if(is_near_path(&path, blue->node.position, MARGIN)){
 			if(blue->sheeps != NULL){
-				pointer = closest_nl_portion_by_nick(nodes_in_sight, *blue, "yellow1");
+				pointer = closest_nl_portion_by_nick(nodes_in_sight, *blue, "yellow2");
 				if(pointer != NULL){
 					printf("Id ciblé : %d\n", pointer->node.id);
 					yellow_pos = pointer->node.position;
@@ -259,7 +259,7 @@ int receive_packet(struct lws *wsi, unsigned char * buf){
 
 	switch(typeMsg){
 		case 18:
-			sendCommand(wsi,blue1, sizeof(blue1));
+			sendCommand(wsi,blue2, sizeof(blue2));
 			break;
 
 		case 16 :
@@ -281,7 +281,7 @@ int receive_packet(struct lws *wsi, unsigned char * buf){
 
 		case 32 :
 			myId = getMyId(buf);
-			blue_node = create_node(myId, create_point(0, 0), "blue1");
+			blue_node = create_node(myId, create_point(0, 0), "blue2");
 			blue_dog = create_dog(blue_node, BLUE_SIGHTX, BLUE_SIGHTY);
 			blue_dog.message = create_message(8, create_point(500,722));
 			break;
@@ -296,9 +296,9 @@ int receive_packet(struct lws *wsi, unsigned char * buf){
 					xMax = border[2];
 					yMax = border[3];
 					path = generate_main_path(xMax, yMax);
-          ally_sheepfold_center.x = xMin;
+          ally_sheepfold_center.x = xMax;
           ally_sheepfold_center.y = yMax/2;
-          ennemy_sheepfold_center.x = xMax;
+          ennemy_sheepfold_center.x = xMin;
           ennemy_sheepfold_center.y = yMax/2;
 					sheepfold_radius = xMax/10;
 				}

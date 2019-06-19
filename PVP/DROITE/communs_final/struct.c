@@ -279,11 +279,11 @@ Path *generate_path(Dog dog, int max_width, int max_height) {
     char* color = dog.node.nickname;
     int x_sight = dog.x_sight, y_sight = dog.y_sight;
 
-    if (!strcmp(color, "yellow1") || !strcmp(color, "blue1")) {
+    if (!strcmp(color, "yellow2") || !strcmp(color, "blue2")) {
         return generate_main_path(max_width, max_height);
     }
 
-    if (!strcmp(color, "green1") || !strcmp(color, "purple1")) {
+    if (!strcmp(color, "green2") || !strcmp(color, "purple1")) {
         return generate_secondary_path(max_width, max_height, x_sight, y_sight);
     }
 
@@ -500,7 +500,7 @@ Point follow_path(Path **head, Dog dog, float max_dist) {
         printpoint(dest->position);
 
     } else {
-        if (!strcmp(dog.node.nickname, "yellow1")) {
+        if (!strcmp(dog.node.nickname, "yellow2")) {
             dest = dest->next;
 
             if (is_near_point(position, dest->position, MARGIN)) {
@@ -518,7 +518,7 @@ int is_pushed_by_yellow(NodeList** head, Node n){
   NodeList* pointer = *head;
   int is_pushed = 0;
   while (pointer != NULL && is_pushed == 0){
-    if(!strcmp("yellow1",  pointer->node.nickname) && (distance(n.position, pointer->node.position) <= 100)){
+    if(!strcmp("yellow2",  pointer->node.nickname) && (distance(n.position, pointer->node.position) <= 100)){
         printf("\n\n\nPOUSSEEEEEEEEEEEEEEEE\n\n\n");
       is_pushed = 1;
     }
@@ -579,7 +579,7 @@ int is_closest_to_sheep(Point target, Node self, NodeList *others) {
     while (others != NULL && closest == 1) {
         other = others->node;
 
-        if ((!strcmp("yellow1", other.nickname) || !strcmp("green1", other.nickname)) && self.id != other.id) {
+        if ((!strcmp("yellow2", other.nickname) || !strcmp("green2", other.nickname)) && self.id != other.id) {
             dist_other = distance(other.position, target);
 
             if (dist_self >= dist_other) {

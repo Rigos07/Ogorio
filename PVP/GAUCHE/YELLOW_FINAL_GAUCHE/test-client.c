@@ -190,7 +190,7 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
             else{
                 if(is_near_path(&path, yellow->node.position, MARGIN) != NULL){
                     pointer = closest_nl_portion_by_nick(nodes_in_sight,*yellow,"blue1");
-                    other_yellow = closest_nl_portion_by_nick(nodes_in_sight,*yellow,"yellow");
+                    other_yellow = closest_nl_portion_by_nick(nodes_in_sight,*yellow,"yellow1");
                     if(pointer != NULL){
                         blue_pos = pointer->node.position;
                         if(is_near_point(yellow->node.position, blue_pos, MARGIN) && (other_yellow == NULL || !is_near_point(other_yellow->node.position, yellow->node.position, MARGIN) || other_yellow->node.id > yellow->node.id)){

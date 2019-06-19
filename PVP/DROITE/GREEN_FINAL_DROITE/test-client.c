@@ -231,7 +231,7 @@ int receive_packet(struct lws *wsi, unsigned char * buf){
 
 	switch(typeMsg){
 		case 18:
-			sendCommand(wsi,green1, sizeof(green1));
+			sendCommand(wsi,green2, sizeof(green2));
 			break;
 
 		case 16 :
@@ -250,7 +250,7 @@ int receive_packet(struct lws *wsi, unsigned char * buf){
 
 		case 32 :
 			myId = getMyId(buf);
-			green_node = create_node(myId, create_point(0, 0), "green1");
+			green_node = create_node(myId, create_point(0, 0), "green2");
 			green_dog = create_dog(green_node, GREEN_SIGHTX, GREEN_SIGHTY);
 			break;
 
@@ -263,12 +263,12 @@ int receive_packet(struct lws *wsi, unsigned char * buf){
 					yMin = border[1];
 					xMax = border[2];
 					yMax = border[3];
-					green_node = create_node(myId, create_point(0, 0), "green1");
+					green_node = create_node(myId, create_point(0, 0), "green2");
 					green_dog = create_dog(green_node, GREEN_SIGHTX, GREEN_SIGHTY);
 					path = generate_path(green_dog, xMax, yMax);
-					ally_sheepfold_center.x = xMin;
+					ally_sheepfold_center.x = xMax;
 					ally_sheepfold_center.y = yMax/2;
-					ennemy_sheepfold_center.x = xMax;
+					ennemy_sheepfold_center.x = xMin;
 					ennemy_sheepfold_center.y = yMax/2;
 					sheepfold_radius = xMax/10;
 				}

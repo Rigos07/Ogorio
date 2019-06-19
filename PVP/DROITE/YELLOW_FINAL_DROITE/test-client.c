@@ -63,7 +63,7 @@ NodeList *is_closest_to_sheep_BIS(Point target, Node self, NodeList **head) {
     while (others != NULL && closest == 1) {
         other = others->node;
 
-        if ((!strcmp("yellow1", other.nickname) || !strcmp("green1", other.nickname)) && self.id != other.id) {
+        if ((!strcmp("yellow2", other.nickname) || !strcmp("green2", other.nickname)) && self.id != other.id) {
             dist_other = distance(other.position, target);
 
             if (dist_self >= dist_other) {
@@ -163,7 +163,7 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
         else{
             //TARGET FINDING
             if(yellow->message.started){
-                pointer = closest_nl_portion_by_nick(nodes_in_sight,*yellow,"blue1");
+                pointer = closest_nl_portion_by_nick(nodes_in_sight,*yellow,"blue2");
                 if(pointer != NULL){
                     blue_pos = pointer->node.position;
                 }
@@ -189,8 +189,8 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
             }
             else{
                 if(is_near_path(&path, yellow->node.position, MARGIN) != NULL){
-                    pointer = closest_nl_portion_by_nick(nodes_in_sight,*yellow,"blue1");
-                    other_yellow = closest_nl_portion_by_nick(nodes_in_sight,*yellow,"yellow1");
+                    pointer = closest_nl_portion_by_nick(nodes_in_sight,*yellow,"blue2");
+                    other_yellow = closest_nl_portion_by_nick(nodes_in_sight,*yellow,"yellow2");
                     if(pointer != NULL){
                         blue_pos = pointer->node.position;
                         if(is_near_point(yellow->node.position, blue_pos, MARGIN) && (other_yellow == NULL || !is_near_point(other_yellow->node.position, yellow->node.position, MARGIN) || other_yellow->node.id > yellow->node.id)){
@@ -363,7 +363,7 @@ int receive_packet(struct lws *wsi, unsigned char * buf){
 
     switch(typeMsg){
         case 18:
-            sendCommand(wsi,yellow1, sizeof(yellow1));
+            sendCommand(wsi,yellow2, sizeof(yellow2));
             break;
 
         case 16 :
@@ -385,7 +385,7 @@ int receive_packet(struct lws *wsi, unsigned char * buf){
 
         case 32 :
             myId = getMyId(buf);
-            yellow_node = create_node(myId, create_point(0, 0), "yellow1");
+            yellow_node = create_node(myId, create_point(0, 0), "yellow2");
             yellow_dog = create_dog(yellow_node, YELLOW_SIGHTX, YELLOW_SIGHTY);
             break;
 
@@ -399,9 +399,9 @@ int receive_packet(struct lws *wsi, unsigned char * buf){
                     xMax = border[2];
                     yMax = border[3];
                     path = generate_main_path(xMax, yMax);
-                    ally_sheepfold_center.x = xMin;
+                    ally_sheepfold_center.x = xMax;
                     ally_sheepfold_center.y = yMax/2;
-                    ennemy_sheepfold_center.x = xMax;
+                    ennemy_sheepfold_center.x = xMin;
                     ennemy_sheepfold_center.y = yMax/2;
                     sheepfold_radius = xMax/10;
                 }

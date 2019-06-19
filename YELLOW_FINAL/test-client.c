@@ -136,7 +136,7 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
                         printf("KEINE GNADE, MEINE KINDER !\n" );
                     }
                     else{ //HAVE A TARGET AND TARGET IS IN SIGHT AND INSIDE SHEEPFOLD
-                        printf("TARGET BRINGED BACK TO SHEEPFOLD, AUF WIDERSEHEN MEINE SCHAF\n* MISSION COMPLETE *\n");
+                        printf("TARGET BROUGHT BACK TO SHEEPFOLD, AUF WIDERSEHEN MEINE SCHAF\n* MISSION COMPLETE *\n");
                         objective = follow_path(&path, *yellow , 9999999);
                         free(yellow->target);
                         yellow->target = NULL;

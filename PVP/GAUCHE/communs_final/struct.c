@@ -518,8 +518,7 @@ int is_pushed_by_yellow(NodeList** head, Node n){
   NodeList* pointer = *head;
   int is_pushed = 0;
   while (pointer != NULL && is_pushed == 0){
-    if(!strcmp("yellow1",  pointer->node.nickname) && (distance(n.position, pointer->node.position) <= 100)){
-        printf("\n\n\nPOUSSEEEEEEEEEEEEEEEE\n\n\n");
+    if((!strcmp("yellow2",  pointer->node.nickname) || !strcmp("yellow1",  pointer->node.nickname) ) && (distance(n.position, pointer->node.position) <= 100)){
       is_pushed = 1;
     }
     pointer = pointer->next;

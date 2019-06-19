@@ -291,8 +291,8 @@ Path *generate_path(Dog dog, int max_width, int max_height) {
 }
 
 Path* generate_main_path(int max_width, int max_height) {
-    int xmin = max_width % (4 * BLUE_SIGHT), ymin = 0,
-        xmax = max_width, ymax = max_height,
+    int xmin = 0, ymin = 0,
+        xmax = max_width - max_width % (4 * BLUE_SIGHT), ymax = max_height,
         inter_nb = max_width / (4 * BLUE_SIGHT),
         i;
 
@@ -314,7 +314,7 @@ Path* generate_main_path(int max_width, int max_height) {
 }
 
 Path *generate_secondary_path(int max_width, int max_height, int x_sight, int y_sight) {
-    int zone_min_x = 0, zone_max_x = max_width % (4 * BLUE_SIGHT),
+    int zone_min_x = max_width - max_width % (4 * BLUE_SIGHT), zone_max_x = max_width,
         zone_min_y = 0, zone_max_y = max_height,
         i, i_max;
     Path *head = create_path();
@@ -518,8 +518,7 @@ int is_pushed_by_yellow(NodeList** head, Node n){
   NodeList* pointer = *head;
   int is_pushed = 0;
   while (pointer != NULL && is_pushed == 0){
-    if(!strcmp("yellow2",  pointer->node.nickname) && (distance(n.position, pointer->node.position) <= 100)){
-        printf("\n\n\nPOUSSEEEEEEEEEEEEEEEE\n\n\n");
+    if((!strcmp("yellow2",  pointer->node.nickname) || !strcmp("yellow1",  pointer->node.nickname) ) && (distance(n.position, pointer->node.position) <= 100)){
       is_pushed = 1;
     }
     pointer = pointer->next;

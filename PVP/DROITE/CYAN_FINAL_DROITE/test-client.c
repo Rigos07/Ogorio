@@ -18,11 +18,11 @@ Point Cyan_behavior(Dog *cyan){
   //Merci Vincent le boss du cyan game
     Point objective, point1, point2;
     Node target1, target2;
-    point1.x = ennemy_sheepfold_center.x - CYAN_RADIUS;
+    point1.x = CYAN_RADIUS;
     point1.y = ennemy_sheepfold_center.y - sheepfold_radius;
     printpoint(point1);
 
-    point2.x = ennemy_sheepfold_center.x - CYAN_RADIUS;
+    point2.x = CYAN_RADIUS;
     point2.y = ennemy_sheepfold_center.y + sheepfold_radius;
     printpoint(point2);
 
@@ -195,7 +195,7 @@ int receive_packet(struct lws *wsi, unsigned char * buf){
 
     switch(typeMsg){
         case 18:
-            sendCommand(wsi,cyan1, sizeof(cyan1));
+            sendCommand(wsi,cyan2, sizeof(cyan2));
             break;
 
         case 16 :
@@ -217,7 +217,7 @@ int receive_packet(struct lws *wsi, unsigned char * buf){
 
         case 32 :
             myId = getMyId(buf);
-            cyan_node = create_node(myId, create_point(0, 0), "cyan1");
+            cyan_node = create_node(myId, create_point(0, 0), "cyan2");
             cyan_dog = create_dog(cyan_node, CYAN_SIGHTX, CYAN_SIGHTY);
             break;
 

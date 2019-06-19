@@ -14,6 +14,9 @@ then
   for ((i=0; $6 - $i; i++))
     do gnome-terminal -e "./GAUCHE/YELLOW_FINAL_GAUCHE/yellow_gauche -o agar.io -p $2 $1"
   done
+  for ((i=0; $7 - $i; i++))
+    do gnome-terminal -e "./GAUCHE/CYAN_FINAL_GAUCHE/cyan_gauche -o agar.io -p $2 $1"
+  done
 fi
 
 if [ $3 = "droite" ]
@@ -29,5 +32,8 @@ then
   cd ./DROITE/YELLOW_FINAL_DROITE/ ;make ;make clean ;cd ../..
   for ((i=0; $6 - $i; i++))
     do gnome-terminal -e "./DROITE/YELLOW_FINAL_DROITE/yellow_droite -o agar.io -p $2 $1"
+  done
+  for ((i=0; $7 - $i; i++))
+    do gnome-terminal -e "./DROITE/CYAN_FINAL_DROITE/cyan_droite -o agar.io -p $2 $1"
   done
 fi

@@ -315,7 +315,7 @@ Path* generate_main_path(int max_width, int max_height) {
 
 Path *generate_secondary_path(int max_width, int max_height, int x_sight, int y_sight) {
     int zone_min_x = max_width - max_width % (4 * BLUE_SIGHT), zone_max_x = max_width,
-        zone_min_y = max_height*0.25, zone_max_y = max_height*0.75,
+        zone_min_y = 0, zone_max_y = max_height,
         i, i_max;
     Path *head = create_path();
     Point last_point = create_point(zone_min_x + x_sight, zone_max_y - y_sight);

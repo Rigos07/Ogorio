@@ -150,6 +150,8 @@ NodeList *get_nodelist_portion(NodeList **head, int id);
 
 NodeList* nl_portion_by_nick(NodeList **head, char* nick);
 
+NodeList* closest_nl_portion_by_nick(NodeList **head, Dog self,char* nick);
+
 // ================== MESSAGE PRIMITIVES ==================
 
 Message create_message(int id, Point point);
@@ -199,11 +201,13 @@ int is_near_segment(Point point, Point seg_point1, Point seg_point2, int margin)
 
 int is_near_point(Point point1, Point point2, int margin);
 
-Path *is_near_path(Path **head, Point p);
+Path *is_near_path(Path **head, Point p, int margin);
 
 Path *closest_point(Path **head, Dog dog, float max_dist);
 
 Point follow_path(Path **head, Dog dog, float max_dist);
+
+int is_pushed_by_yellow(NodeList** head, Node n);
 
 void sheep_count(Dog* dog, NodeList** head, Point sheepfold_center, int sheepfold_radius);
 

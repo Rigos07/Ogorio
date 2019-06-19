@@ -14,6 +14,45 @@
 
 // compile with gcc -Wall -g -o sock ./test-client.c -lwebsockets -lm
 
+
+Point find_new_target(Dog *yellow, NodeList **nodes_in_sight){
+  NodeList *pointer;
+  Point objective;
+
+  if(yellow->sheeps != NULL){
+      empty_nodelist(&yellow->sheeps);
+      yellow->sheeps = NULL;
+  }
+
+  sheep_count(yellow, nodes_in_sight, sheepfold_center, sheepfold_radius);
+
+  if(yellow->sheeps != NULL){
+      yellow->target = malloc(sizeof(Node));
+      *(yellow->target) = closest_sheep(*yellow, 9999999);
+
+      pointer = *nodes_in_sight;
+      if(is_closest_to_sheep(yellow->target->position, yellow->node, pointer) == 0){
+          free(yellow->target);
+          yellow->target = NULL;
+      }
+
+      if(yellow->target != NULL){
+          printf("MEINE NEUES ZIEL\n");
+          objective = bring_back_sheep(*(yellow->target), YELLOW_RADIUS, sheepfold_center);
+      }
+      else{
+          printf("FOLLOWING DEFAULT PATH, NO TARGET FOUND\n");
+          objective = follow_path(&path, *yellow , 9999999);
+      }
+  }
+  else{ //HAVE NO TARGET AND NO POSSIBLE TARGET FOUND
+      printf("FOLLOWING DEFAULT PATH\n");
+      objective = follow_path(&path, *yellow , 9999999);
+  }
+  return objective;
+}
+
+
 NodeList *is_closest_to_sheep_BIS(Point target, Node self, NodeList **head) {
     Node other;
     NodeList *others = *head;
@@ -30,20 +69,16 @@ NodeList *is_closest_to_sheep_BIS(Point target, Node self, NodeList **head) {
             if (dist_self >= dist_other) {
                 closest = 0;
                 closest_id = other.id;
-                printf("ya plus priche : %d\n",other.id);
             }
         }
 
         others = others->next;
     }
     if(closest == 0){
-        printf("bite\n");
         closest_yellow = get_nodelist_portion(head, closest_id);
-        if(closest_yellow==NULL)printf("cheh\n\n\n"),printlist(head);
     }
     else{
         closest_yellow = NULL;
-        printf("PO RENTRé\n");
     }
 
     return closest_yellow;
@@ -75,7 +110,7 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
                         else{
                             printf("ANTI STACKING MEASURE\n");
                             objective = bring_back_sheep(*(yellow->target), YELLOW_RADIUS, sheepfold_center);
-                            
+
                         }
                     }
                     else{
@@ -87,7 +122,7 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
                         yellow->target = NULL;
                         objective = follow_path(&path, *yellow , 9999999);
                     }
-                    
+
                 }
                 else{
                     //SHEEP CHASING
@@ -164,43 +199,13 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
                         objective = yellow->node.position;
                     }
                     else{
-                        if(yellow->sheeps != NULL){
-                            empty_nodelist(&yellow->sheeps);
-                            yellow->sheeps = NULL;
-                        }
-
-                        sheep_count(yellow, nodes_in_sight, sheepfold_center, sheepfold_radius);
-
-                        if(yellow->sheeps != NULL){
-                            yellow->target = malloc(sizeof(Node));
-                            *(yellow->target) = closest_sheep(*yellow, 9999999);
-
-                            pointer = *nodes_in_sight;
-                            if(is_closest_to_sheep(yellow->target->position, yellow->node, pointer) == 0){
-                                free(yellow->target);
-                                yellow->target = NULL;
-                            }
-
-                            if(yellow->target != NULL){
-                                printf("MEINE NEUES ZIEL : \n");
-                                objective = bring_back_sheep(*(yellow->target), YELLOW_RADIUS, sheepfold_center);
-                            }
-                            else{
-                                printf("FOLLOWING DEFAULT PATH, NO TARGET FOUND\n");
-                                objective = follow_path(&path, *yellow , 9999999);
-                            }
-                        }
-                        else{ //HAVE NO TARGET AND NO POSSIBLE TARGET FOUND
-                            printf("FOLLOWING DEFAULT PATH\n");
-                            objective = follow_path(&path, *yellow , 9999999);
-                        }
+                        objective = find_new_target(yellow, nodes_in_sight);
                     }
                 }
                 else{
                     printf("TOO FAR FROM PATH\n");
-                    objective = follow_path(&path, *yellow , 9999999);
+                    objective = find_new_target(yellow, nodes_in_sight);
                 }
-                
             }
         }
     }

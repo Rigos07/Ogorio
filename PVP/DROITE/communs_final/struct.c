@@ -315,7 +315,7 @@ Path* generate_main_path(int max_width, int max_height) {
 
 Path *generate_secondary_path(int max_width, int max_height, int x_sight, int y_sight) {
     int zone_min_x = max_width - max_width % (4 * BLUE_SIGHT), zone_max_x = max_width,
-        zone_min_y = 0, zone_max_y = max_height,
+        zone_min_y = max_height*0.25, zone_max_y = max_height*0.75,
         i, i_max;
     Path *head = create_path();
     Point last_point = create_point(zone_min_x + x_sight, zone_max_y - y_sight);
@@ -526,6 +526,18 @@ int is_pushed_by_yellow(NodeList** head, Node n){
   return is_pushed;
 }
 
+int is_pushed_by_green(NodeList** head, Node n){
+  NodeList* pointer = *head;
+  int is_pushed = 0;
+  while (pointer != NULL && is_pushed == 0){
+    if((!strcmp("green2",  pointer->node.nickname) || !strcmp("green1",  pointer->node.nickname) ) && (distance(n.position, pointer->node.position) <= 100)){
+      is_pushed = 1;
+    }
+    pointer = pointer->next;
+  }
+  return is_pushed;
+}
+
 void sheep_count(Dog* dog, NodeList** head, Point ally_sheepfold_center, Point ennemy_sheepfold_center,int sheepfold_radius) {
     float distance_to_ally_sheepfold, distance_to_ennemy_sheepfold;
     NodeList* pointer = *head;
@@ -536,7 +548,7 @@ void sheep_count(Dog* dog, NodeList** head, Point ally_sheepfold_center, Point e
         distance_to_ally_sheepfold = distance(n.position, ally_sheepfold_center);
         distance_to_ennemy_sheepfold = distance(n.position, ennemy_sheepfold_center);
 
-        if (!strncmp("bot", n.nickname, 3) && (distance_to_ally_sheepfold >= sheepfold_radius - MARGIN) && (distance_to_ennemy_sheepfold >= sheepfold_radius - MARGIN) && !is_pushed_by_yellow(head, n) ) {
+        if (!strncmp("bot", n.nickname, 3) && (distance_to_ally_sheepfold >= sheepfold_radius - MARGIN) && (distance_to_ennemy_sheepfold >= sheepfold_radius - MARGIN) && !is_pushed_by_yellow(head, n) && !is_pushed_by_green(head, n)) {
             if (get_nodelist_portion(&dog->sheeps, n.id) == NULL) {
                 add_node(&dog->sheeps, n);
 
@@ -578,7 +590,7 @@ int is_closest_to_sheep(Point target, Node self, NodeList *others) {
     while (others != NULL && closest == 1) {
         other = others->node;
 
-        if ((!strcmp("yellow2", other.nickname) || !strcmp("green2", other.nickname)) && self.id != other.id) {
+        if ((!strcmp("yellow2", other.nickname) || !strcmp("green2", other.nickname) || !strcmp("yellow1", other.nickname) || !strcmp("green1", other.nickname) ) && self.id != other.id) {
             dist_other = distance(other.position, target);
 
             if (dist_self >= dist_other) {

@@ -39,7 +39,7 @@ Point green_behavior(Dog *green, NodeList **nodes_in_sight){
 					distance_to_ally_sheepfold = distance(green->target->position,ally_sheepfold_center);
 					distance_to_ennemy_sheepfold = distance(green->target->position,ennemy_sheepfold_center);
 					if((distance_to_ally_sheepfold >= sheepfold_radius - MARGIN) && (distance_to_ennemy_sheepfold >= sheepfold_radius - MARGIN)){ //HAVE A TARGET AND TARGET IS IN SIGHT AND OUTSIDE SHEEPFOLD
-						objective = bring_back_sheep(*(green->target), GREEN_RADIUS, distance_to_ally_sheepfold);
+						objective = bring_back_sheep(*(green->target), GREEN_RADIUS, ally_sheepfold_center);
 						printf("\nI'M BRINGING MY TARGET BACK HOME : \n");
 						printf("I'M TARGETING %s, LOCATED AT %d , %d\n", green->target->nickname, green->target->position.x, green->target->position.y);
 						printf("GOING TO : %d , %d\n", objective.x, objective.y );
@@ -69,7 +69,7 @@ Point green_behavior(Dog *green, NodeList **nodes_in_sight){
 				green->sheeps = NULL;
 			}
 
-			sheep_count(green, nodes_in_sight, ally_sheepfold_center, sheepfold_radius);
+			sheep_count(green, nodes_in_sight, ally_sheepfold_center, ennemy_sheepfold_center, sheepfold_radius);
 
 			if(green->sheeps != NULL){
 				green->target = malloc(sizeof(Node));

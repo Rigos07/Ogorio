@@ -1,0 +1,12 @@
+cd ./GREEN_FINAL/ ;make ;make clean ;cd ..
+for ((i=0; $3 - $i; i++))
+  do gnome-terminal -e "./GREEN_FINAL/green -o agar.io -p $2 $1"
+done
+cd ./BLUE_FINAL/ ;make ;make clean ;cd ..
+for ((i=0; $4 - $i; i++))
+  do gnome-terminal -e "./BLUE_FINAL/blue -o agar.io -p $2 $1"
+done
+cd ./YELLOW_FINAL/ ;make ;make clean ;cd ..
+for ((i=0; $5 - $i; i++))
+  do gnome-terminal -e "./YELLOW_FINAL/yellow -o agar.io -p $2 $1"
+done

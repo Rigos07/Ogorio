@@ -223,7 +223,7 @@ int delete_node(NodeList **head, int id) {
     } else {
         prev_element->next = next_element;
     }
-
+    free(this_element->node.nickname);
     free(this_element);
     return 1;
 }

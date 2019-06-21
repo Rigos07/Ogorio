@@ -11,8 +11,23 @@
 #include "client.h"
 #include "green.h"
 
+/* ===================== GREEN DOG AI =====================
+* Objective : bringing sheeps back to the sheepfold in a small zone regardless of others dogs
+* Follows the secondary path
+* Doesn't communicates
+* Young and dynamic
+* =========================================================
+*/
+
 // compile with gcc -Wall -g -o sock ./test-client.c -lwebsockets -lm
 
+
+/*
+* Green dog behavior
+* gren : pointer to dog the program runs
+* nodes_in_sight : pointer to nodelist that stores all nodes sent by server
+* return position to send to server
+*/
 Point green_behavior(Dog *green, NodeList **nodes_in_sight){
 	Point objective;
 	NodeList *pointer = *nodes_in_sight;
@@ -29,7 +44,7 @@ Point green_behavior(Dog *green, NodeList **nodes_in_sight){
 					//ABORTING
 					printf("\nMa startup CIBLE\n");
 					printnode(*(green->target));
-					printf("Oh non un autre marcheur. Sur ceux je m'en vais !\n");
+					printf("Oh non un autre marcheur. Sur ce je m'en vais !\n");
 					free(green->target);
 					green->target = NULL;
 					objective = follow_path(&path, *green , 9999999);
@@ -203,7 +218,7 @@ NodeList* getNodeInVision(unsigned char* buf, NodeList** head){
 }
 
 int getMyId(unsigned char* buf){
-	return  *(int *)(buf+1);//(buf[1] + (buf[2]<<8) + (buf[3]<<16));
+	return  *(int *)(buf+1);
 }
 
 void sendToPoint(struct lws *wsi, Point p){
@@ -218,7 +233,7 @@ void sendToPoint(struct lws *wsi, Point p){
 
 
 /*
-Fonction pour recevoir les packets
+Packets receiving function
 */
 int receive_packet(struct lws *wsi, unsigned char * buf){
 	char typeMsg = buf[0];
@@ -257,7 +272,7 @@ int receive_packet(struct lws *wsi, unsigned char * buf){
 			if(myId == 0){
 				double* border=malloc(4*sizeof(double));
 				border = (double *)(buf+1);
-				if(border[2] > 0 || border[3] > 0){ //Pour éviter le paquet malformé négatif
+				if(border[2] > 0 || border[3] > 0){ //To avoid negative coordinates
 					xMin = border[0];
 					yMin = border[1];
 					xMax = border[2];

@@ -11,10 +11,25 @@
 #include "client.h"
 #include "yellow.h"
 
+/* ===================== YELLOW DOG AI =====================
+* Objective : bringing sheeps back to the sheepfold
+* Follows the main path
+* Communicates with Blue dog
+* Also a German Sheperd
+* ===========================================================
+*/
+
+
 
 // compile with gcc -Wall -g -o sock ./test-client.c -lwebsockets -lm
 
-
+/*
+* Find a new available sheep to target or follow path otherwise
+* yellow : pointer to dog the program runs
+* nodes_in_sight : head of the NodeList that store the dog's sight
+* affect dog.target with new target found if found, NULL otherwise
+* returns point to go
+*/
 Point find_new_target(Dog *yellow, NodeList **nodes_in_sight){
   NodeList *pointer;
   Point objective;
@@ -52,7 +67,13 @@ Point find_new_target(Dog *yellow, NodeList **nodes_in_sight){
   return objective;
 }
 
-
+/*
+* Checks if a dog is the closest to a sheep
+* target : the position of targeted sheep
+* self : node of the dog the program runs
+* head : head of the NodeList that store the dog's sight
+* returns 1 if closest, 0 if another dog (yellow or green) is closer than self.
+*/
 NodeList *is_closest_to_sheep_BIS(Point target, Node self, NodeList **head) {
     Node other;
     NodeList *others = *head;
@@ -84,11 +105,17 @@ NodeList *is_closest_to_sheep_BIS(Point target, Node self, NodeList **head) {
     return closest_yellow;
 }
 
-
+/*
+* Yellow dog behavior
+* yellow : pointer to dog the program runs
+* nodes_in_sight : pointer to nodelist that stores all nodes sent by server
+* return position to send to server
+*/
 Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
     Point objective, blue_pos;
     NodeList *pointer = *nodes_in_sight, *other_yellow;
     float distance_to_destination;
+
     printf("================= START ===============\n");
     if((*nodes_in_sight) != NULL){
         printf("CURRENT POSITION : %d , %d\n",yellow->node.position.x,yellow->node.position.y);
@@ -108,9 +135,8 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
                             objective = follow_path(&path, *yellow , 9999999);
                         }
                         else{
-                            printf("ANTI STACKING MEASURE\n");
+                            printf("ANTI STACKING MEASURE, I TAKE THIS ONE\n");
                             objective = bring_back_sheep(*(yellow->target), YELLOW_RADIUS, sheepfold_center);
-
                         }
                     }
                     else{
@@ -167,14 +193,13 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
                     blue_pos = pointer->node.position;
                 }
                 decode_msg(yellow,blue_pos);
-                printf("OK ALORS : size i : %d id i : %d x i : %d y i : %d\n", yellow->message.size_i,yellow->message.id_i,yellow->message.x_i,yellow->message.y_i);
-                printf("blue pos : %d %d\n", blue_pos.x, blue_pos.y);
+                printf("COMMUNICATION STATUS : size i : %d id i : %d x i : %d y i : %d\n", yellow->message.size_i,yellow->message.id_i,yellow->message.x_i,yellow->message.y_i);
                 if(yellow->message.done){
-                    printf("J'AI COMPRIS : BREBIS N° %d  EN : %d , %d\n",yellow->message.id, yellow->message.position.x, yellow->message.position.y);
+                    printf("I RECEIVED SHEEP N° %d  AT : %d , %d\n",yellow->message.id, yellow->message.position.x, yellow->message.position.y);
                     yellow->message.started = 0;
                     yellow->message.done = 0;
                     yellow->target = malloc(sizeof(Node));
-                    *(yellow->target) = create_node(yellow->message.id, yellow->message.position, "UN TRUC");
+                    *(yellow->target) = create_node(yellow->message.id, yellow->message.position, "position");
                     objective = yellow->message.position;
                 }
                 else{
@@ -192,7 +217,7 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
                     if(pointer != NULL){
                         blue_pos = pointer->node.position;
                         if(is_near_point(yellow->node.position, blue_pos, MARGIN)){
-                            printf("DEBUT DE COOOM ICIIIIIIIIIIII\n");
+                            printf("*** INITIATE COMMUNICATION ***\n");
                             yellow->message = create_message(0, create_point(0,0));
                             yellow->message.started = 1;
                         }
@@ -203,7 +228,7 @@ Point Yellow_behavior(Dog *yellow, NodeList **nodes_in_sight){
                     }
                 }
                 else{
-                    printf("TOO FAR FROM PATH\n");
+                    printf("TOO FAR FROM PATH, GOING BACK\n");
                     objective = find_new_target(yellow, nodes_in_sight);
                 }
             }
@@ -288,21 +313,9 @@ int writePacket(struct lws *wsi)
 
 /****************************************************************************************************************************/
 
-/*A ENLEVER QUAND ON VEUT PLUS FAIRE JOUJOU
-unsigned int rand_a_b(int a, int b){
-    return rand()%(b+1-a)+a;
-}*/
-
 NodeList* getNodeInVision(unsigned char* buf, NodeList** head){
     int i=3;
     Node node;
-    //printf("Salut :\n");
-    /*int k=0;
-    printf("Buffer :\n");
-    for(k=0;k<200;k++){
-        printf("%x", buf[k]);
-    }
-    printf("\n");*/
 
     while(buf[i] + buf[i+1] + buf[i+2] + buf[i+3] != 0){
 
@@ -319,22 +332,17 @@ NodeList* getNodeInVision(unsigned char* buf, NodeList** head){
         node.nickname = malloc((nameLen+1)*sizeof(char));
         strcpy(node.nickname, buf+i);
 
-        /*printf("\n=========NODE==========\n");
-        printnode(node);
-        printf("\n=======================\n");*/
-
         if(*head == NULL || get_nodelist_portion(head,node.id) == NULL){
             add_node(head, node);
         }
 
         i=i+1+nameLen;
     }
-    //printf("Au revoir :\n");
     return NULL;
 }
 
 int getMyId(unsigned char* buf){
-    return  *(int *)(buf+1);//(buf[1] + (buf[2]<<8) + (buf[3]<<16));
+    return  *(int *)(buf+1);
 }
 
 void sendToPoint(struct lws *wsi, Point p){
@@ -349,7 +357,7 @@ void sendToPoint(struct lws *wsi, Point p){
 
 
 /*
-Fonction pour recevoir les packets
+Packets receiving function
 */
 int receive_packet(struct lws *wsi, unsigned char * buf){
     char typeMsg = buf[0];
@@ -372,10 +380,6 @@ int receive_packet(struct lws *wsi, unsigned char * buf){
                 if(dog_node != NULL){
                     yellow_dog.node = dog_node->node;
                 }
-                /*printf("\n=========1============\n");
-                printlist(&nodeInVision);
-                printf("=========2============\n");*/
-
             }else{
                 compteur++;
             }
@@ -391,7 +395,7 @@ int receive_packet(struct lws *wsi, unsigned char * buf){
             if(myId == 0){
                 double* border=malloc(4*sizeof(double));
                 border = (double *)(buf+1);
-                if(border[2] > 0 || border[3] > 0){ //Pour éviter le paquet malformé négatif
+                if(border[2] > 0 || border[3] > 0){ //To avoid negative coordinates
                     xMin = border[0];
                     yMin = border[1];
                     xMax = border[2];
@@ -403,6 +407,7 @@ int receive_packet(struct lws *wsi, unsigned char * buf){
                 }
             }else{
                 p = Yellow_behavior(&yellow_dog, &nodeInVision);
+                
                 if(!is_near_point(yellow_dog.node.position,ORIGIN,0)){
                     sendToPoint(wsi,p);
                 }

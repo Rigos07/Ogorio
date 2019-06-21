@@ -124,7 +124,7 @@ NodeList *get_nodelist_portion(NodeList **head, int id) {
     return this_element;
 }
 
-NodeList* nl_portion_by_nick(NodeList **head, char* nick) {
+NodeList *nl_portion_by_nick(NodeList **head, char* nick) {
     if (*head == NULL) {
         fprintf(stderr, "ERROR : Trying to get nodelist portion in empty nodelist\n");
         return NULL;
@@ -145,7 +145,7 @@ NodeList* nl_portion_by_nick(NodeList **head, char* nick) {
     return this_element;
 }
 
-NodeList* closest_nl_portion_by_nick(NodeList **head, Dog self,char* nick) {
+NodeList *closest_nl_portion_by_nick(NodeList **head, Dog self,char* nick) {
     float min_dist = 99999999999999, distance_to_self;
     int min_id = 0;
     if (*head == NULL) {
@@ -263,7 +263,7 @@ Dog create_dog(Node node, int x_sight, int y_sight) {
     return new_dog;
 }
 
-// ================== FUNCTIONS ==================
+// ================== MATHEMATICAL FUNCTYIONS ==================
 
 float distance(Point p1, Point p2) {
     return sqrt(pow(p1.x - p2.x, 2) + pow(p1.y - p2.y, 2));
@@ -272,6 +272,42 @@ float distance(Point p1, Point p2) {
 int is_between(int a, int b, int c) {
     return a >= b && a <= c;
 }
+
+Point bring_back_sheep(Node target,int radius, Point destination){
+    int dx, dy;
+    int finalx,finaly;
+    float delta_x, delta_y, distance_to_destination;
+    Point objective;
+
+    dx = target.position.x - destination.x;
+    dy = target.position.y - destination.y;
+    distance_to_destination = distance(target.position, destination);
+
+    if(distance_to_destination == 0){
+        objective.x = target.position.x;
+        objective.y = target.position.y;
+        return objective;
+    }
+
+    delta_x = ( ((radius*SHEEP_PUSHING_PERCENT)*dx) / distance_to_destination );
+    delta_y = ( ((radius*SHEEP_PUSHING_PERCENT)*dy) / distance_to_destination );
+
+
+    finalx = floor(target.position.x + delta_x);
+    finaly = floor(target.position.y + delta_y);
+
+    if(finalx < 0){
+        finalx = 0;
+    }
+    if (finaly < 0) {
+        finaly = 0;
+    }
+    objective.x = finalx;
+    objective.y = finaly;
+    return objective;
+}
+
+// ================== PATH FUNCTIONS ==================
 
 Path *generate_path(Dog dog, int max_width, int max_height) {
     char* color = dog.node.nickname;
@@ -288,7 +324,7 @@ Path *generate_path(Dog dog, int max_width, int max_height) {
     return NULL;
 }
 
-Path* generate_main_path(int max_width, int max_height) {
+Path *generate_main_path(int max_width, int max_height) {
     int xmin = max_width % (4 * BLUE_SIGHT), ymin = 0,
         xmax = max_width, ymax = max_height,
         inter_nb = max_width / (4 * BLUE_SIGHT),
@@ -511,6 +547,8 @@ Point follow_path(Path **head, Dog dog, float max_dist) {
     return dest->position;
 }
 
+// ================== SHEEP DETECTION FUNCTIONS ==================
+
 int is_pushed_by_yellow(NodeList** head, Node n){
   NodeList* pointer = *head;
   int is_pushed = 0;
@@ -587,6 +625,8 @@ int is_closest_to_sheep(Point target, Node self, NodeList *others) {
 
     return closest;
 }
+
+// ================== COMMUNICATION FUNCTIONS ==================
 
 int get_octal_size(int x) {
     int size = 1;
@@ -771,41 +811,7 @@ int decode_msg(Dog *dog, Point info) {
     return 1;
 }
 
-// ================= BRINGING FONCTIONS ===================
-
-Point bring_back_sheep(Node target,int radius, Point destination){
-    int dx, dy;
-    int finalx,finaly;
-    float delta_x, delta_y, distance_to_destination;
-    Point objective;
-
-    dx = target.position.x - destination.x;
-    dy = target.position.y - destination.y;
-    distance_to_destination = distance(target.position, destination);
-
-    if(distance_to_destination == 0){
-        objective.x = target.position.x;
-        objective.y = target.position.y;
-        return objective;
-    }
-
-    delta_x = ( ((radius*SHEEP_PUSHING_PERCENT)*dx) / distance_to_destination );
-    delta_y = ( ((radius*SHEEP_PUSHING_PERCENT)*dy) / distance_to_destination );
-
-
-    finalx = floor(target.position.x + delta_x);
-    finaly = floor(target.position.y + delta_y);
-
-    if(finalx < 0){
-        finalx = 0;
-    }
-    if (finaly < 0) {
-        finaly = 0;
-    }
-    objective.x = finalx;
-    objective.y = finaly;
-    return objective;
-}
+// ================= PRINTING FONCTIONS ===================
 
 void printpoint(Point point){
     printf("x : %d\n", point.x);

@@ -148,12 +148,10 @@ NodeList* nl_portion_by_nick(NodeList **head, char* nick) {
 NodeList* closest_nl_portion_by_nick(NodeList **head, Dog self,char* nick) {
     float min_dist = 99999999999999, distance_to_self;
     int min_id = 0;
-    printf("================================== LA ===================================\n");
     if (*head == NULL) {
         fprintf(stderr, "ERROR : Trying to get nodelist portion in empty nodelist\n");
         return NULL;
     }
-    printlist(head);
 
     NodeList *this_element = *head;
 
@@ -169,11 +167,6 @@ NodeList* closest_nl_portion_by_nick(NodeList **head, Dog self,char* nick) {
     }
 
     this_element = get_nodelist_portion(head, min_id);
-    if(this_element != NULL){
-      printnode(this_element->node);
-    }
-    
-    printf("================================== ICI ===================================\n");
     return this_element;
 }
 
@@ -230,7 +223,7 @@ int delete_node(NodeList **head, int id) {
     } else {
         prev_element->next = next_element;
     }
-
+    free(this_element->node.nickname);
     free(this_element);
     return 1;
 }
@@ -502,7 +495,6 @@ Point follow_path(Path **head, Dog dog, float max_dist) {
 
     if (prev_inters == NULL) {
         dest = closest_point(head, dog, max_dist);
-        printpoint(dest->position);
 
     } else {
         if (!strcmp(dog.node.nickname, "yellow")) {
@@ -524,7 +516,6 @@ int is_pushed_by_yellow(NodeList** head, Node n){
   int is_pushed = 0;
   while (pointer != NULL && is_pushed == 0){
     if(!strcmp("yellow",  pointer->node.nickname) && (distance(n.position, pointer->node.position) <= 100)){
-        printf("\n\n\nPOUSSEEEEEEEEEEEEEEEE\n\n\n");
       is_pushed = 1;
     }
     pointer = pointer->next;
